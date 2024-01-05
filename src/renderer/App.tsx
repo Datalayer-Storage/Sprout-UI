@@ -14,7 +14,7 @@ function App() {
   useEffect(() => {
 
     const run = async () => {
-      console.log(await window.walletAPI.getLoggedInFingerprint());
+      console.log(await window.datalayerAPI.getConfig());
     }
     run();
   }, [])
@@ -46,7 +46,5 @@ function App() {
     </>
   );
 }
-
-
 
 export default App;

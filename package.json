@@ -15,8 +15,8 @@
   "dependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/forms": "^0.5.7",
-    "chia-datalayer": "^2.0.12",
-    "chia-wallet": "^1.0.8",
+    "chia-datalayer": "^2.0.13",
+    "chia-wallet": "^1.0.9",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
     "flowbite-typography": "^1.0.3",

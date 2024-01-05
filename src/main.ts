@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain} from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import path from "path";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
@@ -6,21 +6,24 @@ import { dirname } from "path";
 /**
  * importing the chia-wallet module and its typescript types
  */
-import Wallet, { 
-  GetPrivateKeyResponse, 
-  SpendableCoinRequest, 
-  CoinRecordsByNameRequest, 
-  PushTxRequest } from 'chia-wallet';
+import Wallet, 
+{
+  Config as WalletConfig,
+  GetPrivateKeyResponse,
+  SpendableCoinRequest,
+  CoinRecordsByNameRequest,
+  PushTxRequest
+} from 'chia-wallet';
 
 /**
  * importing the chia-datalayer module and its typescript types
  */
-import DataLayer, {
-  Config,
+import DataLayer, 
+{
+  Config as DatalayerConfig, /* the config type is common to both the chia wallet and chia datalayer */
   AddMirrorParams,
   AddMissingFilesParams,
   BatchUpdateParams,
-  CancelOfferParams,
   CreateDataStoreParams,
   DeleteMirrorParams,
   GetKeysParams,
@@ -45,8 +48,10 @@ const __dirname = dirname(__filename);
  * creates the main renderer window
  */
 function createWindow() {
-  
+
   declareWalletRpcHandles();
+  declareDatalayerRpcHandles();
+
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -76,7 +81,6 @@ app.on("activate", () => {
   }
 });
 
-
 /**
  * defines the chia wallet electron IPC remote proceure calls for renderer processes to
  * invoke the chia wallet API's
@@ -84,15 +88,14 @@ app.on("activate", () => {
  * these calls are not accessible in the renderer process without being declared
  * in {@link src/preload.js}
  */
-const declareWalletRpcHandles = async () => {
+async function declareWalletRpcHandles() {
   const wallet = new Wallet();
 
   ipcMain.handle('getConfig', () => {
-      return wallet.getConfig();
-
+    return wallet.getConfig();
   });
 
-  ipcMain.handle('setConfig', (_, config: Config) => {
+  ipcMain.handle('setConfig', (_, config: WalletConfig) => {
     return wallet.setConfig(config);
   })
 
@@ -122,20 +125,20 @@ const declareWalletRpcHandles = async () => {
 }
 
 /**
- * defines the chia datalayer electron IPC remote proceure calls for renderer processes to
- * invoke the chia wallet API's
- * 
- * these calls are not accessible in the renderer process without being declared
- * in {@link src/preload.js}
- */
-const declareDatalayerRpcHandles = async () => {
+* defines the chia datalayer electron IPC remote proceure calls for renderer processes to
+* invoke the chia wallet API's
+* 
+* these calls are not accessible in the renderer process without being declared
+* in {@link src/preload.js}
+*/
+async function declareDatalayerRpcHandles() {
   const datalayer = new DataLayer();
 
   ipcMain.handle('datalayerGetConfig', () => {
     return datalayer.getConfig();
   });
 
-  ipcMain.handle('datalayerSetConfig', (_, config: Config) => {
+  ipcMain.handle('datalayerSetConfig', (_, config: DatalayerConfig) => {
     return datalayer.setConfig(config);
   });
 
@@ -203,8 +206,7 @@ const declareDatalayerRpcHandles = async () => {
     return datalayer.removeSubscriptions(removeSubscriptionsParams, options);
   });
 
-  ipcMain.handle('datalayerSubscribe', (_, subscribeParams: SubscribeParams, options: Options) => {
-    return datalayer.subscribe(subscribeParams, options);
+  ipcMain.handle('datalayerSubscribe', (_, subscribeParams: SubscribeParams, options: Options) => {    return datalayer.subscribe(subscribeParams, options);
   });
 
   ipcMain.handle('datalayerUnsubscribe', (_, unsubscribeParams: UnsubscribeParams, options: Options) => {
@@ -218,4 +220,4 @@ const declareDatalayerRpcHandles = async () => {
   ipcMain.handle('datalayerWalletLogin', (_, walletLogInParams: WalletLogInParams, options: Options) => {
     return datalayer.walletLogin(walletLogInParams, options);
   });
-};
+}
