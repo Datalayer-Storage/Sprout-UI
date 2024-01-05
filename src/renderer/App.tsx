@@ -1,11 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import { Button } from "flowbite-react";
 import "./App.css";
 
+
+/**
+ * @returns app react component to be rendered by electron as the UI
+ */
 function App() {
   const [count, setCount] = useState(0);
+
+  useEffect(() => {
+
+    const run = async () => {
+      console.log(await window.walletAPI.getLoggedInFingerprint());
+    }
+    run();
+  }, [])
+  
 
   return (
     <>
@@ -33,5 +46,7 @@ function App() {
     </>
   );
 }
+
+
 
 export default App;

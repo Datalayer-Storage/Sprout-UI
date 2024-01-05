@@ -1,13 +1,52 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain} from "electron";
 import path from "path";
-
 import { fileURLToPath } from "url";
 import { dirname } from "path";
+
+/**
+ * importing the chia-wallet module and its typescript types
+ */
+import Wallet, { 
+  GetPrivateKeyResponse, 
+  SpendableCoinRequest, 
+  CoinRecordsByNameRequest, 
+  PushTxRequest } from 'chia-wallet';
+
+/**
+ * importing the chia-datalayer module and its typescript types
+ */
+import DataLayer, {
+  Config,
+  AddMirrorParams,
+  AddMissingFilesParams,
+  BatchUpdateParams,
+  CancelOfferParams,
+  CreateDataStoreParams,
+  DeleteMirrorParams,
+  GetKeysParams,
+  GetKeysValuesParams,
+  GetKvDiffParams,
+  GetMirrorsParams,
+  GetRootParams,
+  GetRootHistoryParams,
+  GetSyncStatusParams,
+  GetValueParams,
+  Options,
+  RemoveSubscriptionsParams,
+  SubscribeParams,
+  UnsubscribeParams,
+  WalletLogInParams
+} from 'chia-datalayer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+/**
+ * creates the main renderer window
+ */
 function createWindow() {
+  
+  declareWalletRpcHandles();
   const win = new BrowserWindow({
     width: 800,
     height: 600,
@@ -36,3 +75,147 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+
+/**
+ * defines the chia wallet electron IPC remote proceure calls for renderer processes to
+ * invoke the chia wallet API's
+ * 
+ * these calls are not accessible in the renderer process without being declared
+ * in {@link src/preload.js}
+ */
+const declareWalletRpcHandles = async () => {
+  const wallet = new Wallet();
+
+  ipcMain.handle('getConfig', () => {
+      return wallet.getConfig();
+
+  });
+
+  ipcMain.handle('setConfig', (_, config: Config) => {
+    return wallet.setConfig(config);
+  })
+
+  ipcMain.handle('getLoggedInFingerprint', () => {
+    return wallet.getLoggedInFingerprint();
+  });
+
+  ipcMain.handle('getCoinRecords', (_, options: any) => {
+    return wallet.getCoinRecords(options);
+  })
+
+  ipcMain.handle('getPrivateKey', (_, getPrivateKeyResponse: GetPrivateKeyResponse, options: any) => {
+    return wallet.getPrivateKey(getPrivateKeyResponse, options);
+  })
+
+  ipcMain.handle('getCoinRecordsByName', (_, coinRecordsByNameRequest: CoinRecordsByNameRequest, options: any) => {
+    return wallet.getCoinRecordsByName(coinRecordsByNameRequest, options);
+  })
+
+  ipcMain.handle('getSpendableCoins', (_, spendableCoinRequest: SpendableCoinRequest, options?: any) => {
+    return wallet.getSpendablCoins(spendableCoinRequest, options);
+  });
+
+  ipcMain.handle('pushTx', (_, pushTxRequest: PushTxRequest, options: any) => {
+    return wallet.pushTx(pushTxRequest, options);
+  })
+}
+
+/**
+ * defines the chia datalayer electron IPC remote proceure calls for renderer processes to
+ * invoke the chia wallet API's
+ * 
+ * these calls are not accessible in the renderer process without being declared
+ * in {@link src/preload.js}
+ */
+const declareDatalayerRpcHandles = async () => {
+  const datalayer = new DataLayer();
+
+  ipcMain.handle('datalayerGetConfig', () => {
+    return datalayer.getConfig();
+  });
+
+  ipcMain.handle('datalayerSetConfig', (_, config: Config) => {
+    return datalayer.setConfig(config);
+  });
+
+  ipcMain.handle('datalayerAddMirror', (_, addMirrorParams: AddMirrorParams, options: Options) => {
+    return datalayer.addMirror(addMirrorParams, options);
+  });
+
+  ipcMain.handle('datalayerAddMissingFiles', (_, addMissingFilesParams: AddMissingFilesParams, options: Options) => {
+    return datalayer.addMissingFiles(addMissingFilesParams, options);
+  });
+
+  ipcMain.handle('datalayerCreateDataStore', (_, createDataStoreParams: CreateDataStoreParams, options: Options) => {
+    return datalayer.createDataStore(createDataStoreParams, options);
+  });
+
+  ipcMain.handle('datalayerDeleteMirror', (_, deleteMirrorParams: DeleteMirrorParams, options: Options) => {
+    return datalayer.deleteMirror(deleteMirrorParams, options);
+  });
+
+  ipcMain.handle('datalayerGetKeys', (_, getKeysParams: GetKeysParams, options: Options) => {
+    return datalayer.getKeys(getKeysParams, options);
+  });
+
+  ipcMain.handle('datalayerGetKeysValues', (_, getKeysValuesParams: GetKeysValuesParams, options: Options) => {
+    return datalayer.getKeysValues(getKeysValuesParams, options);
+  });
+
+  ipcMain.handle('datalayerGetKvDiff', (_, getKvDiffParams: GetKvDiffParams, options: Options) => {
+    return datalayer.getKvDiff(getKvDiffParams, options);
+  });
+
+  ipcMain.handle('datalayerGetMirrors', (_, getMirrorsParams: GetMirrorsParams, options: Options) => {
+    return datalayer.getMirrors(getMirrorsParams, options);
+  });
+
+  ipcMain.handle('datalayerGetOwnedStores', () => {
+    return datalayer.getOwnedStores();
+  });
+
+  ipcMain.handle('datalayerGetRoot', (_, getRootParams: GetRootParams, options: Options) => {
+    return datalayer.getRoot(getRootParams, options);
+  });
+
+  ipcMain.handle('datalayerGetRootHistory', (_, getRootHistoryParams: GetRootHistoryParams, options: Options) => {
+    return datalayer.getRootHistory(getRootHistoryParams, options);
+  });
+
+  ipcMain.handle('datalayerGetSyncStatus', (_, getSyncStatusParams: GetSyncStatusParams, options: Options) => {
+    return datalayer.getSyncStatus(getSyncStatusParams, options);
+  });
+
+  ipcMain.handle('datalayerGetSubscriptions', (_, options: Options) => {
+    return datalayer.getSubscriptions(options);
+  });
+
+  ipcMain.handle('datalayerGetValue', (_, getValueParams: GetValueParams, options: Options) => {
+    return datalayer.getValue(getValueParams, options);
+  });
+
+  ipcMain.handle('datalayerPlugins', (_, options: Options) => {
+    return datalayer.plugins(options);
+  });
+
+  ipcMain.handle('datalayerRemoveSubscriptions', (_, removeSubscriptionsParams: RemoveSubscriptionsParams, options: Options) => {
+    return datalayer.removeSubscriptions(removeSubscriptionsParams, options);
+  });
+
+  ipcMain.handle('datalayerSubscribe', (_, subscribeParams: SubscribeParams, options: Options) => {
+    return datalayer.subscribe(subscribeParams, options);
+  });
+
+  ipcMain.handle('datalayerUnsubscribe', (_, unsubscribeParams: UnsubscribeParams, options: Options) => {
+    return datalayer.unsubscribe(unsubscribeParams, options);
+  });
+
+  ipcMain.handle('datalayerUpdateDataStore', (_, batchUpdateParams: BatchUpdateParams, options: Options) => {
+    return datalayer.updateDataStore(batchUpdateParams, options);
+  });
+
+  ipcMain.handle('datalayerWalletLogin', (_, walletLogInParams: WalletLogInParams, options: Options) => {
+    return datalayer.walletLogin(walletLogInParams, options);
+  });
+};
