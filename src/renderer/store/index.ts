@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { ipcApi } from 'api';
+import { ipcApi } from '../api';
 import appReducer from './slices/app/app.slice';
 import userOptionsReducer from './slices/userOptions/userOptions.slice';
 import storage from 'redux-persist/lib/storage';
+// @ts-ignore
 import { rtkQueryErrorLogger } from './middleware/rtkQueryErrorLogger';
 
 import {
@@ -26,6 +27,7 @@ const persistUserOptionsConfig = {
 const store = configureStore({
   reducer: {
     app: appReducer,
+    // @ts-ignore
     userOptions: persistReducer(persistUserOptionsConfig, userOptionsReducer),
     [ipcApi.reducerPath]: ipcApi.reducer
   },
@@ -41,7 +43,7 @@ const store = configureStore({
 
 const persistor = persistStore(store);
 
-// eslint-disable-next-line no-undef
+// @ts-ignore
 window.store = store;
 
 export { store, persistor };

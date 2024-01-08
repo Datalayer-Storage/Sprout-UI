@@ -1,37 +1,22 @@
-import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useState } from "react";
 import { Button } from "flowbite-react";
 import "./App.css";
-import { AddMissingFilesParams } from "chia-datalayer";
+import { useGetConfigQuery } from './api/ipc/wallet';
 
 /**
  * @returns app react component to be rendered by electron as the UI
  */
 function App() {
   const [count, setCount] = useState(0);
+  const { data, isLoading, isError } = useGetConfigQuery({});
 
-  useEffect(() => {
-    
-    const run = async () => {
-      const aMFP: AddMissingFilesParams = {};
-      console.log(await window.datalayerAPI.addMissingFiles(aMFP));
-    }
-    run();
-  }, [])
-  
+  if (isLoading) return <div>Loading...</div>
+  if (isError) return <div>Error</div>
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
       <h1>Vite + React</h1>
+      {JSON.stringify(data)}
       <Button>Click me</Button>
       <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>

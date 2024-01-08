@@ -14,7 +14,6 @@ contextBridge.exposeInMainWorld(
         getConfig: () => {
             return ipcRenderer.invoke('walletGetConfig');
         },
-        
         setConfig: (config) => {
             return ipcRenderer.invoke('walletSetConfig', config);
         },
