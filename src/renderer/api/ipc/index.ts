@@ -16,10 +16,10 @@ interface ipcRendererBaseQueryArgs {
  */
 const ipcRendererBaseQuery = async ({
   channel,
-  args,
+  args
 }: ipcRendererBaseQueryArgs) => {
   try {
-    const result = await ipcRenderer.invoke(channel, args);
+    const result = await ipcRenderer.invoke(channel, args, options);
     return { data: result };
   } catch (error) {
     return {
