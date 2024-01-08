@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import { Button } from "flowbite-react";
 import "./App.css";
-
+import { AddMissingFilesParams } from "chia-datalayer";
 
 /**
  * @returns app react component to be rendered by electron as the UI
@@ -12,9 +12,10 @@ function App() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-
+    
     const run = async () => {
-      console.log(await window.datalayerAPI.getConfig());
+      const aMFP: AddMissingFilesParams = {};
+      console.log(await window.datalayerAPI.addMissingFiles(aMFP));
     }
     run();
   }, [])

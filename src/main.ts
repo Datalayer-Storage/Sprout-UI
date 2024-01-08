@@ -91,37 +91,37 @@ app.on("activate", () => {
 async function declareWalletRpcHandles() {
   const wallet = new Wallet();
 
-  ipcMain.handle('getConfig', () => {
+  ipcMain.handle('walletGetConfig', () => {
     return wallet.getConfig();
   });
 
-  ipcMain.handle('setConfig', (_, config: WalletConfig) => {
+  ipcMain.handle('walletSetConfig', (_, config: WalletConfig) => {
     return wallet.setConfig(config);
-  })
+  });
 
-  ipcMain.handle('getLoggedInFingerprint', () => {
+  ipcMain.handle('walletGetLoggedInFingerprint', () => {
     return wallet.getLoggedInFingerprint();
   });
 
-  ipcMain.handle('getCoinRecords', (_, options: any) => {
+  ipcMain.handle('walletGetCoinRecords', (_, options: any) => {
     return wallet.getCoinRecords(options);
-  })
+  });
 
-  ipcMain.handle('getPrivateKey', (_, getPrivateKeyResponse: GetPrivateKeyResponse, options: any) => {
+  ipcMain.handle('walletGetPrivateKey', (_, getPrivateKeyResponse: GetPrivateKeyResponse, options: any) => {
     return wallet.getPrivateKey(getPrivateKeyResponse, options);
-  })
+  });
 
-  ipcMain.handle('getCoinRecordsByName', (_, coinRecordsByNameRequest: CoinRecordsByNameRequest, options: any) => {
+  ipcMain.handle('walletGetCoinRecordsByName', (_, coinRecordsByNameRequest: CoinRecordsByNameRequest, options: any) => {
     return wallet.getCoinRecordsByName(coinRecordsByNameRequest, options);
-  })
+  });
 
-  ipcMain.handle('getSpendableCoins', (_, spendableCoinRequest: SpendableCoinRequest, options?: any) => {
+  ipcMain.handle('walletGetSpendableCoins', (_, spendableCoinRequest: SpendableCoinRequest, options?: any) => {
     return wallet.getSpendablCoins(spendableCoinRequest, options);
   });
 
-  ipcMain.handle('pushTx', (_, pushTxRequest: PushTxRequest, options: any) => {
+  ipcMain.handle('walletPushTx', (_, pushTxRequest: PushTxRequest, options: any) => {
     return wallet.pushTx(pushTxRequest, options);
-  })
+  });
 }
 
 /**

@@ -12,127 +12,130 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld(
   'walletAPI', {
         getConfig: () => {
-            return ipcRenderer.invoke('getConfig');
+            return ipcRenderer.invoke('walletGetConfig');
         },
-
-        setConfig: () => {
-            return ipcRenderer.invoke('setConfig', config);
+        
+        setConfig: (config) => {
+            return ipcRenderer.invoke('walletSetConfig', config);
         },
         
         getLoggedInFingerprint: () => {
-            return ipcRenderer.invoke('getLoggedInFingerprint');
+            return ipcRenderer.invoke('walletGetLoggedInFingerprint');
         },
-
-        getCoinRecords: () => {
-            return ipcRenderer.invoke('getCoinRecords', options);
+        
+        getCoinRecords: (options) => {
+            return ipcRenderer.invoke('walletGetCoinRecords', options);
         },
-
-        getPrivateKey: () => {
-            return ipcRenderer.invoke('getPrivateKey', getPrivateKeyResponse, options);
+        
+        getPrivateKey: (getPrivateKeyResponse, options) => {
+            return ipcRenderer.invoke('walletGetPrivateKey', getPrivateKeyResponse, options);
         },
-
-        getCoinRecordsByName: () => {
-            return ipcRenderer.invoke('getCoinRecordsByName', coinRecordsByNameRequest, options);
+        
+        getCoinRecordsByName: (coinRecordsByNameRequest, options) => {
+            return ipcRenderer.invoke('walletGetCoinRecordsByName', coinRecordsByNameRequest, options);
         },
-
+        
         getSpendableCoins: (spendableCoinsRequest, options) => {
-            return ipcRenderer.invoke('getSpendableCoins', spendableCoinsRequest, options);
+            return ipcRenderer.invoke('walletGetSpendableCoins', spendableCoinsRequest, options);
         },
-
+        
         pushTx: (pushTxRequest, options) => {
-            return ipcRenderer.invoke('pushTx', pushTxRequest, options);
+            return ipcRenderer.invoke('walletPushTx', pushTxRequest, options);
         }
+        
     }
 )
 
 contextBridge.exposeInMainWorld(
     'datalayerAPI', {
+
         getConfig: () => {
-            return ipcRenderer.invoke('getConfig');
+            return ipcRenderer.invoke('datalayerGetConfig');
         },
-
+        
         setConfig: (config) => {
-            return ipcRenderer.invoke('setConfig', config);
+            return ipcRenderer.invoke('datalayerSetConfig', config);
         },
-
+        
         addMirror: (addMirrorParams, options) => {
-            return ipcRenderer.invoke('addMirror', addMirrorParams, options);
+            return ipcRenderer.invoke('datalayerAddMirror', addMirrorParams, options);
         },
-
+        
         addMissingFiles: (addMissingFilesParams, options) => {
-            return ipcRenderer.invoke('addMissingFiles', addMissingFilesParams, options);
+            return ipcRenderer.invoke('datalayerAddMissingFiles', addMissingFilesParams, options);
         },
-
+        
         createDataStore: (createDataStoreParams, options) => {
-            return ipcRenderer.invoke('createDataStore', createDataStoreParams, options);
+            return ipcRenderer.invoke('datalayerCreateDataStore', createDataStoreParams, options);
         },
-
+        
         deleteMirror: (deleteMirrorParams, options) => {
-            return ipcRenderer.invoke('deleteMirror', deleteMirrorParams, options);
+            return ipcRenderer.invoke('datalayerDeleteMirror', deleteMirrorParams, options);
         },
-
+        
         getKeys: (getKeysParams, options) => {
-            return ipcRenderer.invoke('getKeys', getKeysParams, options);
+            return ipcRenderer.invoke('datalayerGetKeys', getKeysParams, options);
         },
-
+        
         getKeysValues: (getKeysValuesParams, options) => {
-            return ipcRenderer.invoke('getKeysValues', getKeysValuesParams, options);
+            return ipcRenderer.invoke('datalayerGetKeysValues', getKeysValuesParams, options);
         },
-
+        
         getKvDiff: (getKvDiffParams, options) => {
-            return ipcRenderer.invoke('getKvDiff', getKvDiffParams, options);
+            return ipcRenderer.invoke('datalayerGetKvDiff', getKvDiffParams, options);
         },
-
+        
         getMirrors: (getMirrorsParams, options) => {
-            return ipcRenderer.invoke('getMirrors', getMirrorsParams, options);
+            return ipcRenderer.invoke('datalayerGetMirrors', getMirrorsParams, options);
         },
-
+        
         getOwnedStores: (options) => {
-            return ipcRenderer.invoke('getOwnedStores', options);
+            return ipcRenderer.invoke('datalayerGetOwnedStores', options);
         },
-
+        
         getRoot: (getRootParams, options) => {
-            return ipcRenderer.invoke('getRoot', getRootParams, options);
+            return ipcRenderer.invoke('datalayerGetRoot', getRootParams, options);
         },
-
+        
         getRootHistory: (getRootHistoryParams, options) => {
-            return ipcRenderer.invoke('getRootHistory', getRootHistoryParams, options);
+            return ipcRenderer.invoke('datalayerGetRootHistory', getRootHistoryParams, options);
         },
-
+        
         getSyncStatus: (getSyncStatusParams, options) => {
-            return ipcRenderer.invoke('getSyncStatus', getSyncStatusParams, options);
+            return ipcRenderer.invoke('datalayerGetSyncStatus', getSyncStatusParams, options);
         },
-
+        
         getSubscriptions: (options) => {
-            return ipcRenderer.invoke('getSubscriptions', options);
+            return ipcRenderer.invoke('datalayerGetSubscriptions', options);
         },
-
+        
         getValue: (getValueParams, options) => {
-            return ipcRenderer.invoke('getValue', getValueParams, options);
+            return ipcRenderer.invoke('datalayerGetValue', getValueParams, options);
         },
-
+        
         plugins: (options) => {
-            return ipcRenderer.invoke('plugins', options);
+            return ipcRenderer.invoke('datalayerPlugins', options);
         },
-
+        
         removeSubscriptions: (removeSubscriptionsParams, options) => {
-            return ipcRenderer.invoke('removeSubscriptions', removeSubscriptionsParams, options);
+            return ipcRenderer.invoke('datalayerRemoveSubscriptions', removeSubscriptionsParams, options);
         },
-
+        
         subscribe: (subscribeParams, options) => {
-            return ipcRenderer.invoke('subscribe', subscribeParams, options);
+            return ipcRenderer.invoke('datalayerSubscribe', subscribeParams, options);
         },
-
+        
         unsubscribe: (unsubscribeParams, options) => {
-            return ipcRenderer.invoke('unsubscribe', unsubscribeParams, options);
+            return ipcRenderer.invoke('datalayerUnsubscribe', unsubscribeParams, options);
         },
-
+        
         updateDataStore: (batchUpdateParams, options) => {
-            return ipcRenderer.invoke('updateDataStore', batchUpdateParams, options);
+            return ipcRenderer.invoke('datalayerUpdateDataStore', batchUpdateParams, options);
         },
-
+        
         walletLogin: (walletLogInParams, options) => {
-            return ipcRenderer.invoke('walletLogin', walletLogInParams, options);
+            return ipcRenderer.invoke('datalayerWalletLogin', walletLogInParams, options);
         }
+        
     }
 )
