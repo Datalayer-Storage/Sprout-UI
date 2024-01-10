@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "flowbite-react";
-import { useGetConfigQuery } from '../../api/ipc/wallet';
+import { useGetConfigQuery } from '@/api/ipc/wallet';
 
 const AppDefault = () => {
     const [count, setCount] = useState(0);

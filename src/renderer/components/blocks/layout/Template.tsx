@@ -1,4 +1,4 @@
-import { ErrorBoundary } from '../../../pages';
+import { ErrorBoundary } from '@/pages';
 import { LeftNav } from './LeftNav';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';

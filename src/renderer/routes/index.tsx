@@ -7,8 +7,8 @@ import {
   redirect,
 } from 'react-router-dom';
 import ROUTES from './route-constants'
-import * as Pages from '../pages'
-import { Template } from '../components/blocks/layout/Template';
+import * as Pages from '@/pages'
+import { Template } from '@/components';
 
 const AppNavigator: React.FC = () => {
   

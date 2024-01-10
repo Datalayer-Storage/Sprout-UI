@@ -1,7 +1,7 @@
 //import { useCallback } from 'react';
 import { Sidebar } from 'flowbite-react';
 //import { useLocation } from 'react-router-dom';
-import ROUTES from '../../../routes/route-constants';
+import ROUTES from '@/routes/route-constants';
 import { useNavigate } from 'react-router-dom';
 
 //@ts-ignore todo: ask michael about this. michael if you see this, lets discuss it

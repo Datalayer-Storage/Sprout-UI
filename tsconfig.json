@@ -1,29 +1,28 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable",
-      "dom",
-      "es6",
-      "dom.iterable",
-      "scripthost"
-    ],
-    "module": "ESNext",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["./renderer/*"]
+    },
+    "composite": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "target": "esnext",
+    "allowJs": true,
     "skipLibCheck": true,
-    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false, // Emit compiled JavaScript files
+    "noEmit": true,
     "jsx": "react-jsx",
-    "outDir": "dist", // Output directory for compiled files
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noImplicitAny": false,
+    "useDefineForClassFields": true
   },
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", "vite.config.ts"],
+  "types": ["src/**/*.d.ts"]
 }

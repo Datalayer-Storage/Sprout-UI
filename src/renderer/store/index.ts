@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { ipcApi } from '../api';
+import { ipcApi } from '@/api';
 import appReducer from './slices/app/app.slice';
 import userOptionsReducer from './slices/userOptions/userOptions.slice';
 import storage from 'redux-persist/lib/storage';
