@@ -1,6 +1,6 @@
 import { ErrorBoundary } from '../../../pages';
 import { LeftNav } from './LeftNav';
-import styled, { withTheme } from 'styled-components';
+import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 
 const AppContainer = styled.div`
@@ -26,7 +26,7 @@ const ContentContainer = styled.div`
   margin: 0 auto;
 `;
 
-const Template = withTheme(() => {
+const Template = () => {
   return (
     <ErrorBoundary>
       <>
@@ -37,8 +37,7 @@ const Template = withTheme(() => {
             </LeftNavAside>
             <ContentContainer id="content">
               <>
-                {/* 100% - header */}
-                <div style={{ height: 'calc(100% - 64px)', overflowY: 'auto' }}>
+                <div style={{ height: '100%', overflowY: 'auto' }}>
                   <ErrorBoundary>
                     <Outlet />
                   </ErrorBoundary>
@@ -50,6 +49,6 @@ const Template = withTheme(() => {
       </>
     </ErrorBoundary>
   );
-});
+};
 
 export { Template };

@@ -7,7 +7,7 @@ import { AppNavigator } from "./routes";
 function App() {
 
   return (
-  <div>  
+  <div style={{height: '100%'}}>  
     <AppNavigator/>
   </div>
   );

@@ -22,7 +22,11 @@ const AppNavigator: React.FC = () => {
             path="*(/+)"
             loader={({ params }) => redirect(params['*'] || '/')}
           />
-          <Route path="" element={<Template/>}> 
+          <Route path="" element={<Template/>}>
+            <Route
+                path="/"
+                element={<Navigate to={ROUTES.APP_DEFAULT} />}
+            />
             <Route 
               path={ROUTES.APP_DEFAULT} 
               element={<Pages.AppDefault />} 

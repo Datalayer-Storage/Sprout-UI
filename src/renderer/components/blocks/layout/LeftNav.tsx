@@ -1,13 +1,11 @@
 //import { useCallback } from 'react';
-import { withTheme } from 'styled-components';
 import { Sidebar } from 'flowbite-react';
 //import { useLocation } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
 import ROUTES from '../../../routes/route-constants';
 import { useNavigate } from 'react-router-dom';
 
 //@ts-ignore todo: ask michael about this. michael if you see this, lets discuss it
-const LeftNav = withTheme(({ theme }) => {
+const LeftNav = () => {
   const navigate = useNavigate();
   //const location = useLocation();
 
@@ -22,8 +20,8 @@ const LeftNav = withTheme(({ theme }) => {
 
   return (
     <div
-      className={`bg-${theme.surface.slot1.background.class}`}
-      style={{ width: '100%', height: 'calc(100% - 64px)', overflow: 'auto' }}
+      className={`bg-white`}
+      style={{ width: '100%', height: '100%', overflow: 'auto' }}
     >
       <Sidebar aria-label="App Navigation">
         <Sidebar.Items>
@@ -33,14 +31,14 @@ const LeftNav = withTheme(({ theme }) => {
               //active={isActive(ROUTES.APP_DEFAULT)}
               onClick={() => navigate(ROUTES.APP_DEFAULT)}
             >
-              <FormattedMessage id="my-mirrors" />
+              App Default
             </Sidebar.Item>
             <Sidebar.Item
               style={{ cursor: 'pointer' }}
               //active={isActive(ROUTES.HELLO_1)}
               onClick={() => navigate(ROUTES.HELLO_1)}
             >
-              <FormattedMessage id="private-mirrors" />
+              Hello 1
             </Sidebar.Item>
 
             <Sidebar.Item
@@ -48,7 +46,7 @@ const LeftNav = withTheme(({ theme }) => {
               //active={isActive(ROUTES.HELLO_2)}
               onClick={() => navigate(ROUTES.HELLO_2)}
             >
-              <FormattedMessage id="proxy" />
+              Hello 2
             </Sidebar.Item>
 
           </Sidebar.ItemGroup>
@@ -56,6 +54,6 @@ const LeftNav = withTheme(({ theme }) => {
       </Sidebar>
     </div>
   );
-});
+};
 
 export { LeftNav };
