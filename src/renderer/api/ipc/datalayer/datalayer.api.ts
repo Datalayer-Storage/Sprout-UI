@@ -26,7 +26,7 @@ import {
   // @ts-ignore
 } from 'chia-datalayer';
 
-const datalayerConfigTag: string = "datalayerConfig";
+const configTag: string = "datalayerConfig";
 const mirrorsTag: string = "mirrors";
 const dataStoresTag: string = "dataStores";
 const subscriptionsTag: string = "subscriptions";
@@ -40,13 +40,13 @@ const datalayerApi = ipcApi.injectEndpoints({
     getConfig: builder.query<any, any>({
       query: () => ({ channel: "datalayerGetConfig", args: {} }),
       // @ts-ignore
-      providesTags: () => [datalayerConfigTag]
+      providesTags: () => [configTag]
     }),
 
     setConfig: builder.mutation<any, DatalayerConfig>({
       query: (args) => ({ channel: "datalayerSetConfig", args}),
       //@ts-ignore
-      invalidatesTags: () => [datalayerConfigTag]
+      invalidatesTags: () => [configTag]
     }),
 
     addMirror: builder.mutation<any, AddMirrorParams>({

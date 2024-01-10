@@ -1,4 +1,4 @@
-import { ipcApi } from "..";
+import { ipcApi } from "@/api";
 
 /**
  * importing the chia-wallet module and its typescript types
@@ -12,6 +12,8 @@ import {
   // @ts-ignore
 } from 'chia-wallet';
 
+const configTag: string = "walletConfig";
+
 /**
  * RTKquery state managment API for chia-wallet
  */
@@ -21,13 +23,13 @@ const walletApi = ipcApi.injectEndpoints({
     getConfig: builder.query<WalletConfig, any>({
       query: () => ({ channel: 'walletGetConfig', args: {} }),
       // @ts-ignore
-      providesTags: () => ['walletConfig'],
+      providesTags: () => [configTag],
     }),
 
     setConfig: builder.mutation<WalletConfig, any>({
       query: () => ({ channel: 'walletSetConfig', args: {} }),
       // @ts-ignore
-      invalidatesTags: () => ['walletConfig'],
+      invalidatesTags: () => [configTag],
     }),
 
     getLoggedInFingerprint: builder.query<any ,any>({
