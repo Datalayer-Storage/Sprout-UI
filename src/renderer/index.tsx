@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 // @ts-ignore
 import { PersistGate } from "redux-persist/integration/react";
 // @ts-ignore
-import { store, persistor } from "./store"
+import { store, persistor } from "@/store"
 
 const root = ReactDOM.createRoot(document.getElementById("root") || document.createElement("div"));
 

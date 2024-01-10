@@ -36,7 +36,7 @@ function App() {
   return (
   <div style={{height: '100%'}}> 
     <IntlProvider
-      locale="en"
+      locale={appStore.locale}
       defaultLocale="en"
       //@ts-ignore
       messages={translationTokens.default}
