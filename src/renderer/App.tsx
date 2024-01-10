@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { IntlProvider } from 'react-intl';
 import { loadLocaleData } from '@/translations';
@@ -6,7 +6,6 @@ import "@/App.css";
 import { AppNavigator } from "@/routes";
 import { setLocale } from '@/store/slices/app';
 import { IndeterminateProgressOverlay } from '@/components/layout/IndeterminateProgressOverlay';
-import { taskCancelled } from '@reduxjs/toolkit/dist/listenerMiddleware/exceptions';
 
 /**
  * @returns app react component to be rendered by electron as the UI

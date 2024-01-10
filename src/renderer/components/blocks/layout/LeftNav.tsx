@@ -1,13 +1,25 @@
 import { useCallback } from 'react';
 import { Sidebar } from 'flowbite-react';
+import { Button } from 'flowbite-react';
+import { HiOutlineArrowLeft, HiOutlineArrowRight, HiChartPie } from 'react-icons/hi';
+import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import ROUTES from '@/routes/route-constants';
 import { useNavigate } from 'react-router-dom';
 
+const ButtonContainer = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 10px;
+`;
+
 const LeftNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [leftNavExpanded, setLeftNavExpanded] = useState<boolean>(true);
 
   const isActive = useCallback(
     (path: string) => {
@@ -15,43 +27,109 @@ const LeftNav = () => {
     },
     [location],
   );
-
-  return (
-    <div
-      className={`bg-white`}
-      style={{ width: '100%', height: '100%', overflow: 'auto' }}
-    >
-      <Sidebar aria-label="App Navigation">
-        <Sidebar.Items>
-          <Sidebar.ItemGroup>
-            <Sidebar.Item
-              style={{ cursor: 'pointer' }}
-              active={isActive(ROUTES.APP_DEFAULT)}
-              onClick={() => navigate(ROUTES.APP_DEFAULT)}
-            >
-              <FormattedMessage id="app-default"/>
-            </Sidebar.Item>
-            <Sidebar.Item
-              style={{ cursor: 'pointer' }}
-              active={isActive(ROUTES.HELLO_1)}
-              onClick={() => navigate(ROUTES.HELLO_1)}
-            >
-              <FormattedMessage id="hello-1"/>
-            </Sidebar.Item>
-
-            <Sidebar.Item
-              style={{ cursor: 'pointer' }}
-              active={isActive(ROUTES.HELLO_2)}
-              onClick={() => navigate(ROUTES.HELLO_2)}
-            >
-              <FormattedMessage id="hello-2"/>
-            </Sidebar.Item>
-
-          </Sidebar.ItemGroup>
-        </Sidebar.Items>
-      </Sidebar>
-    </div>
+  
+  const handleToggleLeftNav = useCallback(
+    () => {
+      if (leftNavExpanded){
+        setLeftNavExpanded(() => false);
+      }else{
+        setLeftNavExpanded(() => true);
+      }
+    },
+    [leftNavExpanded]
   );
+
+  const expandedLeftNav = () => {
+    return (
+      <div
+        className={`bg-white`}
+        style={{ width: '100%', height: '100%', overflow: 'auto' }}
+      >
+        <Sidebar aria-label="App Navigation">
+          <ButtonContainer>
+            <Button pill color="light" onClick={handleToggleLeftNav}>
+              <HiOutlineArrowLeft className="h-5 w-5"/>
+            </Button>
+          </ButtonContainer>
+          <Sidebar.Items>
+            <Sidebar.ItemGroup>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.APP_DEFAULT)}
+                onClick={() => navigate(ROUTES.APP_DEFAULT)}
+                icon={HiChartPie}
+              >
+                <FormattedMessage id="app-default"/>
+              </Sidebar.Item>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.HELLO_1)}
+                onClick={() => navigate(ROUTES.HELLO_1)}
+                icon={HiChartPie}
+              >
+                <FormattedMessage id="hello-1"/>
+              </Sidebar.Item>
+
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.HELLO_2)}
+                onClick={() => navigate(ROUTES.HELLO_2)}
+                icon={HiChartPie}
+              >
+                <FormattedMessage id="hello-2"/>
+              </Sidebar.Item>
+            </Sidebar.ItemGroup>
+          </Sidebar.Items>
+        </Sidebar>
+      </div>
+    );
+  }
+  
+  const collapsedLeftNav = () => {
+    return (
+      <div
+        className={`bg-white`}
+        style={{ width: '100%', height: '100%', overflow: 'auto' }}
+      >
+        <Sidebar aria-label="App Navigation">
+          <ButtonContainer>
+            <Button pill onClick={handleToggleLeftNav}>
+              <HiOutlineArrowRight className="h-5 w-5"/>
+            </Button>
+          </ButtonContainer>
+          <Sidebar.Items>
+            <Sidebar.ItemGroup>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.APP_DEFAULT)}
+                onClick={() => navigate(ROUTES.APP_DEFAULT)}
+                icon={HiChartPie}
+              />
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.HELLO_1)}
+                onClick={() => navigate(ROUTES.HELLO_1)}
+                icon={HiChartPie}
+              />
+
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.HELLO_2)}
+                onClick={() => navigate(ROUTES.HELLO_2)}
+                icon={HiChartPie}
+              />
+            </Sidebar.ItemGroup>
+          </Sidebar.Items>
+        </Sidebar>
+      </div>
+    );
+  }
+
+  if (leftNavExpanded){
+    return expandedLeftNav();
+  }else{
+    return collapsedLeftNav();
+  }
 };
 
 export { LeftNav };

@@ -19,6 +19,13 @@ const LeftNavAside = styled('aside')`
   height: 100%;
 `;
 
+const ButtonContainer = styled('div')`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 10px;
+`;
+
 const ContentContainer = styled.div`
   width: 100%;
   height: 100%;
