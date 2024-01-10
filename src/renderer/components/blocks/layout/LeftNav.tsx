@@ -1,22 +1,20 @@
-//import { useCallback } from 'react';
+import { useCallback } from 'react';
 import { Sidebar } from 'flowbite-react';
-//import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { FormattedMessage } from 'react-intl';
 import ROUTES from '@/routes/route-constants';
 import { useNavigate } from 'react-router-dom';
 
-//@ts-ignore todo: ask michael about this. michael if you see this, lets discuss it
 const LeftNav = () => {
   const navigate = useNavigate();
-  //const location = useLocation();
+  const location = useLocation();
 
-  /*
   const isActive = useCallback(
     (path: string) => {
       return location.pathname === path;
     },
     [location],
   );
-  */
 
   return (
     <div
@@ -28,25 +26,25 @@ const LeftNav = () => {
           <Sidebar.ItemGroup>
             <Sidebar.Item
               style={{ cursor: 'pointer' }}
-              //active={isActive(ROUTES.APP_DEFAULT)}
+              active={isActive(ROUTES.APP_DEFAULT)}
               onClick={() => navigate(ROUTES.APP_DEFAULT)}
             >
-              App Default
+              <FormattedMessage id="app-default"/>
             </Sidebar.Item>
             <Sidebar.Item
               style={{ cursor: 'pointer' }}
-              //active={isActive(ROUTES.HELLO_1)}
+              active={isActive(ROUTES.HELLO_1)}
               onClick={() => navigate(ROUTES.HELLO_1)}
             >
-              Hello 1
+              <FormattedMessage id="hello-1"/>
             </Sidebar.Item>
 
             <Sidebar.Item
               style={{ cursor: 'pointer' }}
-              //active={isActive(ROUTES.HELLO_2)}
+              active={isActive(ROUTES.HELLO_2)}
               onClick={() => navigate(ROUTES.HELLO_2)}
             >
-              Hello 2
+              <FormattedMessage id="hello-2"/>
             </Sidebar.Item>
 
           </Sidebar.ItemGroup>
