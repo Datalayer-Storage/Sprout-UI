@@ -4,25 +4,31 @@
     "paths": {
       "@/*": ["./renderer/*"]
     },
-    "composite": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "module": "esnext",
-    "target": "esnext",
-    "allowJs": true,
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable",
+      "dom",
+      "es6",
+      "dom.iterable",
+      "scripthost"
+    ],
+    "module": "ESNext",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
+    "outDir": "build",
+    "strict": true,
     "noImplicitAny": false,
-    "useDefineForClassFields": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "vite.config.ts"],
+  "include": ["src", "src/**/*.json"],
   "types": ["src/**/*.d.ts"]
 }

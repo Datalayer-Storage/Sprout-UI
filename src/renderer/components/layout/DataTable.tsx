@@ -4,7 +4,7 @@ import { Caption2, Caption1 } from '@/components';
 import { withTheme } from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
-const DataTable = withTheme(({ columns, data, theme, isLoading = false }) => {
+const DataTable = withTheme(({ columns, data, isLoading = false }) => {
   const columnMap = useMemo(() => {
     return columns.reduce((map, curr) => {
       map[curr.key] = curr;
