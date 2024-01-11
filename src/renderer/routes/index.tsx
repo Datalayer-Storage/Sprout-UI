@@ -24,9 +24,13 @@ const AppNavigator: React.FC = () => {
           />
           <Route path="" element={<Template/>}>
             <Route
-                path="/"
-                element={<Navigate to={ROUTES.APP_DEFAULT} />}
+              path="/"
+              element={<Navigate to={ROUTES.BROWSER} />}
             />
+            <Route
+              path={ROUTES.BROWSER}
+              element={<Pages.Browser/>}
+            />  
             <Route 
               path={ROUTES.APP_DEFAULT} 
               element={<Pages.AppDefault />} 

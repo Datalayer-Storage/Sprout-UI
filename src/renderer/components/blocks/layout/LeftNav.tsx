@@ -20,6 +20,7 @@ const LeftNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [leftNavExpanded, setLeftNavExpanded] = useState<boolean>(true);
+  const buttonArrowSize: string = "h-3 w-3";
 
   const isActive = useCallback(
     (path: string) => {
@@ -48,11 +49,19 @@ const LeftNav = () => {
         <Sidebar aria-label="App Navigation">
           <ButtonContainer>
             <Button pill color="light" onClick={handleToggleLeftNav}>
-              <HiOutlineArrowLeft className="h-5 w-5"/>
+              <HiOutlineArrowLeft className={buttonArrowSize}/>
             </Button>
           </ButtonContainer>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
+            <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.BROWSER)}
+                onClick={() => navigate(ROUTES.BROWSER)}
+                icon={HiChartPie}
+              >
+                <FormattedMessage id="browser"/>
+              </Sidebar.Item>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.APP_DEFAULT)}
@@ -91,10 +100,11 @@ const LeftNav = () => {
         className={`bg-white`}
         style={{ width: '100%', height: '100%', overflow: 'auto' }}
       >
-        <Sidebar aria-label="App Navigation">
+
+        <Sidebar style={{width:75}} aria-label="App Navigation">
           <ButtonContainer>
-            <Button pill onClick={handleToggleLeftNav}>
-              <HiOutlineArrowRight className="h-5 w-5"/>
+            <Button pill color="light" onClick={handleToggleLeftNav}>
+              <HiOutlineArrowRight className={buttonArrowSize}/>
             </Button>
           </ButtonContainer>
           <Sidebar.Items>
@@ -103,21 +113,24 @@ const LeftNav = () => {
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.APP_DEFAULT)}
                 onClick={() => navigate(ROUTES.APP_DEFAULT)}
-                icon={HiChartPie}
-              />
+              >
+                <HiChartPie />
+              </Sidebar.Item>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.HELLO_1)}
                 onClick={() => navigate(ROUTES.HELLO_1)}
-                icon={HiChartPie}
-              />
-
+              >
+                <HiChartPie />
+              </Sidebar.Item>
+              
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.HELLO_2)}
                 onClick={() => navigate(ROUTES.HELLO_2)}
-                icon={HiChartPie}
-              />
+              >
+                <HiChartPie />
+              </Sidebar.Item>
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
