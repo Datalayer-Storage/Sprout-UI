@@ -1,7 +1,11 @@
 import { useCallback } from 'react';
 import { Sidebar } from 'flowbite-react';
 import { Button } from 'flowbite-react';
-import { HiOutlineArrowLeft, HiOutlineArrowRight, HiChartPie } from 'react-icons/hi';
+import { 
+          HiOutlineArrowLeft, 
+          HiOutlineArrowRight, 
+          HiChartPie,
+          HiGlobeAlt } from 'react-icons/hi';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -54,11 +58,11 @@ const LeftNav = () => {
           </ButtonContainer>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-            <Sidebar.Item
+              <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.BROWSER)}
                 onClick={() => navigate(ROUTES.BROWSER)}
-                icon={HiChartPie}
+                icon={HiGlobeAlt}
               >
                 <FormattedMessage id="browser"/>
               </Sidebar.Item>
@@ -109,6 +113,13 @@ const LeftNav = () => {
           </ButtonContainer>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.BROWSER)}
+                onClick={() => navigate(ROUTES.BROWSER)}
+              >
+                <HiGlobeAlt />
+              </Sidebar.Item>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.APP_DEFAULT)}
