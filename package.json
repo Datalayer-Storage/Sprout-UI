@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist/main.js",
+  "main": "build/main.js",
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "electron": "tsc && cp src/preload.js dist && cross-env NODE_ENV=development electron .",
+    "electron": "tsc && cross-env NODE_ENV=development electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"

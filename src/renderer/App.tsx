@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { IntlProvider } from 'react-intl';
 import { loadLocaleData } from '@/translations';
@@ -14,7 +14,7 @@ function App() {
 
   const dispatch = useDispatch();
   const appStore = useSelector((state: any) => state.app);
-  const [translationTokens, setTranslationTokens] = useState<Object>();
+  const [translationTokens, setTranslationTokens] = useState<object>();
 
   useEffect(() => {
     if (appStore.locale) {
@@ -26,7 +26,7 @@ function App() {
     } else {
       dispatch(setLocale(navigator.language));
     }
-  }, [appStore.locale]);
+  }, [appStore.locale, dispatch]);
 
   if (!translationTokens) {
     return <IndeterminateProgressOverlay />;

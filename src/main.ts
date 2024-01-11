@@ -49,14 +49,14 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      contextIsolation: true,
+      contextIsolation: false,
       nodeIntegration: true,
       webviewTag: true
     },
   });
 
   if (process.env.NODE_ENV === "development") {
-    win.loadURL("https://localhost:5173/");
+    win.loadURL("http://localhost:5173/");
   } else {
     win.loadFile("dist/index.html");
   }
