@@ -1,6 +1,7 @@
 import { isEqual } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './browser.initialstate';
+import { HistoryEntry } from '.';
 
 export const browserSlice = createSlice({
   name: 'browser',
@@ -18,10 +19,12 @@ export const browserSlice = createSlice({
       const currentPage = state.history[state.historyIndex];
 
       if (!isEqual(currentPage, newEntry)) {
+
+        // Remove future history if new page is visited
+        state.history = state.history.slice(0, state.historyIndex);
+        
         state.history.push(newEntry);
         state.historyIndex++;
-        // Remove future history if new page is visited
-        state.history = state.history.slice(0, state.historyIndex + 1);
       }
     },
 
@@ -42,6 +45,4 @@ export const browserSlice = createSlice({
 });
 
 export const { visitPage, goBack, goForward } = browserSlice.actions;
-
-export type { VisitPagePayload, PageState, HistoryEntry };
 export default browserSlice.reducer;

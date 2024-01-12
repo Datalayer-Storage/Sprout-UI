@@ -10,6 +10,10 @@ import {
   VisitPagePayload,
   selectCurrentPage,
   selectDefaultPage,
+  /* selectPreviousPage,
+  selectNextPage, */
+  goBack,
+  goForward,
 } from '@/store/slices/browser';
 
 const Browser: React.FC = () => {
@@ -17,6 +21,8 @@ const Browser: React.FC = () => {
   const webviewRef = useRef<WebviewTag>(null);
   const currentPage = useSelector((state: any) => selectCurrentPage(state));
   const defaultPage = useSelector((state: any) => selectDefaultPage(state));
+  //const previousPage = useSelector((state: any) => selectPreviousPage(state));
+  //const nextPage = useSelector((state: any) => selectNextPage(state));
   const [addressBar, setAddressBar] = useState('');
 
   useEffect(() => {
@@ -31,6 +37,11 @@ const Browser: React.FC = () => {
   }, [setAddressBar]);
 
   const handleGotoAddress = () => {
+
+    if (webviewRef.current && addressBar === currentPage.url){
+      webviewRef.current.reload();
+    }
+
     const pageState: PageState = { 
       scrollPosition: {x: 0, y: 0},
       formData: {}
@@ -38,14 +49,20 @@ const Browser: React.FC = () => {
     const payload: VisitPagePayload = { 
       url: addressBar, title: '', pageState: pageState 
     }
+
+    console.log("browser going to address\n", addressBar);
     dispatch(visitPage(payload));
   };
 
-  const handleRefresh = () => {
-    if (webviewRef.current) {
-      webviewRef.current.reload();
-    }
+  const handleGoToPrevPage = () => {
+    console.log("browser got onBack");
+    dispatch(goBack());
   }
+  
+  const handleGoToNextPage = () => {
+    console.log("browser got onForward");
+    dispatch(goForward());
+  } 
 
   if (!currentPage) {
     return <Spinner />;
@@ -57,7 +74,9 @@ const Browser: React.FC = () => {
         value={addressBar} 
         onChange={handleUpdateAddressBar}
         onEnterDown={handleGotoAddress}
-        onRefresh={handleRefresh}
+        onRefresh={handleGotoAddress}
+        onBack={handleGoToPrevPage}
+        onForward={handleGoToNextPage}
       />
       <WebView
         ref={webviewRef}

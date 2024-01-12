@@ -14,12 +14,16 @@ interface NavigationBarProps {
   onChange: (event: React.ChangeEvent) => void;
   onEnterDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onRefresh: () => void;
+  onBack: () => void;
+  onForward: () => void;
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = ({
   value,
   onChange,
   onRefresh,
+  onBack,
+  onForward,
   onEnterDown = noop,
 }) => {
   const handleOnEnterKeyDown = useCallback(
@@ -34,6 +38,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   return (
     <>
       <NavBarBox>
+        <button onClick={onBack}>Back</button>
+        <button onClick={onForward}>Forward</button>
         <button onClick={onRefresh}>Refresh</button>
         <input
           type="text"

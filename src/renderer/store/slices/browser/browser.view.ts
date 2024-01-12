@@ -1,4 +1,4 @@
-import { HistoryEntry } from './browser.slice';
+import { HistoryEntry } from './browser.types';
 
 export const selectDefaultPage = (state): HistoryEntry => {
   return {

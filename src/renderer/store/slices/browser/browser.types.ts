@@ -15,3 +15,5 @@ interface HistoryEntry {
   pageState: PageState;
   timeStamp: string;
 }
+
+export type { VisitPagePayload, PageState, HistoryEntry };
