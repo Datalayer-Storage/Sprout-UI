@@ -1,12 +1,7 @@
 import { HistoryEntry } from './browser.types';
 
 export const selectDefaultPage = (state): HistoryEntry => {
-  return {
-    url: state.browser.defaultPage,
-    title: '',
-    pageState: {},
-    timeStamp: new Date().toString(),
-  };
+  return state.browser.defaultPage;
 };
 
 export const selectCurrentPage = (state): HistoryEntry => {
