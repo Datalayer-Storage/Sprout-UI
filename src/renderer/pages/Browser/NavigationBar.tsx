@@ -34,6 +34,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   return (
     <>
       <NavBarBox>
+        <button onClick={onRefresh}>Refresh</button>
         <input
           type="text"
           value={value}
