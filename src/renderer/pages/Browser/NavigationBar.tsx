@@ -12,31 +12,37 @@ const NavBarBox = Styled('div')`
 interface NavigationBarProps {
   value: string;
   onChange: (event: React.ChangeEvent) => void;
-  onEnterDown: (event: React.KeyboardEvent<HTMLInputElement>) => void
+  onEnterDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onRefresh: () => void;
 }
 
-const NavigationBar: React.FC<NavigationBarProps> = ({value, onChange, onEnterDown = noop}) => {
-  
-  const handleOnEnterKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log('##', event.key);
-    if (event.key === 'Enter') {
-      console.log('@@')
-      onEnterDown();
-    }
-  }, [onEnterDown]);
-  
+const NavigationBar: React.FC<NavigationBarProps> = ({
+  value,
+  onChange,
+  onRefresh,
+  onEnterDown = noop,
+}) => {
+  const handleOnEnterKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        onEnterDown();
+      }
+    },
+    [onEnterDown],
+  );
+
   return (
     <>
       <NavBarBox>
-        <input 
-          type="text" 
-          value={value} 
-          onChange={onChange} 
+        <input
+          type="text"
+          value={value}
+          onChange={onChange}
           onKeyDown={handleOnEnterKeyDown}
         />
       </NavBarBox>
     </>
   );
-}
+};
 
 export { NavigationBar }

@@ -1,16 +1,30 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { WebView } from "@/components/blocks/layout/WebView";
 import { NavigationBar } from "./NavigationBar";
 import { WebviewTag } from 'electron';
 import { useDispatch, useSelector } from 'react-redux';
-import { visitPage, PageState, VisitPagePayload } from '@/store/slices/browser';
+import { Spinner } from 'flowbite-react';
+import {
+  visitPage,
+  PageState,
+  VisitPagePayload,
+  selectCurrentPage,
+  selectDefaultPage,
+} from '@/store/slices/browser';
 
 const Browser: React.FC = () => {
   const dispatch = useDispatch();
   const webviewRef = useRef<WebviewTag>(null);
-  //@ts-ignore
-  const browserStore = useSelector((state: any) => state.browser);
+  const currentPage = useSelector((state: any) => selectCurrentPage(state));
+  const defaultPage = useSelector((state: any) => selectDefaultPage(state));
   const [addressBar, setAddressBar] = useState('');
+
+  useEffect(() => {
+    if (!currentPage) {
+      dispatch(visitPage(defaultPage));
+      setAddressBar(defaultPage.url);
+    }
+  }, [currentPage, defaultPage, dispatch]);
 
   const handleUpdateAddressBar = useCallback((event) => {
     setAddressBar(event.target.value);
@@ -27,19 +41,29 @@ const Browser: React.FC = () => {
     dispatch(visitPage(payload));
   };
 
+  const handleRefresh = () => {
+    if (webviewRef.current) {
+      webviewRef.current.reload();
+    }
+  }
+
+  if (!currentPage) {
+    return <Spinner />;
+  }
+
   return (
     <>
       <NavigationBar 
         value={addressBar} 
         onChange={handleUpdateAddressBar}
         onEnterDown={handleGotoAddress}
+        onRefresh={handleRefresh}
       />
       <WebView
         ref={webviewRef}
-        defaultLocation="https://google.com"
+        location={currentPage.url}
       />
     </>
-
   );
 };
 
