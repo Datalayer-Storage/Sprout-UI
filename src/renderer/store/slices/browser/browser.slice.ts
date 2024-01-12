@@ -2,24 +2,6 @@ import { isEqual } from 'lodash';
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './browser.initialstate';
 
-interface PageState {
-  scrollPosition?: { x: number; y: number };
-  formData?: any;
-}
-
-interface VisitPagePayload {
-  url: string;
-  title: string;
-  pageState: PageState;
-}
-
-interface HistoryEntry {
-  url: string;
-  title: string;
-  pageState: PageState;
-  timeStamp: string;
-}
-
 export const browserSlice = createSlice({
   name: 'browser',
   initialState,
