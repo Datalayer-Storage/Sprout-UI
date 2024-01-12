@@ -68,6 +68,10 @@ const Browser: React.FC = () => {
     dispatch(goForward());
   }, [dispatch]);
 
+  const handleGoToHome = useCallback(() => {
+    dispatch(visitPage(defaultPage));
+  }, [dispatch, defaultPage]);
+
   if (!currentPage) {
     return <Spinner />;
   }
@@ -81,6 +85,7 @@ const Browser: React.FC = () => {
         onRefresh={handleGotoAddress}
         onBack={handleGoToPrevPage}
         onForward={handleGoToNextPage}
+        onHome={handleGoToHome}
       />
       <WebView ref={webviewRef} location={currentPage.url} />
     </>

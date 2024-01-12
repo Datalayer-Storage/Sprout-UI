@@ -1,13 +1,46 @@
 import { noop } from 'lodash';
 import React, { useCallback } from 'react';
 import Styled from 'styled-components';
+import { Button, Navbar } from 'flowbite-react';
+import { 
+  HiHome,
+  HiChevronDoubleLeft,
+  HiChevronDoubleRight,
+  HiRefresh
+} from 'react-icons/hi';
 
-const NavBarBox = Styled('div')`
+/*
+const NavButtonBox = Styled('div')`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   padding-bottom: 10px;
 `;
+*/
+
+interface BackButton {
+  onClick: () => void;
+}
+
+const BackButton: React.FC<BackButton> = ({onClick}) => { 
+  return (
+    <Button onClick={onClick}>
+      <HiChevronDoubleLeft/>
+    </Button>
+  );
+}
+
+interface ForwardButton {
+  onClick: () => void;
+}
+
+const ForwardButton: React.FC<ForwardButton> = ({onClick}) => { 
+  return (
+    <Button onClick={onClick}>
+      <HiChevronDoubleRight/>
+    </Button>
+  );
+}
 
 interface NavigationBarProps {
   value: string;
@@ -16,6 +49,7 @@ interface NavigationBarProps {
   onRefresh: () => void;
   onBack: () => void;
   onForward: () => void;
+  onHome: () => void;
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = ({
@@ -24,6 +58,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   onRefresh,
   onBack,
   onForward,
+  onHome,
   onEnterDown = noop,
 }) => {
   const handleOnEnterKeyDown = useCallback(
@@ -37,17 +72,24 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 
   return (
     <>
-      <NavBarBox>
-        <button onClick={onBack}>Back</button>
-        <button onClick={onForward}>Forward</button>
-        <button onClick={onRefresh}>Refresh</button>
+      <Navbar>
+        <Button onClick={onHome}>
+          <HiHome/>
+        </Button>
+        <Button.Group>
+          <BackButton onClick={onBack}/>
+        <ForwardButton onClick={onForward}/>
+        </Button.Group>
         <input
           type="text"
           value={value}
           onChange={onChange}
           onKeyDown={handleOnEnterKeyDown}
         />
-      </NavBarBox>
+        <Button onClick={onRefresh}>
+          <HiRefresh/>
+        </Button>
+      </Navbar>
     </>
   );
 };

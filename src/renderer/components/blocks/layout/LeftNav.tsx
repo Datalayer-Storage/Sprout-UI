@@ -2,10 +2,11 @@ import { useCallback } from 'react';
 import { Sidebar } from 'flowbite-react';
 import { Button } from 'flowbite-react';
 import { 
-          HiOutlineArrowLeft, 
-          HiOutlineArrowRight, 
-          HiChartPie,
-          HiGlobeAlt } from 'react-icons/hi';
+  HiOutlineArrowLeft, 
+  HiOutlineArrowRight, 
+  HiChartPie,
+  HiGlobeAlt 
+} from 'react-icons/hi';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
