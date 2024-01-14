@@ -15,7 +15,6 @@ const BodyContainer = styled.div`
 `;
 
 const LeftNavAside = styled('aside')`
-  width: 270px;
   height: 100%;
 `;
 

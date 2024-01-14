@@ -13,6 +13,7 @@ import {
   goBack,
   goForward,
 } from '@/store/slices/browser';
+import { transformToChiaProtocol } from '@/utils/chia-utils';
 
 const Browser: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,15 +25,19 @@ const Browser: React.FC = () => {
   useEffect(() => {
     if (!currentPage) {
       dispatch(visitPage(defaultPage));
-      setAddressBar(defaultPage.url);
+      setAddressBar(transformToChiaProtocol(defaultPage.url));
     } else {
-      setAddressBar(currentPage.url);
+      setAddressBar(transformToChiaProtocol(currentPage.url));
     }
   }, [currentPage, dispatch, defaultPage, setAddressBar]);
 
+  const handleOnDidNavigate = useCallback((location) => {
+    setAddressBar(transformToChiaProtocol(location));
+  }, []);
+
   const handleUpdateAddressBar = useCallback(
     (event) => {
-      setAddressBar(event.target.value);
+      setAddressBar(transformToChiaProtocol(event.target.value));
     },
     [setAddressBar],
   );
@@ -54,17 +59,14 @@ const Browser: React.FC = () => {
       pageState: pageState,
     };
 
-    console.log('browser going to address\n', addressBar);
     dispatch(visitPage(payload));
   }, [addressBar, currentPage, dispatch]);
 
   const handleGoToPrevPage = useCallback(() => {
-    console.log('browser got onBack');
     dispatch(goBack());
   }, [dispatch]);
 
   const handleGoToNextPage = useCallback(() => {
-    console.log('browser got onForward');
     dispatch(goForward());
   }, [dispatch]);
 
@@ -82,7 +84,11 @@ const Browser: React.FC = () => {
         onBack={handleGoToPrevPage}
         onForward={handleGoToNextPage}
       />
-      <WebView ref={webviewRef} location={currentPage.url} />
+      <WebView
+        ref={webviewRef}
+        onDidNavigate={handleOnDidNavigate}
+        location={currentPage.url}
+      />
     </>
   );
 };

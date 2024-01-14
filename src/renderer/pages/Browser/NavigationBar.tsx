@@ -1,6 +1,7 @@
 import { noop } from 'lodash';
 import React, { useCallback } from 'react';
 import Styled from 'styled-components';
+import { Button } from 'flowbite-react';
 
 const NavBarBox = Styled('div')`
   display: flex;
@@ -38,11 +39,21 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   return (
     <>
       <NavBarBox>
-        <button onClick={onBack}>Back</button>
-        <button onClick={onForward}>Forward</button>
-        <button onClick={onRefresh}>Refresh</button>
+        <Button style={{ margin: 10 }} color="light" onClick={onBack}>
+          Back
+        </Button>
+        <Button style={{ margin: 10 }} color="light" onClick={onForward}>
+          Forward
+        </Button>
+        <Button style={{ margin: 10 }} color="light" onClick={onRefresh}>
+          Refresh
+        </Button>
+        <Button style={{ margin: 10 }} color="light">
+          Home
+        </Button>
         <input
           type="text"
+          style={{ width: '100%', margin: 10, borderRadius: 5 }}
           value={value}
           onChange={onChange}
           onKeyDown={handleOnEnterKeyDown}

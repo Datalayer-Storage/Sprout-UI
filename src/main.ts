@@ -1,4 +1,9 @@
 import { app, BrowserWindow, ipcMain } from "electron";
+import gateway from 'chia-web2-gateway';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 /**
  * importing the chia-wallet module and its typescript types
@@ -42,6 +47,19 @@ import DataLayer, {
  * creates the main renderer window
  */
 function createWindow() {
+  // set from user settings
+  gateway.configure({
+    FULL_NODE_HOST: 'https://localhost:8555',
+    DATALAYER_HOST: 'https://localhost:8562',
+    WALLET_HOST: 'https://localhost:9256',
+    CERTIFICATE_FOLDER_PATH: '~/.chia/mainnet/config/ssl',
+    WEB2_GATEWAY_PORT: 41411,
+    WEB2_BIND_ADDRESS: 'localhost',
+    DEFAULT_WALLET_ID: 1,
+    MAXIMUM_RPC_PAYLOAD_SIZE: 26214400,
+  });
+
+  gateway.start();
   declareWalletRpcHandles();
   declareDatalayerRpcHandles();
 
@@ -51,14 +69,15 @@ function createWindow() {
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
-      webviewTag: true
+      webviewTag: true,
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
 
-  if (process.env.NODE_ENV === "development") {
-    win.loadURL("http://localhost:5173/");
+  if (process.env.NODE_ENV === 'development') {
+    win.loadURL('http://localhost:5173/');
   } else {
-    win.loadFile("dist/index.html");
+    win.loadFile('dist/index.html');
   }
 }
 

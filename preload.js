@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron';
+const { contextBridge, ipcRenderer } = require('electron');
 
 window.addEventListener('dom-ready', () => {
   const mimeType = document.contentType;
