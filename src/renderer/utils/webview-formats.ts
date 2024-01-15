@@ -34,8 +34,6 @@ const formatNonHtmlContent = (currentWebview) => {
  currentWebview?.executeJavaScript(script);
 }
 
-
-
 const maybeFormatMarkdown = (currentWebview) => {
   const script = `
     if (document.contentType && document.contentType === 'text/markdown') {
@@ -138,9 +136,6 @@ const maybeFormatXml = (currentWebview) => {
   const style = `
     body { background-color: #f0f0f0; color: #333; }
     pre { white-space: pre-wrap; }
-    .header, hr {
-        border-bottom: 2px solid #f0f0f0;
-    }
   `;
 
   currentWebview.insertCSS(style);
