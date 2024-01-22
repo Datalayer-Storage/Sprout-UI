@@ -1,43 +1,71 @@
 import { noop } from 'lodash';
 import React, { useCallback } from 'react';
-import { Button, Navbar } from 'flowbite-react';
+import { Button, ButtonGroup, TextInput } from 'flowbite-react';
+import styled from 'styled-components';
 import { 
   HiHome,
   HiChevronDoubleLeft,
   HiChevronDoubleRight,
-  HiRefresh
+  HiRefresh,
+  HiSearch,
 } from 'react-icons/hi';
 
-/*
-const NavButtonBox = Styled('div')`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding-bottom: 10px;
-`;
-*/
+const navButtonColor: string = 'light';
+const navButtonIconSize: string = '15pt';
 
-interface BackButton {
+const NavigationBarDiv = styled('div')`
+  display: flex;
+  justify-content: left;
+`;
+
+const NavButtonGroup = styled(ButtonGroup)`
+  gap: 5px;
+  margin: 10px;
+`;
+
+const StyledTextInput = styled(TextInput)`
+  padding: 10px;
+  width: 100%;
+  justify-content: center;
+`;
+
+const StyledNavButton = styled(Button)`
+  border: none;
+`;
+
+interface NavButton {
   onClick: () => void;
 }
 
-const BackButton: React.FC<BackButton> = ({onClick}) => { 
+const BackButton: React.FC<NavButton> = ({onClick}) => {
   return (
-    <Button onClick={onClick}>
-      <HiChevronDoubleLeft/>
-    </Button>
+    <StyledNavButton onClick={onClick} color={navButtonColor}>
+      <HiChevronDoubleLeft font-size={navButtonIconSize}/>
+    </StyledNavButton>
   );
 }
 
-interface ForwardButton {
-  onClick: () => void;
+const ForwardButton: React.FC<NavButton> = ({onClick}) => {
+  return (
+    <StyledNavButton onClick={onClick} color={navButtonColor}>
+      <HiChevronDoubleRight font-size={navButtonIconSize}/>
+    </StyledNavButton>
+  );
 }
 
-const ForwardButton: React.FC<ForwardButton> = ({onClick}) => { 
+const HomeButton: React.FC<NavButton> = ({onClick}) => {
   return (
-    <Button onClick={onClick}>
-      <HiChevronDoubleRight/>
-    </Button>
+    <StyledNavButton onClick={onClick} color={navButtonColor}>
+      <HiHome font-size={navButtonIconSize}/>
+    </StyledNavButton>
+  );
+}
+
+const RefreshButton: React.FC<NavButton> = ({onClick}) => {
+  return (
+    <StyledNavButton onClick={onClick} color={navButtonColor}>
+      <HiRefresh font-size={navButtonIconSize}/>
+    </StyledNavButton>
   );
 }
 
@@ -71,25 +99,21 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 
   return (
     <>
-      <Navbar>
-        <Button onClick={onHome}>
-          <HiHome/>
-        </Button>
-        <Button.Group>
+      <NavigationBarDiv>
+        <NavButtonGroup>
           <BackButton onClick={onBack}/>
-        <ForwardButton onClick={onForward}/>
-        </Button.Group>
-        <input
-          type="text"
-          style={{ width: '100%', margin: 10, borderRadius: 5 }}
+          <ForwardButton onClick={onForward}/>
+          <RefreshButton onClick={onRefresh}/>
+          <HomeButton onClick={onHome}/>
+        </NavButtonGroup>
+        <StyledTextInput
           value={value}
           onChange={onChange}
           onKeyDown={handleOnEnterKeyDown}
-        />
-        <Button onClick={onRefresh}>
-          <HiRefresh/>
-        </Button>
-      </Navbar>
+          icon={HiSearch}
+        >
+        </StyledTextInput>
+      </NavigationBarDiv>
     </>
   );
 };
