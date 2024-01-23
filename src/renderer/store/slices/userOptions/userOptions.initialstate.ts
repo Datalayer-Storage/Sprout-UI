@@ -1,3 +1,5 @@
 export default {
-  selectedTheme: 'light'
+  selectedTheme: 'light',
+  accessKey: '',
+  accessSecret: '',
 };

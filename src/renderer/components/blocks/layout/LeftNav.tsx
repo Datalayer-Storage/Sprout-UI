@@ -5,8 +5,9 @@ import {
   HiOutlineArrowLeft, 
   HiOutlineArrowRight, 
   HiChartPie,
-  HiGlobeAlt 
+  HiGlobeAlt,
 } from 'react-icons/hi';
+import { IoSettingsOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -69,6 +70,14 @@ const LeftNav = () => {
               </Sidebar.Item>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.SETTINGS)}
+                onClick={() => navigate(ROUTES.SETTINGS)}
+                icon={IoSettingsOutline}
+              >
+                <FormattedMessage id="settings"/>
+              </Sidebar.Item>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.APP_DEFAULT)}
                 onClick={() => navigate(ROUTES.APP_DEFAULT)}
                 icon={HiChartPie}
@@ -120,6 +129,13 @@ const LeftNav = () => {
                 onClick={() => navigate(ROUTES.BROWSER)}
               >
                 <HiGlobeAlt />
+              </Sidebar.Item>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.SETTINGS)}
+                onClick={() => navigate(ROUTES.SETTINGS)}
+              >
+                <IoSettingsOutline />
               </Sidebar.Item>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}

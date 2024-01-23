@@ -1,7 +1,10 @@
 {
-  
   "app-default": "App Default",
   "hello-1": "Hello 1",
   "hello-2": "Hello 2",
-  "browser": "Browser"
+  "browser": "Browser",
+  "settings": "Settings",
+  "access-key": "Access Key",
+  "access-secret": "Access Secret",
+  "save": "Save"
 }

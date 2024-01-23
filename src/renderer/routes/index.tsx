@@ -30,7 +30,11 @@ const AppNavigator: React.FC = () => {
             <Route
               path={ROUTES.BROWSER}
               element={<Pages.Browser/>}
-            />  
+            />
+            <Route
+              path={ROUTES.SETTINGS}
+              element={<Pages.Settings/>}
+            />
             <Route 
               path={ROUTES.APP_DEFAULT} 
               element={<Pages.AppDefault />} 

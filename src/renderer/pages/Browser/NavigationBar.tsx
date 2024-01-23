@@ -56,7 +56,7 @@ const ForwardButton: React.FC<NavButton> = ({onClick}) => {
 const HomeButton: React.FC<NavButton> = ({onClick}) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiHome font-size={navButtonIconSize}/>
+      <HiHome fontSize={navButtonIconSize}/>
     </StyledNavButton>
   );
 }

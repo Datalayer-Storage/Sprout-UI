@@ -11,12 +11,30 @@ export const userOptionsSlice = createSlice({
       } else {
         state.selectedTheme = 'light';
       }
+    },
+
+    setAccessKey: (state, { payload }) => {
+
+      if ((typeof payload === 'string') && payload) {
+        state.accessKey = payload;
+      }else{
+        console.error("invalid access key. key must be a string and must not be null");
+      }
+    },
+
+    setAccessSecret: (state, { payload }) => {
+
+      if ((typeof payload === 'string') && payload) {
+        state.accessSecret = payload;
+      }else{
+        console.error("invalid access secret. secret must be a string and must not be null");
+      }
     }
   },
 });
 
 export const {
-  toggleTheme,
+  toggleTheme,setAccessKey, setAccessSecret
 } = userOptionsSlice.actions;
 
 export default userOptionsSlice.reducer;
