@@ -4,11 +4,12 @@ import { formatDocType } from '@/utils/webview-formats';
 interface WebViewProps {
   location: string;
   onDidNavigate: (url: string) => void;
+  onDidNavigateInPage: (url: string) => void;
   style?: React.CSSProperties;
 }
 
 const WebView = forwardRef<Electron.WebviewTag, WebViewProps>(
-  ({ location, onDidNavigate, style = {} }, ref) => {
+  ({ location, onDidNavigate, onDidNavigateInPage, style = {} }, ref) => {
     const webviewRef = React.useRef<Electron.WebviewTag>(null);
 
     // Use type assertion to ensure webviewRef.current is not null
@@ -23,7 +24,7 @@ const WebView = forwardRef<Electron.WebviewTag, WebViewProps>(
       };
 
       const handleDidNavigateInPage = (e: Electron.DidNavigateInPageEvent) => {
-        onDidNavigate(e.url);
+        onDidNavigateInPage(e.url);
         formatDocType(currentWebview);
       };
 
@@ -31,7 +32,7 @@ const WebView = forwardRef<Electron.WebviewTag, WebViewProps>(
         currentWebview.addEventListener('did-navigate', handleDidNavigate);
         currentWebview.addEventListener(
           'did-navigate-in-page',
-          handleDidNavigateInPage,
+            handleDidNavigateInPage,
         );
       }
 
@@ -44,7 +45,7 @@ const WebView = forwardRef<Electron.WebviewTag, WebViewProps>(
           );
         }
       };
-    }, [onDidNavigate]);
+    }, [onDidNavigate, onDidNavigateInPage]);
 
     return (
       <webview

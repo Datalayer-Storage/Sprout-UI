@@ -35,6 +35,24 @@ const Browser: React.FC = () => {
     setAddressBar(transformToChiaProtocol(location));
   }, []);
 
+  const handleOnDidNavigateInPage = useCallback((location) => {
+    console.log('handleOnDidNavigateInPage', location);
+    setAddressBar(transformToChiaProtocol(location));
+
+    const pageState: PageState = {
+      scrollPosition: { x: 0, y: 0 },
+      formData: {},
+    };
+
+    const payload: VisitPagePayload = {
+      url: location.url,
+      title: '',
+      pageState: pageState,
+    };
+
+    visitPage(payload);
+  }, []);
+
   const handleUpdateAddressBar = useCallback(
     (event) => {
       setAddressBar(transformToChiaProtocol(event.target.value));
@@ -92,6 +110,7 @@ const Browser: React.FC = () => {
       <WebView
         ref={webviewRef}
         onDidNavigate={handleOnDidNavigate}
+        onDidNavigateInPage={handleOnDidNavigateInPage}
         location={currentPage.url}
       />
     </>
