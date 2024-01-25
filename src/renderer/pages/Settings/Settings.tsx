@@ -1,4 +1,4 @@
-import { Button, TextInput } from "flowbite-react";
+import { Button, TextInput, Card} from "flowbite-react";
 import styled from "styled-components";
 import { FormattedMessage } from "react-intl";
 import {useCallback, useEffect, useRef} from "react";
@@ -51,7 +51,7 @@ const AccessSettings: React.FC<AccessSettingsProps> = () => {
   }, [dispatch]);
 
   return (
-    <>
+    <Card>
       <div>
         <div className="mb-2 block">
           <FormattedMessage id="access-key"/>
@@ -76,7 +76,7 @@ const AccessSettings: React.FC<AccessSettingsProps> = () => {
       <Button type="submit" onClick={onSave} style={{width: "100%"}}>
         <FormattedMessage id="save"/>
       </Button>
-    </>
+    </Card>
   );
 }
 

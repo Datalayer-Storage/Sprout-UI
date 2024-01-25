@@ -1,10 +1,16 @@
 {
   "app-default": "App Default",
-  "hello-1": "Hello 1",
+  "my-store": "My Store",
   "hello-2": "Hello 2",
   "browser": "Browser",
   "settings": "Settings",
   "access-key": "Access Key",
   "access-secret": "Access Secret",
-  "save": "Save"
+  "save": "Save",
+  "edit": "Edit",
+  "select-store": "Select Store",
+  "no-stores-found": "No Stores Found",
+  "create-new-store": "Create New Store",
+  "unable-to-load-stores-click-to-retry": "Unable to load stores. Click to retry.",
+  "loading-your-stores": "Loading your stores..."
 }

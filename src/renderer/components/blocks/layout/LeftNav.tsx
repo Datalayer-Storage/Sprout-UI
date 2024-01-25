@@ -6,6 +6,7 @@ import {
   HiOutlineArrowRight, 
   HiChartPie,
   HiGlobeAlt,
+  HiArchive
 } from 'react-icons/hi';
 import { IoSettingsOutline } from 'react-icons/io5';
 import styled from 'styled-components';
@@ -78,21 +79,20 @@ const LeftNav = () => {
               </Sidebar.Item>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.MY_STORE)}
+                onClick={() => navigate(ROUTES.MY_STORE)}
+                icon={HiArchive}
+              >
+                <FormattedMessage id="my-store"/>
+              </Sidebar.Item>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.APP_DEFAULT)}
                 onClick={() => navigate(ROUTES.APP_DEFAULT)}
                 icon={HiChartPie}
               >
                 <FormattedMessage id="app-default"/>
               </Sidebar.Item>
-              <Sidebar.Item
-                style={{ cursor: 'pointer' }}
-                active={isActive(ROUTES.HELLO_1)}
-                onClick={() => navigate(ROUTES.HELLO_1)}
-                icon={HiChartPie}
-              >
-                <FormattedMessage id="hello-1"/>
-              </Sidebar.Item>
-
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.HELLO_2)}
@@ -137,17 +137,19 @@ const LeftNav = () => {
               >
                 <IoSettingsOutline />
               </Sidebar.Item>
+
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.MY_STORE)}
+                onClick={() => navigate(ROUTES.MY_STORE)}
+              >
+                <HiArchive/>
+              </Sidebar.Item>
+
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.APP_DEFAULT)}
                 onClick={() => navigate(ROUTES.APP_DEFAULT)}
-              >
-                <HiChartPie />
-              </Sidebar.Item>
-              <Sidebar.Item
-                style={{ cursor: 'pointer' }}
-                active={isActive(ROUTES.HELLO_1)}
-                onClick={() => navigate(ROUTES.HELLO_1)}
               >
                 <HiChartPie />
               </Sidebar.Item>

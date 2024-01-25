@@ -40,8 +40,8 @@ const AppNavigator: React.FC = () => {
               element={<Pages.AppDefault />} 
             />
             <Route
-              path={ROUTES.HELLO_1}
-              element={<Pages.Hello1 />}
+              path={ROUTES.MY_STORE}
+              element={<Pages.MyStore/>}
             />
             <Route
               path={ROUTES.HELLO_2}
