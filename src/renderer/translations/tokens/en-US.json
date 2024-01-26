@@ -8,9 +8,17 @@
   "access-secret": "Access Secret",
   "save": "Save",
   "edit": "Edit",
+  "error": "Error",
+  "success": "Success",
   "select-store": "Select Store",
+  "selected-store-id": "Selected store ID:",
+  "select-directory-or-files-to-deploy": "Select directory or files to deploy",
   "no-stores-found": "No Stores Found",
   "create-new-store": "Create New Store",
   "unable-to-load-stores-click-to-retry": "Unable to load stores. Click to retry.",
-  "loading-your-stores": "Loading your stores..."
+  "loading-your-stores": "Loading your stores...",
+  "unable-to-create-new-store": "Unable to create new store",
+  "successfully-created-new-store": "Successfully created new store",
+  "invalid-component-state": "INVALID COMPONENT STATE",
+  "browse-...": "Browse ..."
 }

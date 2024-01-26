@@ -34,7 +34,7 @@ import DataLayer, {
  * in {@link src/preload.js}
  */
 export async function mountDatalayerRpcHandles() {
-  const datalayer = new DataLayer();
+  const datalayer = new DataLayer({verbose: true});
 
   ipcMain.handle('datalayerGetConfig', () => {
     return datalayer.getConfig();
