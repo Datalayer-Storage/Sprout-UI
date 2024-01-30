@@ -11,8 +11,6 @@ import * as Pages from '@/pages'
 import { Template } from '@/components';
 
 const AppNavigator: React.FC = () => {
-  
-  //TODO: copy over src/components/blocks/layout/Template.jsx
 
   return (
     <>

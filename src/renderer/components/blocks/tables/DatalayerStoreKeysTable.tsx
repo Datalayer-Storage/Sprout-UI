@@ -1,13 +1,14 @@
 import React, {useEffect} from "react";
 import {Button, Table, TableBody} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
-import {useGetKeysQuery, useGetValueQuery} from "@/api/ipc/datalayer";
+import {useGetKeysQuery} from "@/api/ipc/datalayer";
 import {LoadingSpinnerCard} from "@/components";
 import {useSelector} from "react-redux";
 import {getStoreToView} from "@/store/slices/myDatalayerStore";
-//import {visitPage} from "@/store/slices/browser";
-import {GetKeysParams, GetValueParams} from "chia-datalayer";
+import {visitPage} from "@/store/slices/browser";
+import {GetKeysParams} from "chia-datalayer";
 import {decodeHex} from '@/utils/hex-utils';
+import {useNavigate} from "react-router-dom";
 
 interface DatalayerStoreKeysTableProps {
   handleViewKeyData?: (storeId: string) => void;
@@ -16,6 +17,7 @@ interface DatalayerStoreKeysTableProps {
 
 const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: DatalayerStoreKeysTableProps) => {
 
+  const navigate = useNavigate();
   const storeID: string = useSelector((state)=> getStoreToView(state));
   const getKeysParams: GetKeysParams = {id: storeID}
   const { data, isLoading, error, refetch} = useGetKeysQuery(getKeysParams);
@@ -24,9 +26,9 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: 
   const {
     handleViewKeyData = (key: string) => {
       if (storeID) {
-        const getValueParams: GetValueParams = {id: storeID, key: key}
-        const response = useGetValueQuery(getValueParams);
-        console.log("get value response:", response);
+        visitPage("chia://" + storeID + "/" + key);
+        navigate("/browser");
+        console.log("viewing store in browser");
       }
     },
     setTableContentsLoaded = () => {}
