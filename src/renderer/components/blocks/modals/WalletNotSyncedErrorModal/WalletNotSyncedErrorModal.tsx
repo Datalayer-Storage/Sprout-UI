@@ -2,12 +2,12 @@ import React from "react";
 import { Modal } from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 
-interface CreateStoreErrorModalProps {
+interface WalletNotSyncedErrorModalProps {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
 }
 
-const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (props: CreateStoreErrorModalProps) => {
+const WalletNotSyncedErrorModal: React.FC<WalletNotSyncedErrorModalProps> = (props: WalletNotSyncedErrorModalProps) => {
 
   const { showModal, setShowModal } = props;
 
@@ -20,7 +20,8 @@ const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (props: Crea
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <span>
-              <FormattedMessage id="error-occured-while-creating-store-ensure-chia-services-are-running-and-accessible"/>
+              <FormattedMessage id="your-chia-wallet-is-not-synced"/>
+              <FormattedMessage id="please-try-again-later"/>
             </span>
           </p>
         </div>
@@ -29,4 +30,4 @@ const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (props: Crea
   );
 }
 
-export { CreateStoreErrorModal };
+export { WalletNotSyncedErrorModal };

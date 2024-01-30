@@ -65,4 +65,16 @@ export async function mountWalletRpcHandles() {
       return wallet.pushTx(pushTxRequest, options);
     },
   );
+
+  ipcMain.handle(
+    'getSyncStatus',
+    (_, options: any) => {
+    return wallet.getSyncStatus(options);
+  });
+
+  ipcMain.handle(
+    'getWalletBalance',
+    (_, options: any) => {
+    return wallet.getWalletBalance(options);
+  })
 }

@@ -54,8 +54,20 @@ const walletApi = ipcApi.injectEndpoints({
 
     pushTxRequest: builder.mutation<PushTxRequest, any>({
       query: () => ({ channel: 'walletPushTx', args: {} }),
-    })
+    }),
+
+    getSyncStatus: builder.mutation<any, any>({
+      query: () => ({ channel: 'getSyncStatus', args: {} }),
+    }),
+
+    getWalletBalance: builder.mutation<any, any>({
+      query: () => ({ channel: 'getWalletBalance', args: {} }),
+    }),
   }),
 });
 
-export const { useGetConfigQuery } = walletApi;
+export const {
+  useGetConfigQuery,
+  useGetSyncStatusMutation,
+  useGetWalletBalanceMutation,
+} = walletApi;

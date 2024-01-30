@@ -19,9 +19,15 @@
   "no-stores-found": "No Stores Found",
   "create-new-store": "Create New Store",
   "unable-to-load-stores-click-to-retry": "Unable to load stores. Click to retry.",
+  "insufficient-wallet-balance": "Insufficient wallet balance.",
+  "please-try-again-later": "Please try again later.",
   "loading-...": "Loading ...",
   "unable-to-create-new-store": "Unable to create new store",
   "successfully-created-new-store": "Successfully created new store",
   "invalid-component-state": "INVALID COMPONENT STATE",
-  "browse-...": "Browse ..."
+  "browse-...": "Browse ...",
+  "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
+  "your-balance-must-be-at-least-one-Mojo-to-create-a-store.": "Your balance must be at least 1 Mojo to create a store.",
+  "error-occured-while-creating-store-ensure-chia-services-are-running-and-accessible":
+    "Error occured while creating store. Ensure Chia services are running and accessible."
 }

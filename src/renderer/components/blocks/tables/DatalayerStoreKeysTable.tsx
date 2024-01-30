@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {Button, Table, TableBody} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useGetKeysQuery} from "@/api/ipc/datalayer";
-import {LoadingSpinnerCard} from "@/components";
+import {LoadingSpinnerCard, SelectedStoreIdCard, Spacer} from "@/components";
 import {useSelector} from "react-redux";
 import {getStoreToView} from "@/store/slices/myDatalayerStore";
 import {visitPage} from "@/store/slices/browser";
@@ -76,21 +76,26 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: 
     );
   }else{
     return (
-      <div className="overflow-x-auto">
-        <Table>
-          <Table.Head>
-            <Table.HeadCell>
-              <FormattedMessage id="key"/>
-            </Table.HeadCell>
-            <Table.HeadCell>
-              <span className="sr-only"/>
-            </Table.HeadCell>
-          </Table.Head>
-          <TableBody className="divide-y">
-            { (!data?.keys?.length) ? <>{noDataInStore}</> : <>{tableContents}</>}
-          </TableBody>
-        </Table>
-      </div>
+      <>
+        <SelectedStoreIdCard storeId={storeID}/>
+        <Spacer size={10}/>
+        <div className="overflow-x-auto">
+          <Table>
+            <Table.Head>
+              <Table.HeadCell>
+                <FormattedMessage id="key"/>
+              </Table.HeadCell>
+              <Table.HeadCell>
+                <span className="sr-only"/>
+              </Table.HeadCell>
+            </Table.Head>
+            <TableBody className="divide-y">
+              { (!data?.keys?.length) ? <>{noDataInStore}</> : <>{tableContents}</>}
+            </TableBody>
+          </Table>
+        </div>
+      </>
+
     );
   }
 }
