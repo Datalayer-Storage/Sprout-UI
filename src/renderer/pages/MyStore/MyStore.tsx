@@ -1,11 +1,11 @@
 
 import styled from "styled-components";
-import { FormattedMessage } from "react-intl";
 import React, {useEffect, useState} from "react";
-import {SelectDlStore, SelectAndDeployFolder} from "@/pages";
+import {DatalayerStoreManager, EditDatalayerStore} from "@/pages";
 import {useSelector} from "react-redux";
-import {getFilesDeployed, getSelectedStoreId} from "@/store/slices/myDatalayerStore";
-//import {useSelector} from "react-redux";
+import {getStoreToView, getStoreToEdit} from "@/store/slices/myDatalayerStore";
+import {Spacer} from '@/components'
+import {DatalayerStoreKeysTable} from "@/components/blocks/tables/DatalayerStoreKeysTable";
 
 const SpacerDiv = styled('div')`
   height: 100%;
@@ -13,61 +13,55 @@ const SpacerDiv = styled('div')`
   padding: 10px;
 `;
 
-enum MyStoreStatesEnum {
-  SELECT_STORE ,
-  SELECT_FOLDER,
-  FOLDER_DEPLOYED
+enum WorkFlowSteps {
+  DISPLAY_STORES,
+  EDIT_STORE,
+  VIEW_STORE
 }
 
 const MyStore: React.FC = () => {
 
-  const [stateOfMyStoreComponent, setStateOfMyStoreComponent] = useState<MyStoreStatesEnum>(MyStoreStatesEnum.SELECT_STORE);
-  const selectedStoreId = useSelector((state: any) => getSelectedStoreId(state));
-  const filesDeployed = useSelector((state: any) => getFilesDeployed(state));
-
-  console.log(selectedStoreId, "files deployed:", filesDeployed);
+  const [workFlowStep, setWorkFlowStep] = useState<WorkFlowSteps>(WorkFlowSteps.DISPLAY_STORES);
+  const storeIdToEdit = useSelector((state: any) => getStoreToEdit(state));
+  const storeIdToView = useSelector((state: any) => getStoreToView(state));
 
   useEffect(() => {
-    if (selectedStoreId && !filesDeployed){
-      setStateOfMyStoreComponent(MyStoreStatesEnum.SELECT_FOLDER);
-    } else if (selectedStoreId && filesDeployed){
-      setStateOfMyStoreComponent(MyStoreStatesEnum.FOLDER_DEPLOYED);
+    if (storeIdToEdit && !storeIdToView){
+      setWorkFlowStep(WorkFlowSteps.EDIT_STORE);
+    } else if (storeIdToView && !storeIdToEdit){
+      setWorkFlowStep(WorkFlowSteps.VIEW_STORE);
     }
-  }, [filesDeployed, selectedStoreId]);
+  }, [storeIdToView, storeIdToEdit]);
 
-
-  switch(stateOfMyStoreComponent) {
-    case MyStoreStatesEnum.SELECT_STORE: {
+  switch(workFlowStep) {
+    case WorkFlowSteps.DISPLAY_STORES: {
       return (
-        <SpacerDiv>
-          <SelectDlStore/>
-        </SpacerDiv>
+        <>
+          <Spacer size={10}/>
+          <DatalayerStoreManager/>
+          <Spacer size={10}/>
+        </>
       );
     }
-    case MyStoreStatesEnum.SELECT_FOLDER: {
+    case WorkFlowSteps.EDIT_STORE: {
       return (
-        <SpacerDiv>
+        <>
+          <Spacer size={10}/>
           <span>
-            <SelectAndDeployFolder selectedStoreId={selectedStoreId}/>
+            <EditDatalayerStore selectedStoreId={storeIdToEdit}/>
           </span>
-        </SpacerDiv>
+          <Spacer size={10}/>
+        </>
       );
     }
-    case MyStoreStatesEnum.FOLDER_DEPLOYED: {
+    case WorkFlowSteps.VIEW_STORE: {
       return (
         <SpacerDiv>
-          Todo: Folder Deployed Component
-        </SpacerDiv>
-      );
-    }
-    default: {
-      return (
-        <SpacerDiv>
-          <FormattedMessage id="invalid-component-state"/>
+          <DatalayerStoreKeysTable/>
         </SpacerDiv>
       );
     }
   }
 };
 
-export { MyStore, MyStoreStatesEnum };
+export { MyStore, WorkFlowSteps };

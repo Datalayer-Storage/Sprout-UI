@@ -10,18 +10,28 @@ export const myDatalayerStoreSlice = createSlice({
       state.filesDeployed = !state.filesDeployed;
     },
 
-    setSelectedStoreId: (state, { payload }) => {
+    setStoreIdToEdit: (state, { payload }) => {
       if ((typeof payload === 'string') && payload){
-        state.selectedStoreId = payload;
+        state.storeIdToEdit = payload;
       }else{
         console.error("invalid store id. store id must be a string and must not be null");
       }
-    }
+    },
+
+    setStoreIdToView: (state, { payload }) => {
+      if ((typeof payload === 'string') && payload){
+        state.storeIdToView = payload;
+      }else{
+        console.error("invalid store id. store id must be a string and must not be null");
+      }
+    },
   },
 });
 
 export const {
-  toggleFilesDeployed,setSelectedStoreId
+  toggleFilesDeployed,
+  setStoreIdToEdit,
+  setStoreIdToView
 } = myDatalayerStoreSlice.actions;
 
 export default myDatalayerStoreSlice.reducer;

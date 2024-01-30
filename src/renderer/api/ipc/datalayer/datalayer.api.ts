@@ -148,4 +148,6 @@ const datalayerApi = ipcApi.injectEndpoints({
 export const {
   useCreateDataStoreMutation,
   useGetOwnedStoresQuery,
+  useGetKeysQuery,
+  useGetValueQuery
 } = datalayerApi;

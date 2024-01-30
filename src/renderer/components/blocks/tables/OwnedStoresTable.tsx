@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Button, Table, TableBody} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
-import {LoadingDlStoresSpinner} from "@/components";
+import {LoadingSpinnerCard} from "@/components";
+//import {decodeHex} from '@/utils/hex-utils';
 
 interface OwnedStoreSelectionTableProps {
-  handleStoreSelected?: (storeId: string) => void;
+  handleEditStore?: (storeId: string) => void;
+  handleViewStore?: (storeId: string) => void;
   setTableContentsLoaded?: (loaded: boolean) => void;
 }
 
@@ -15,9 +17,18 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (props: OwnedS
 
   /** defines default functions for optional props */
   const {
-    handleStoreSelected = () => {},
+    handleEditStore = () => {},
+    handleViewStore = () => {},
     setTableContentsLoaded = () => {}
   } = props;
+
+  useEffect(() => {
+    if (isLoading || error){
+      setTableContentsLoaded(false);
+    }else{
+      setTableContentsLoaded(true);
+    }
+  }, [setTableContentsLoaded, isLoading, error]);
 
   const tableContents = data?.store_ids?.map((storeId: string, index: number) => (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={index}>
@@ -25,16 +36,28 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (props: OwnedS
         {storeId}
       </Table.Cell>
 
-      { (props?.handleStoreSelected) ?
-        <Table.Cell key={index}>
-          <a href="#"
-             className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-             onClick={() => handleStoreSelected(data.store_ids[index])}>
-            <FormattedMessage id={"select-store"}/>
-          </a>
-        </Table.Cell>
-        :
-        <></>
+      {
+        props?.handleEditStore &&
+        <>
+          <Table.Cell key={index}>
+            <a href="#"
+               className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+               onClick={() => handleEditStore(data.store_ids[index])}>
+              <FormattedMessage id={"edit"}/>
+            </a>
+          </Table.Cell>
+        </>
+      }
+      { props?.handleViewStore &&
+        <>
+          <Table.Cell key={index}>
+            <a href="#"
+               className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+               onClick={() => handleViewStore(data.store_ids[index])}>
+              <FormattedMessage id={"view"}/>
+            </a>
+          </Table.Cell>
+        </>
       }
 
     </Table.Row>
@@ -50,12 +73,10 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (props: OwnedS
 
 
   if (isLoading){
-    setTableContentsLoaded(false);
     return (
-      <LoadingDlStoresSpinner/>
+      <LoadingSpinnerCard/>
     );
   }else if (error){
-    setTableContentsLoaded(false);
     return (
       <>
         <Button onClick={refetch}>
@@ -64,12 +85,16 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (props: OwnedS
       </>
     );
   }else{
-    setTableContentsLoaded(true);
     return (
       <div className="overflow-x-auto">
         <Table>
           <Table.Head>
-            <Table.HeadCell>Store ID</Table.HeadCell>
+            <Table.HeadCell>
+              <FormattedMessage id="store-id"/>
+            </Table.HeadCell>
+            <Table.HeadCell>
+              <span className="sr-only"/>
+            </Table.HeadCell>
             <Table.HeadCell>
               <span className="sr-only"/>
             </Table.HeadCell>

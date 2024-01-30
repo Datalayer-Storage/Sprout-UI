@@ -1,3 +1,3 @@
 export * from './MyStore';
-export * from './SelectAndDeployFolder';
-export * from './SelectDlStore';
+export * from './EditDatalayerStore';
+export * from './DatalayerStoreManager';
