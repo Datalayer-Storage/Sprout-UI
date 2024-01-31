@@ -1,12 +1,12 @@
-import React, { useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
 import { Button, Spinner } from "flowbite-react";
 import { useCreateDataStoreMutation} from "@/api/ipc/datalayer";
 import { FormattedMessage} from "react-intl";
-import {  CreatStoreErrorModal, CreatStoreSuccessModal} from "@/components";
-//import * as repl from "repl";
-
+import {WalletNotSyncedErrorModal, CreatStoreSuccessModal, CreateStoreErrorModal} from "@/components";
+//import {useGetSyncStatusMutation, useGetWalletBalanceMutation} from "@/api/ipc/wallet";
 
 const CreateDlStoreButton: React.FC = () => {
+  const [showNotSyncedModal, setShowNotSyncedModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [triggerCreateDataStore, {isLoading}] = useCreateDataStoreMutation();
@@ -17,9 +17,9 @@ const CreateDlStoreButton: React.FC = () => {
 
     if (response.success){
       setShowSuccessModal(true);
-      setShowSuccessModal(false);
+      setShowErrorModal(false)
     }else{
-      setShowErrorModal(false);
+      setShowSuccessModal(false)
       setShowErrorModal(true);
     }
   }, [triggerCreateDataStore]);
@@ -31,7 +31,8 @@ const CreateDlStoreButton: React.FC = () => {
           {isLoading ? <Spinner/> : <span><FormattedMessage id="create-new-store"/></span>}
         </Button>
         <CreatStoreSuccessModal showModal={showSuccessModal} setShowModal={setShowSuccessModal}/>
-        <CreatStoreErrorModal showModal={showErrorModal} setShowModal={setShowErrorModal}/>
+        <CreateStoreErrorModal showModal={showErrorModal} setShowModal={setShowErrorModal}/>
+        <WalletNotSyncedErrorModal showModal={showNotSyncedModal} setShowModal={setShowNotSyncedModal}/>
       </div>
     </>
   );

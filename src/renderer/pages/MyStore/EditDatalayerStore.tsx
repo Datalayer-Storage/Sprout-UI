@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {Button, Card, FileInput, Label} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
+import {SelectedStoreIdCard} from "@/components";
 
 interface ChooseFolderProps {
   selectedStoreId: string
@@ -16,10 +17,7 @@ const EditDatalayerStore: React.FC<ChooseFolderProps> = (props: ChooseFolderProp
 
   return (
     <>
-      <Card>
-        <FormattedMessage id="selected-store-id"/>
-        <div>{props.selectedStoreId}</div>
-      </Card>
+      <SelectedStoreIdCard storeId={props.selectedStoreId}/>
       <div style={{padding: "10px"}}/>
       <Card>
         <div>

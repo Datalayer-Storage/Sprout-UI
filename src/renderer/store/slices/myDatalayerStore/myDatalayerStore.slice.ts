@@ -11,7 +11,7 @@ export const myDatalayerStoreSlice = createSlice({
     },
 
     setStoreIdToEdit: (state, { payload }) => {
-      if ((typeof payload === 'string') && payload){
+      if ((typeof payload === 'string') && (payload || payload === '')){
         state.storeIdToEdit = payload;
       }else{
         console.error("invalid store id. store id must be a string and must not be null");
@@ -19,7 +19,7 @@ export const myDatalayerStoreSlice = createSlice({
     },
 
     setStoreIdToView: (state, { payload }) => {
-      if ((typeof payload === 'string') && payload){
+      if ((typeof payload === 'string') && (payload || payload === '')){
         state.storeIdToView = payload;
       }else{
         console.error("invalid store id. store id must be a string and must not be null");
