@@ -3,7 +3,6 @@ import { WebView } from '@/components/blocks/layout/WebView';
 import { NavigationBar } from './NavigationBar';
 import { WebviewTag } from 'electron';
 import { useDispatch, useSelector } from 'react-redux';
-import { Spinner } from 'flowbite-react';
 import {
   visitPage,
   PageState,
@@ -15,6 +14,7 @@ import {
 } from '@/store/slices/browser';
 import { transformToChiaProtocol } from '@/utils/chia-router';
 import { useGetOwnedStoresQuery } from '@/api/ipc/datalayer';
+import {LoadingSpinnerCard} from "@/components";
 
 const Browser: React.FC = () => {
   const dispatch = useDispatch();
@@ -118,7 +118,7 @@ const Browser: React.FC = () => {
   }, [dispatch, defaultPage, fallbackStoreProvider, ownedStores]);
 
   if (!currentPage || isLoading) {
-    return <Spinner />;
+    return <LoadingSpinnerCard/>;
   }
 
   return (

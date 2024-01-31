@@ -75,6 +75,6 @@ export async function mountWalletRpcHandles() {
   ipcMain.handle(
     'getWalletBalance',
     (_, options: any) => {
-    return wallet.getWalletBalance(options);
+    return wallet.getWalletBalance({wallet_id: 1}, options);
   })
 }

@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import { startWeb2Gateway } from './web2gateway.js';
 import { mountDatalayerRpcHandles } from "./datalayer-bindings.js";
 import { mountWalletRpcHandles } from "./wallet-bindings.js";
+//import {mountOsHandles} from "./os-bindings";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -14,6 +15,7 @@ function createWindow() {
   startWeb2Gateway();
   mountDatalayerRpcHandles();
   mountWalletRpcHandles();
+  //mountOsHandles();
 
   const win = new BrowserWindow({
     width: 800,

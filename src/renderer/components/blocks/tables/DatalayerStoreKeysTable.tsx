@@ -20,13 +20,18 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: 
   const navigate = useNavigate();
   const storeID: string = useSelector((state)=> getStoreToView(state));
   const getKeysParams: GetKeysParams = {id: storeID}
-  const { data, isLoading, error, refetch} = useGetKeysQuery(getKeysParams);
+  const fallbackStoreProvider = useSelector(
+    (state: any) => state.userOptions.fallbackStoreProvider,
+  );
+  const { data, isLoading, error, refetch } = useGetKeysQuery(getKeysParams);
 
   /** defines default functions for optional props */
   const {
     handleViewKeyData = (key: string) => {
       if (storeID) {
-        visitPage("chia://" + storeID + "/" + key);
+        const dataPage: string = "chia://" + storeID + "/" + key
+        console.log("chia url: ", dataPage);
+        visitPage({page: dataPage, fallbackStoreProvider});
         navigate("/browser");
         console.log("viewing store in browser");
       }
@@ -47,7 +52,7 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: 
       <Table.Cell key={index}>
         <a href="#"
            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-           onClick={() => handleViewKeyData(data.keys[index])}>
+           onClick={() => handleViewKeyData(decodeHex(data.keys[index]))}>
            {decodeHex(storeKey)}
         </a>
       </Table.Cell>
@@ -57,7 +62,7 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: 
   const noDataInStore = (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        <FormattedMessage id={"no-stores-found"}/>
+        <FormattedMessage id={"no-data-in-store"}/>
       </Table.Cell>
     </Table.Row>
   );

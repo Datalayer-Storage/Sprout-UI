@@ -1,5 +1,4 @@
-import React, {useState} from "react";
-import {Button, Card, FileInput, Label} from "flowbite-react";
+import {Button, Card, Label} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {SelectedStoreIdCard} from "@/components";
 
@@ -9,11 +8,7 @@ interface ChooseFolderProps {
 
 const EditDatalayerStore: React.FC<ChooseFolderProps> = (props: ChooseFolderProps) => {
 
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-
-  const handleFileChange = (event) => {
-    setSelectedFiles(Array.from(event.target.files));
-  };
+  //const [selectedDir, setSelectedDir] = useState<string>('');
 
   return (
     <>
@@ -23,31 +18,13 @@ const EditDatalayerStore: React.FC<ChooseFolderProps> = (props: ChooseFolderProp
         <div>
           <div className="mb-2 block">
             <Label>
-              <FormattedMessage id="select-directory-or-files-to-deploy"/>
+              <FormattedMessage id="select-directory-to-deploy"/>
             </Label>
+            <Button>
+              Deploy
+            </Button>
           </div>
-          <FileInput
-            id="multiple-file-upload"
-            onChange={handleFileChange}
-            multiple
-          />
-          {selectedFiles.length > 0 && (
-            <div className="mt-2">
-              <strong>Selected Files:</strong>
-              <ul>
-                {selectedFiles.map((file, index) => (
-                  <li key={index}>{file.name}</li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
-      </Card>
-      <div style={{padding: "10px"}}/>
-      <Card>
-        <Button>
-          Deploy
-        </Button>
       </Card>
     </>
 

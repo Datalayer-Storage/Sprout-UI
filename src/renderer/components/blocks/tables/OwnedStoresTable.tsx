@@ -1,8 +1,8 @@
-import React, {useEffect} from "react";
-import {Button, Table, TableBody} from "flowbite-react";
+import React, {useEffect, useState} from "react";
+import {Button, Card, Table, TableBody} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
-import {LoadingSpinnerCard} from "@/components";
+import {LoadingSpinnerCard, Spacer} from "@/components";
 //import {decodeHex} from '@/utils/hex-utils';
 
 interface OwnedStoreSelectionTableProps {
@@ -21,6 +21,16 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (props: OwnedS
     handleViewStore = () => {},
     setTableContentsLoaded = () => {}
   } = props;
+
+  const [numStores, setNumStores] = useState<number>(0);
+
+  useEffect(() => {
+    if (data?.store_ids?.length){
+      setNumStores(data.store_ids.length)
+    }else{
+      setNumStores(0);
+    }
+  }, [data]);
 
   useEffect(() => {
     if (isLoading || error){
@@ -103,6 +113,14 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (props: OwnedS
             { (!data?.store_ids?.length) ? <>{noStoresFound}</> : <>{tableContents}</>}
           </TableBody>
         </Table>
+        <Spacer size={5}/>
+        <Card>
+          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            <span>
+              <FormattedMessage id="store-count"/>{numStores}
+            </span>
+          </p>
+        </Card>
       </div>
     );
   }

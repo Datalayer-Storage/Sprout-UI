@@ -1,7 +1,6 @@
 {
   "app-default": "App Default",
   "my-store": "My Store",
-  "hello-2": "Hello 2",
   "browser": "Browser",
   "settings": "Settings",
   "access-key": "Access Key",
@@ -13,9 +12,12 @@
   "back-to-my-stores": "Back to My Stores",
   "key": "Key",
   "success": "Success",
+  "important": "Important",
   "selected-store-id": "Selected store ID:",
   "store-id": "Store ID",
-  "select-directory-or-files-to-deploy": "Select directory or files to deploy",
+  "store-count": "Store Count: ",
+  "select-directory-to-deploy": "Select directory to deploy",
+  "no-data-in-store": "No data in store",
   "no-stores-found": "No Stores Found",
   "create-new-store": "Create New Store",
   "unable-to-load-stores-click-to-retry": "Unable to load stores. Click to retry.",
@@ -29,5 +31,10 @@
   "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
   "your-balance-must-be-at-least-one-Mojo-to-create-a-store.": "Your balance must be at least 1 Mojo to create a store.",
   "error-occured-while-creating-store-ensure-chia-services-are-running-and-accessible":
-    "Error occured while creating store. Ensure Chia services are running and accessible."
+    "Error occured while creating store. Ensure Chia services are running and accessible.",
+  "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!":
+    "Creating a store is a permanent action that cannot be un-done!",
+  "do-you-want-to-proceed-with-store-creation?": "Do you want to proceed with store creation?",
+  "yes-create-store": "Yes, Create Store",
+  "no-cancel-store-creation": "No, Cancel Store Creation"
 }
