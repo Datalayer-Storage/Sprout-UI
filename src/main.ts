@@ -1,10 +1,13 @@
-import { app, BrowserWindow } from "electron";
+import {app, BrowserWindow, ipcMain} from "electron";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { startWeb2Gateway } from './web2gateway.js';
 import { mountDatalayerRpcHandles } from "./datalayer-bindings.js";
 import { mountWalletRpcHandles } from "./wallet-bindings.js";
 //import {mountOsHandles} from "./os-bindings";
+
+//todo: remove when exporting from os-bindings.ts is working
+import {dialog} from 'electron';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -46,6 +49,19 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
+  }
+});
+
+
+//todo: remove when exporting from os-bindings.ts is working
+ipcMain.handle('selectFolderDialog', async () => {
+  try {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory'],
+    });
+    return { data: result.filePaths[0], error: null, success: true };
+  } catch (error) {
+    return { data: null, error, success: false };
   }
 });
 

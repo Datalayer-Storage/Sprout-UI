@@ -2,20 +2,14 @@ import { ipcMain } from 'electron';
 import dialog = Electron.dialog;
 
 export async function mountOsHandles() {
-  ipcMain.handle('selectFolderDialogue', () => {
+  ipcMain.handle('selectFolderDialog', async () => {
     try {
-      dialog.showOpenDialog({
+      const result = await dialog.showOpenDialog({
         properties: ['openDirectory'],
-      }).then((result) => {
-        if (result.canceled){
-          return { data: null, error: null, success: false };
-        }else{
-          return { data: result.filePaths[0], error: null, success: true };
-        }
       });
-
+      return { data: result.filePaths[0], error: null, success: true };
     } catch (error) {
       return { data: null, error, success: false };
     }
-  })
+  });
 }

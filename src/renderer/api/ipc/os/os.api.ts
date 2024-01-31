@@ -1,14 +1,6 @@
-import { ipcApi } from "@/api";
+import {ipcRenderer} from 'electron';
 
-const osApi = ipcApi.injectEndpoints({
-  endpoints: (builder) => ({
-
-    openFolderSelection: builder.mutation<any, any>({
-      query: () => ({ channel: 'selectFolderDialogue', args: {} }),
-    }),
-  }),
-});
-
-export const {
-  useOpenFolderSelectionMutation
-} = osApi;
+export async function selectFolderDialogue() {
+  const result = await ipcRenderer.invoke('selectFolderDialog');
+  console.log('result of file dialogue:', result);
+}
