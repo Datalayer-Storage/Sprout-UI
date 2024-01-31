@@ -1,8 +1,14 @@
 import { noop } from 'lodash';
 import React, { useCallback } from 'react';
-import { Button, ButtonGroup, TextInput } from 'flowbite-react';
+import {
+  Button,
+  ButtonGroup,
+  TextInput,
+  Dropdown,
+  DropdownItem,
+} from 'flowbite-react';
 import styled from 'styled-components';
-import { 
+import {
   HiHome,
   HiChevronDoubleLeft,
   HiChevronDoubleRight,
@@ -21,6 +27,7 @@ const NavigationBarDiv = styled('div')`
 const NavButtonGroup = styled(ButtonGroup)`
   gap: 5px;
   margin: 10px;
+  width: 500px;
 `;
 
 const StyledTextInput = styled(TextInput)`
@@ -37,46 +44,50 @@ interface NavButton {
   onClick: () => void;
 }
 
-const BackButton: React.FC<NavButton> = ({onClick}) => {
+const BackButton: React.FC<NavButton> = ({ onClick }) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiChevronDoubleLeft font-size={navButtonIconSize}/>
+      <HiChevronDoubleLeft font-size={navButtonIconSize} />
     </StyledNavButton>
   );
-}
+};
 
-const ForwardButton: React.FC<NavButton> = ({onClick}) => {
+const ForwardButton: React.FC<NavButton> = ({ onClick }) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiChevronDoubleRight font-size={navButtonIconSize}/>
+      <HiChevronDoubleRight font-size={navButtonIconSize} />
     </StyledNavButton>
   );
-}
+};
 
-const HomeButton: React.FC<NavButton> = ({onClick}) => {
+const HomeButton: React.FC<NavButton> = ({ onClick }) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiHome fontSize={navButtonIconSize}/>
+      <HiHome fontSize={navButtonIconSize} />
     </StyledNavButton>
   );
-}
+};
 
-const RefreshButton: React.FC<NavButton> = ({onClick}) => {
+const RefreshButton: React.FC<NavButton> = ({ onClick }) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiRefresh font-size={navButtonIconSize}/>
+      <HiRefresh font-size={navButtonIconSize} />
     </StyledNavButton>
   );
-}
+};
 
 interface NavigationBarProps {
   value: string;
   onChange: (event: React.ChangeEvent) => void;
-  onEnterDown: (event: React.KeyboardEvent<HTMLInputElement>) => void;
+  onEnterDown: (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    url?: string,
+  ) => void;
   onRefresh: () => void;
   onBack: () => void;
   onForward: () => void;
   onHome: () => void;
+  ownedStores?: string[];
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = ({
@@ -86,7 +97,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   onBack,
   onForward,
   onHome,
-  onEnterDown = noop,
+  ownedStores,
+  onEnterDown = noop
 }) => {
   const handleOnEnterKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -97,25 +109,52 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     [onEnterDown],
   );
 
+  const handleOptionClick = (option: string): void => {
+    onEnterDown(null, `chia://${option}`);
+  };
+
   return (
     <>
       <NavigationBarDiv>
         <NavButtonGroup>
-          <BackButton onClick={onBack}/>
-          <ForwardButton onClick={onForward}/>
-          <RefreshButton onClick={onRefresh}/>
-          <HomeButton onClick={onHome}/>
+          <BackButton onClick={onBack} />
+          <ForwardButton onClick={onForward} />
+          <RefreshButton onClick={onRefresh} />
+          <HomeButton onClick={onHome} />
         </NavButtonGroup>
         <StyledTextInput
           value={value}
           onChange={onChange}
           onKeyDown={handleOnEnterKeyDown}
           icon={HiSearch}
+        />
+        <div
+          style={{
+            height: 60,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-        </StyledTextInput>
+          <Dropdown label="LOCAL" disabled={Boolean(ownedStores?.length)}>
+            {ownedStores?.length || 0 > 0 ? (
+              ownedStores?.map((option, index) => (
+                <DropdownItem
+                  key={index}
+                  onClick={() => handleOptionClick(option)}
+                  style={{ padding: '0.25rem', fontSize: '0.875rem' }}
+                >
+                  {option}
+                </DropdownItem>
+              ))
+            ) : (
+              <DropdownItem disabled>No options found</DropdownItem>
+            )}
+          </Dropdown>
+        </div>
       </NavigationBarDiv>
     </>
   );
 };
 
-export { NavigationBar }
+export { NavigationBar };

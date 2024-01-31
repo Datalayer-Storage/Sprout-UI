@@ -13,6 +13,10 @@ export const userOptionsSlice = createSlice({
       }
     },
 
+    setFallbackStoreProvider: (state, { payload }) => {
+      state.fallbackStoreProvider = payload;
+    },
+
     setAccessKey: (state, { payload }) => {
 
       if ((typeof payload === 'string') && payload) {
@@ -33,8 +37,7 @@ export const userOptionsSlice = createSlice({
   },
 });
 
-export const {
-  toggleTheme,setAccessKey, setAccessSecret
-} = userOptionsSlice.actions;
+export const { toggleTheme, setAccessKey, setAccessSecret, setFallbackStoreProvider } =
+  userOptionsSlice.actions;
 
 export default userOptionsSlice.reducer;

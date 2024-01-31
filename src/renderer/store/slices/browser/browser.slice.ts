@@ -2,7 +2,7 @@ import { isEqual } from 'lodash';
 import { createSlice, current } from '@reduxjs/toolkit';
 import initialState from './browser.initialstate';
 import { HistoryEntry } from './browser.types';
-import { transformToHttpProtocal } from '@/utils/chia-utils';
+import { transformToHttpProtocal } from '@/utils/chia-router';
 
 export const browserSlice = createSlice({
   name: 'browser',
@@ -11,11 +11,17 @@ export const browserSlice = createSlice({
     visitPage: (state, { payload }) => {
       console.log('visitPage', payload);
       const timestamp: string = new Date().toDateString();
-      
+
+      const { page, fallbackStoreProvider, ownedStores } = payload;
+
       const newEntry: HistoryEntry = {
-        url: transformToHttpProtocal(payload.url),
-        title: payload.title,
-        pageState: payload.pageState,
+        url: transformToHttpProtocal(
+          page.url,
+          fallbackStoreProvider,
+          ownedStores,
+        ),
+        title: page.title,
+        pageState: page.pageState,
         timeStamp: timestamp,
       };
 

@@ -85,22 +85,6 @@ const LeftNav = () => {
               >
                 <FormattedMessage id="my-store"/>
               </Sidebar.Item>
-              <Sidebar.Item
-                style={{ cursor: 'pointer' }}
-                active={isActive(ROUTES.APP_DEFAULT)}
-                onClick={() => navigate(ROUTES.APP_DEFAULT)}
-                icon={HiChartPie}
-              >
-                <FormattedMessage id="app-default"/>
-              </Sidebar.Item>
-              <Sidebar.Item
-                style={{ cursor: 'pointer' }}
-                active={isActive(ROUTES.HELLO_2)}
-                onClick={() => navigate(ROUTES.HELLO_2)}
-                icon={HiChartPie}
-              >
-                <FormattedMessage id="hello-2"/>
-              </Sidebar.Item>
             </Sidebar.ItemGroup>
           </Sidebar.Items>
         </Sidebar>
