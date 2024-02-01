@@ -3,8 +3,7 @@ import { Sidebar } from 'flowbite-react';
 import { Button } from 'flowbite-react';
 import { 
   HiOutlineArrowLeft, 
-  HiOutlineArrowRight, 
-  HiChartPie,
+  HiOutlineArrowRight,
   HiGlobeAlt,
   HiArchive
 } from 'react-icons/hi';
@@ -119,31 +118,14 @@ const LeftNav = () => {
                 active={isActive(ROUTES.SETTINGS)}
                 onClick={() => navigate(ROUTES.SETTINGS)}
               >
-                <IoSettingsOutline />
+                <IoSettingsOutline/>
               </Sidebar.Item>
-
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
                 active={isActive(ROUTES.MY_STORE)}
                 onClick={() => navigate(ROUTES.MY_STORE)}
               >
                 <HiArchive/>
-              </Sidebar.Item>
-
-              <Sidebar.Item
-                style={{ cursor: 'pointer' }}
-                active={isActive(ROUTES.APP_DEFAULT)}
-                onClick={() => navigate(ROUTES.APP_DEFAULT)}
-              >
-                <HiChartPie />
-              </Sidebar.Item>
-              
-              <Sidebar.Item
-                style={{ cursor: 'pointer' }}
-                active={isActive(ROUTES.HELLO_2)}
-                onClick={() => navigate(ROUTES.HELLO_2)}
-              >
-                <HiChartPie />
               </Sidebar.Item>
             </Sidebar.ItemGroup>
           </Sidebar.Items>

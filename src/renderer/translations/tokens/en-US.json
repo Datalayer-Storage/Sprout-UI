@@ -1,5 +1,4 @@
 {
-  "app-default": "App Default",
   "my-store": "My Store",
   "browser": "Browser",
   "settings": "Settings",
@@ -13,10 +12,13 @@
   "key": "Key",
   "success": "Success",
   "important": "Important",
+  "reset": "Reset",
   "selected-store-id": "Selected store ID:",
   "store-id": "Store ID",
   "store-count": "Store Count: ",
   "select-directory-to-deploy": "Select directory to deploy",
+  "deploy-selected-directory-to-store": "Deploy selected directory to store",
+  "selected-directory:-": "Selected directory: ",
   "no-data-in-store": "No data in store",
   "no-stores-found": "No Stores Found",
   "create-new-store": "Create New Store",
@@ -36,5 +38,16 @@
     "Creating a store is a permanent action that cannot be un-done!",
   "do-you-want-to-proceed-with-store-creation?": "Do you want to proceed with store creation?",
   "yes-create-store": "Yes, Create Store",
-  "no-cancel-store-creation": "No, Cancel Store Creation"
+  "no-cancel-store-creation": "No, Cancel Store Creation",
+  "web2-gateway-settings" :"Web2 Gateway Settings",
+  "data-layer-storage-settings" :"Data Layer Storage Settings",
+  "deployment-settings" :"Deployment Settings",
+  "datalayer-host" :"Datalayer Host",
+  "wallet-host": "Wallet Host",
+  "fallback-store-provider": "Fallback Store Provider",
+  "certificate-folder-path": "Certificate Folder Path",
+  "default-wallet-id": "Default Wallet ID",
+  "default-mirror-coin-amount": "Default Mirror Coin Amount",
+  "default-fee": "Default Fee"
+
 }

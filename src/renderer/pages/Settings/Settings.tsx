@@ -10,7 +10,8 @@ import {
   setAccessSecret,
   setFallbackStoreProvider,
 } from '@/store/slices/userOptions';
-import { Spacer } from '@/components';
+import initialState from "@/store/slices/userOptions/userOptions.initialstate";
+import { Spacer, DeploymentSettings } from '@/components';
 
 const SettingsDiv = styled('div')`
   height: 100%;
@@ -23,6 +24,41 @@ const SettingsDiv = styled('div')`
 interface SettingsProps {}
 
 interface AccessSettingsProps {}
+
+
+const Web2GatewaySettings: React.FC<AccessSettingsProps> = () => {
+  const dispatch = useDispatch();
+  const userOptionsStore = useSelector((state: any) => state.userOptions);
+
+  const handleOnChange = useCallback((event) => {
+    dispatch(setFallbackStoreProvider(event.target.value));
+  }, [dispatch]);
+
+  const handleReset = useCallback(() => {
+    dispatch(setFallbackStoreProvider(initialState.fallbackStoreProvider));
+  }, [dispatch]);
+
+  return (
+    <Card>
+      <h5>
+        <FormattedMessage id="web2-gateway-settings" />
+      </h5>
+      <Label htmlFor="datalayerHost">
+        <FormattedMessage id="fallback-store-provider" />
+      </Label>
+      <TextInput
+        id="datalayerHost"
+        type="text"
+        value={userOptionsStore.fallbackStoreProvider}
+        onChange={handleOnChange}
+        required
+      />
+      <Button onClick={handleReset}>
+        <FormattedMessage id="reset"/>
+      </Button>
+    </Card>
+  );
+};
 
 const AccessSettings: React.FC<AccessSettingsProps> = () => {
   const dispatch = useDispatch();
@@ -54,7 +90,9 @@ const AccessSettings: React.FC<AccessSettingsProps> = () => {
 
   return (
     <Card>
-      <h5>DataLayer Storage Settings</h5>
+      <h5>
+        <FormattedMessage id="data-layer-storage-settings" />
+      </h5>
       <div>
         <div className="mb-2 block">
           <FormattedMessage id="access-key" />
@@ -85,42 +123,15 @@ const AccessSettings: React.FC<AccessSettingsProps> = () => {
   );
 };
 
-const Web2GatewaySettings: React.FC<AccessSettingsProps> = () => {
-  const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
-
-  const handleOnChange = useCallback((event) => {
-    dispatch(setFallbackStoreProvider(event.target.value));
-  }, [dispatch]);
-
-  const handleReset = useCallback(() => {
-    dispatch(setFallbackStoreProvider('https://datalayer.link'));
-  }, [dispatch]);
-
-  return (
-    <Card>
-      <h5>Web2 Gateway Settings</h5>
-      <Label htmlFor="web2GatewayFallback" value="Fallback Store Provider" />
-      <TextInput
-        id="web2GatewayFallback"
-        type="text"
-        value={userOptionsStore.fallbackStoreProvider}
-        onChange={handleOnChange}
-        required
-      />
-      <Button onClick={handleReset}>Reset</Button>
-    </Card>
-  );
-};
-
 const Settings: React.FC<SettingsProps> = () => {
   return (
     <SettingsDiv>
       <div style={{ width: '100%' }}>
-        <h3>Settings</h3>
         <Web2GatewaySettings />
         <Spacer size={10} />
         <AccessSettings />
+        <Spacer size={10} />
+        <DeploymentSettings />
       </div>
     </SettingsDiv>
   );

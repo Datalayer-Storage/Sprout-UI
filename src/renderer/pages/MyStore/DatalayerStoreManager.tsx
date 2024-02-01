@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from "react";
-import {CreateDlStoreButton, OwnedStoresTable} from "@/components";
+import {CreateDlStoreButton, OwnedStoresTable, Spacer} from "@/components";
 import {setStoreIdToEdit, setStoreIdToView} from "@/store/slices/myDatalayerStore";
 import {useDispatch} from "react-redux";
 
@@ -19,7 +19,12 @@ const DatalayerStoreManager: React.FC = () => {
 
   return (
     <>
-      { storeTableContentsLoaded && <CreateDlStoreButton/> }
+      { storeTableContentsLoaded &&
+        <>
+          <CreateDlStoreButton/>
+          <Spacer size={10}/>
+        </>
+      }
       <OwnedStoresTable
         setTableContentsLoaded={setStoreTableContentsLoaded}
         handleEditStore={handleEditStore}

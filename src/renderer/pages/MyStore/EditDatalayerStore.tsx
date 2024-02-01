@@ -1,7 +1,9 @@
 import {Button, Card, Label} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
-import {SelectedStoreIdCard} from "@/components";
-//import {selectFolderDialogue} from "@/api/ipc/os";
+import {SelectedStoreIdCard, Spacer} from "@/components";
+import {useCallback, useState} from "react";
+import {selectFolderDialogue} from "@/utils/os";
+import {SelectFolderDialogResponse} from "@/vite-env";
 
 interface ChooseFolderProps {
   selectedStoreId: string
@@ -9,24 +11,40 @@ interface ChooseFolderProps {
 
 const EditDatalayerStore: React.FC<ChooseFolderProps> = (props: ChooseFolderProps) => {
 
-  //const [selectedDir, setSelectedDir] = useState<string>('');
+  const [selectedPath, setSelectedPath] = useState<string>('');
 
+  const handleOpenFolder = useCallback(async () => {
+    const openFolderResponse: SelectFolderDialogResponse = await selectFolderDialogue();
+
+    if (openFolderResponse?.success) {
+      setSelectedPath(openFolderResponse.filePath);
+    }else if (openFolderResponse?.error){
+      console.log("failed to open folder. Error:\n", openFolderResponse.error);
+    }
+  }, []);
 
   return (
     <>
       <SelectedStoreIdCard storeId={props.selectedStoreId}/>
-      <div style={{padding: "10px"}}/>
+      <Spacer size={10}/>
       <Card>
-        <div>
-          <div className="mb-2 block">
+        {
+          (selectedPath) ?
+          <>
             <Label>
-              <FormattedMessage id="select-directory-to-deploy"/>
+              <span><FormattedMessage id="selected-directory:-"/>{selectedPath}</span>
             </Label>
-            <Button>
-              Deploy
+            <Button onClick={handleOpenFolder}>
+              <FormattedMessage id="deploy-selected-directory-to-store"/>
             </Button>
-          </div>
-        </div>
+          </>
+          :
+          <>
+            <Button onClick={handleOpenFolder}>
+              <FormattedMessage id="select-directory-to-deploy"/>
+            </Button>
+          </>
+        }
       </Card>
     </>
 

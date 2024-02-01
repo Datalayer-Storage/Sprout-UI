@@ -4,10 +4,13 @@ import { fileURLToPath } from 'url';
 import { startWeb2Gateway } from './web2gateway.js';
 import { mountDatalayerRpcHandles } from "./datalayer-bindings.js";
 import { mountWalletRpcHandles } from "./wallet-bindings.js";
+import {SelectFolderDialogResponse} from "@/vite-env";
 //import {mountOsHandles} from "./os-bindings";
 
 //todo: remove when exporting from os-bindings.ts is working
 import {dialog} from 'electron';
+
+
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -21,8 +24,8 @@ function createWindow() {
   //mountOsHandles();
 
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1100,
+    height: 650,
     webPreferences: {
       contextIsolation: false,
       nodeIntegration: true,
@@ -52,16 +55,15 @@ app.on("activate", () => {
   }
 });
 
-
 //todo: remove when exporting from os-bindings.ts is working
-ipcMain.handle('selectFolderDialog', async () => {
+ipcMain.handle('selectFolderDialog', async (): Promise<SelectFolderDialogResponse> => {
   try {
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
     });
-    return { data: result.filePaths[0], error: null, success: true };
-  } catch (error) {
-    return { data: null, error, success: false };
+    return { filePath: result.filePaths[0], error: null, success: true };
+  } catch (error: any) {
+    return { filePath: '', error, success: false };
   }
 });
 

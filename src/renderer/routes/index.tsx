@@ -33,21 +33,13 @@ const AppNavigator: React.FC = () => {
               path={ROUTES.SETTINGS}
               element={<Pages.Settings/>}
             />
-            <Route 
-              path={ROUTES.APP_DEFAULT} 
-              element={<Pages.AppDefault />} 
-            />
             <Route
               path={ROUTES.MY_STORE}
               element={<Pages.MyStore/>}
             />
             <Route
-              path={ROUTES.HELLO_2}
-              element={<Pages.Hello2 />}
-            />
-            <Route
               path="*"
-              element={<Navigate replace to={ROUTES.APP_DEFAULT} />}
+              element={<Navigate replace to={ROUTES.BROWSER} />}
             />
           </Route>  
         </Routes>

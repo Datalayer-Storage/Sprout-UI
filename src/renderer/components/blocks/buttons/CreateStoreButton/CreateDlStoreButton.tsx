@@ -7,7 +7,7 @@ import {
   WalletBalanceInsufficientErrorModal,
   CreatStoreSuccessModal,
   CreateStoreErrorModal} from "@/components";
-import {useGetSyncStatusMutation, useGetWalletBalanceMutation} from "@/api/ipc/wallet";
+import {/* useGetSyncStatusMutation,*/ useGetWalletBalanceMutation} from "@/api/ipc/wallet";
 import {ConfirmCreateStoreModal} from "@/components/blocks/modals/ConfirmCreateStoreModal";
 
 const CreateDlStoreButton: React.FC = () => {
@@ -21,17 +21,20 @@ const CreateDlStoreButton: React.FC = () => {
   const [createStoreErrorMsg, setCreateStoreErrorMsg] = useState('');
 
   const [triggerCreateDataStore, {isLoading: isStoreCreating}] = useCreateDataStoreMutation();
-  const [triggerGetSyncStatus, {isLoading: isSyncStatusLoading}] = useGetSyncStatusMutation();
+  //const [triggerGetSyncStatus, {isLoading: isSyncStatusLoading}] = useGetSyncStatusMutation();
   const [triggerGetWalletBalance, {isLoading: isBalanceLoading}] = useGetWalletBalanceMutation();
 
   const handleCreateDataStore = useCallback(async () => {
 
+    /*
     const syncStatusResponse = await triggerGetSyncStatus({});
     // @ts-ignore
     if (syncStatusResponse?.data?.synced){
       setShowNotSyncedModal(true);
       return;
     }
+
+     */
 
     const walletBalanceResponse = await triggerGetWalletBalance({});
     // @ts-ignore
@@ -56,13 +59,13 @@ const CreateDlStoreButton: React.FC = () => {
     }
 
      */
-  }, [triggerCreateDataStore, triggerGetSyncStatus, triggerGetWalletBalance]);
+  }, [triggerCreateDataStore, /* triggerGetSyncStatus, */ triggerGetWalletBalance]);
 
   return (
     <>
       <div>
         <Button onClick={() => setShowConfirmStoreCreationModal(true)}>
-          {(isSyncStatusLoading || isBalanceLoading || isStoreCreating) ?
+          {(/*isSyncStatusLoading || */ isBalanceLoading || isStoreCreating) ?
             <Spinner/>
             :
             <span>
