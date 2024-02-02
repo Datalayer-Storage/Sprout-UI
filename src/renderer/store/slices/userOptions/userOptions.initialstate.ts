@@ -6,16 +6,16 @@ interface userOptionsInitialState {
   datalayerHost: string;
   walletHost: string;
   certificateFolderPath: string;
-  defaultWalletId: number;
-  defaultFee: number;
-  defaultMirrorCoinAmount: number;
-  maximumRpcPayloadSize: number;
-  web2GatewayPort: number;
+  defaultWalletId: number | null;
+  defaultFee: number | null;
+  defaultMirrorCoinAmount: number | null;
+  maximumRpcPayloadSize: number | null;
+  web2GatewayPort: number | null;
   web2GatewayHost: string;
   forceIp4Mirror: boolean;
   mirrorUrlOverride: string | null;
   verbose: boolean;
-  numFilesProcessedPerBatch: number;
+  numFilesProcessedPerBatch: number | null;
   ignoreOrphans: boolean;
 }
 
