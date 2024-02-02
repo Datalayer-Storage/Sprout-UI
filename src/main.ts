@@ -1,16 +1,15 @@
-import {app, BrowserWindow, ipcMain} from "electron";
+import { app, BrowserWindow, ipcMain } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { startWeb2Gateway } from './web2gateway.js';
-import { mountDatalayerRpcHandles } from "./datalayer-bindings.js";
-import { mountWalletRpcHandles } from "./wallet-bindings.js";
-import {SelectFolderDialogResponse} from "@/vite-env";
+import { mountDatalayerRpcHandles } from './datalayer-bindings.js';
+import { mountWalletRpcHandles } from './wallet-bindings.js';
+import { SelectFolderDialogResponse } from '@/vite-env';
+import { deploy } from 'chia-datalayer-fs-deploy';
 //import {mountOsHandles} from "./os-bindings";
 
 //todo: remove when exporting from os-bindings.ts is working
-import {dialog} from 'electron';
-
-
+import { dialog } from 'electron';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -43,28 +42,41 @@ function createWindow() {
 
 app.whenReady().then(createWindow);
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
     app.quit();
   }
 });
 
-app.on("activate", () => {
+app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
 
 //todo: remove when exporting from os-bindings.ts is working
-ipcMain.handle('selectFolderDialog', async (): Promise<SelectFolderDialogResponse> => {
-  try {
-    const result = await dialog.showOpenDialog({
-      properties: ['openDirectory'],
-    });
-    return { filePath: result.filePaths[0], error: null, success: true };
-  } catch (error: any) {
-    return { filePath: '', error, success: false };
-  }
+ipcMain.handle(
+  'selectFolderDialog',
+  async (): Promise<SelectFolderDialogResponse> => {
+    try {
+      const result = await dialog.showOpenDialog({
+        properties: ['openDirectory'],
+      });
+      return { filePath: result.filePaths[0], error: null, success: true };
+    } catch (error: any) {
+      return { filePath: '', error, success: false };
+    }
+  },
+);
+
+ipcMain.handle('deployStore', async (event, storeId, deployDir, options = {}) => {
+  const deployment = deploy(storeId, deployDir, options);
+
+  deployment.on('info', (message) => {
+    event.sender.send('logMessage', message);
+  });
+
+  deployment.on('error', (error) => {
+    event.sender.send('logMessage', error);
+  });
 });
-
-
