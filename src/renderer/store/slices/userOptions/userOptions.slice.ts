@@ -60,42 +60,67 @@ export const userOptionsSlice = createSlice({
     },
 
     setDefaultWalletId: (state, { payload }) => {
-      if ((typeof payload === 'number') && payload) {
-        state.defaultWalletId = payload;
-      } else {
-        console.error("Invalid defaultWalletId. ID must be a number and must not be null");
+      try {
+        const value = parseInt(payload);
+        if (Number.isNaN(value)){
+          state.defaultWalletId = null;
+        }else{
+          state.defaultWalletId = value;
+        }
+      } catch (error) {
+        console.error("Invalid defaultWalletId. ID must be a number and must not be null", error);
       }
     },
 
     setDefaultFee: (state, { payload }) => {
-      if ((typeof payload === 'number') && payload) {
-        state.defaultFee = payload;
-      } else {
-        console.error("Invalid defaultFee. Fee must be a number and must not be null");
+      try {
+        const value = parseInt(payload);
+        if (Number.isNaN(value)){
+          state.defaultFee = null;
+        }else{
+          state.defaultFee = value;
+        }
+      } catch (error) {
+        console.error("Invalid defaultFee. Fee must be a number and must not be null", error);
       }
     },
 
     setDefaultMirrorCoinAmount: (state, { payload }) => {
-      if ((typeof payload === 'number') && payload) {
-        state.defaultMirrorCoinAmount = payload;
-      } else {
-        console.error("Invalid defaultMirrorCoinAmount. Amount must be a number and must not be null");
+      try {
+        const value = parseInt(payload);
+        if (Number.isNaN(value)){
+          state.defaultMirrorCoinAmount = null;
+        }else{
+          state.defaultMirrorCoinAmount = value;
+        }
+      } catch (error) {
+        console.error("Invalid defaultMirrorCoinAmount. Amount must be a number and must not be null", error);
       }
     },
 
     setMaximumRpcPayloadSize: (state, { payload }) => {
-      if ((typeof payload === 'number') && payload) {
-        state.maximumRpcPayloadSize = payload;
-      } else {
-        console.error("Invalid maximumRpcPayloadSize. Size must be a number and must not be null");
+      try {
+        const value = parseInt(payload);
+        if (Number.isNaN(value)){
+          state.maximumRpcPayloadSize = null;
+        }else{
+          state.maximumRpcPayloadSize = value;
+        }
+      } catch (error) {
+        console.error("Invalid maximumRpcPayloadSize. Size must be a number and must not be null", error);
       }
     },
 
     setWeb2GatewayPort: (state, { payload }) => {
-      if ((typeof payload === 'number') && payload) {
-        state.web2GatewayPort = payload;
-      } else {
-        console.error("Invalid web2GatewayPort. Port must be a number and must not be null");
+      try {
+        const value: number = parseInt(payload);
+        if (Number.isNaN(value)){
+          state.web2GatewayPort = null;
+        }else{
+          state.web2GatewayPort = value;
+        }
+      } catch (error) {
+        console.error("Invalid web2GatewayPort. Port must be a number and must not be null", error);
       }
     },
 
@@ -116,35 +141,27 @@ export const userOptionsSlice = createSlice({
     },
 
     setMirrorUrlOverride: (state, { payload }) => {
-      if ((typeof payload === 'string') && payload) {
+      if (payload === '') {
+        state.mirrorUrlOverride = null;
+      }else{
         state.mirrorUrlOverride = payload;
-      } else {
-        console.error("Invalid mirrorUrlOverride. URL must be a string and must not be null");
       }
     },
 
     toggleVerbose: (state, { payload }) => {
-      if ((typeof payload === 'boolean') && payload) {
-        state.verbose = payload; // No change needed
-      } else {
-        console.error("Invalid verbosity setting. Value must be a boolean and must not be null");
-      }
+      state.verbose = payload;
     },
 
     setNumFilesProcessedPerBatch: (state, { payload }) => {
-      if ((typeof payload === 'number') && payload) {
-        state.numFilesProcessedPerBatch = payload;
-      } else {
-        console.error("Invalid numFilesProcessedPerBatch. Value must be a number and must not be null");
+      try {
+        state.numFilesProcessedPerBatch = parseInt(payload);
+      } catch (error) {
+        console.error("Invalid numFilesProcessedPerBatch. Value must not be null", error);
       }
     },
 
     toggleIgnoreOrphans: (state, { payload }) => {
-      if ((typeof payload === 'boolean') && payload) {
-        state.ignoreOrphans = payload; // No change needed
-      } else {
-        console.error("Invalid ignoreOrphans. Value must be a boolean and must not be null");
-      }
+      state.ignoreOrphans = payload;
     },
   },
 });

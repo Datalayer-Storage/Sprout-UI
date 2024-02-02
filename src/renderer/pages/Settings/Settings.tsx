@@ -25,7 +25,6 @@ interface SettingsProps {}
 
 interface AccessSettingsProps {}
 
-
 const Web2GatewaySettings: React.FC<AccessSettingsProps> = () => {
   const dispatch = useDispatch();
   const userOptionsStore = useSelector((state: any) => state.userOptions);

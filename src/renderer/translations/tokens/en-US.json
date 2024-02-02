@@ -48,6 +48,11 @@
   "certificate-folder-path": "Certificate Folder Path",
   "default-wallet-id": "Default Wallet ID",
   "default-mirror-coin-amount": "Default Mirror Coin Amount",
-  "default-fee": "Default Fee"
-
+  "default-fee": "Default Fee",
+  "maximum-rpc-payload-size": "Maximum RPC Payload Size",
+  "web-2-gateway-port": "Web 2 Gateway Port",
+  "web-2-gateway-host": "Web 2 Gateway Host",
+  "mirror-url-override": "Mirror URL Override",
+  "num-files-processed-per-batch": "Num Files Processed Per Batch",
+  "verbose": "Verbose"
 }
