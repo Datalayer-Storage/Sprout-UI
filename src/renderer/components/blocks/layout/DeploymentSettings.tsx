@@ -4,7 +4,7 @@ import {
   setCertificateFolderPath,
   setDatalayerHost, setDefaultFee, setDefaultMirrorCoinAmount,
   setDefaultWalletId, setMaximumRpcPayloadSize, setMirrorUrlOverride, setNumFilesProcessedPerBatch,
-  setWalletHost, setWeb2GatewayHost, setWeb2GatewayPort, toggleVerbose
+  setWalletHost, setWeb2GatewayHost, setWeb2GatewayPort, toggleIgnoreOrphans, toggleVerbose
 } from "@/store/slices/userOptions";
 import initialState from "@/store/slices/userOptions/userOptions.initialstate";
 import {Button, Card, Checkbox, Label, TextInput} from "flowbite-react";
@@ -458,75 +458,56 @@ const Verbose: React.FC = () => {
   const dispatch = useDispatch();
   const userOptionsStore = useSelector((state: any) => state.userOptions);
 
-  const handleOnChange = useCallback((event) => {
-    dispatch(toggleVerbose(event.target.value));
+  const handleOnChange = useCallback(() => {
+    dispatch(toggleVerbose());
   }, [dispatch]);
 
   return (
     <>
-      <SettingHorizontalFlexBox>
-        <Spacer size={5}/>
-        <div className="flex items-center gap-2">
-          <LabelBox>
-            <Label htmlFor="remember">
-              <FormattedMessage id="verbose" />
-            </Label>
-          </LabelBox>
-          <Checkbox
-            id="remember"
-            onChange={handleOnChange}
-            value={userOptionsStore.verbose}
-          />
-        </div>
-      </SettingHorizontalFlexBox>
+      <div className="flex items-center gap-2">
+        <LabelBox>
+          <Label htmlFor="verbose">
+            <FormattedMessage id="verbose" />
+          </Label>
+        </LabelBox>
+        <Checkbox
+          id="verbose"
+          onChange={handleOnChange}
+          checked={userOptionsStore.verbose}
+        />
+      </div>
       <Spacer size={5}/>
     </>
   );
 }
 
-/*
 const IgnoreOrphans: React.FC = () => {
 
   const dispatch = useDispatch();
   const userOptionsStore = useSelector((state: any) => state.userOptions);
 
-  const handleOnChange = useCallback((event) => {
-    dispatch(toggleVerbose(event.target.value));
-  }, [dispatch]);
-
-  const handleReset = useCallback(() => {
-    console.log("initialState.verbose", initialState.verbose);
-    dispatch(toggleVerbose(initialState.verbose));
+  const handleOnChange = useCallback(() => {
+    dispatch(toggleIgnoreOrphans());
   }, [dispatch]);
 
   return (
     <>
-      <SettingHorizontalFlexBox>
-        <Spacer size={5}/>
-        <div className="flex items-center gap-2">
-          <LabelBox>
-            <Label htmlFor="remember">
-              <FormattedMessage id="verbose" />
-            </Label>
-          </LabelBox>
-
-          <Checkbox
-            id="remember"
-            onChange={handleOnChange}
-            value={userOptionsStore.verbose}
-          />
-        </div>
-        <Spacer size={5}/>
-        <Button onClick={handleReset}>
-          <FormattedMessage id="reset"/>
-        </Button>
-      </SettingHorizontalFlexBox>
+      <div className="flex items-center gap-2">
+        <LabelBox>
+          <Label htmlFor="ignoreOrphans">
+            <FormattedMessage id="ignore-orphans" />
+          </Label>
+        </LabelBox>
+        <Checkbox
+          id="ignoreOrphans"
+          onChange={handleOnChange}
+          checked={userOptionsStore.ignoreOrphans}
+        />
+      </div>
       <Spacer size={5}/>
     </>
   );
 }
-
- */
 
 const DeploymentSettings: React.FC = () => {
   return (
@@ -535,7 +516,6 @@ const DeploymentSettings: React.FC = () => {
         <FormattedMessage id="deployment-settings" />
       </h5>
       <Spacer size={5}/>
-      <Verbose />
       <DatalayerHost />
       <WalletHost />
       <CertificateFolderPath />
@@ -547,6 +527,8 @@ const DeploymentSettings: React.FC = () => {
       <Web2GatewayHost />
       <MirrorUrlOverride />
       <NumFilesProcessedPerBatch />
+      <IgnoreOrphans />
+      <Verbose />
     </Card>
   );
 }

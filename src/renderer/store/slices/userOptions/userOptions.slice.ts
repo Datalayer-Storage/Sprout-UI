@@ -148,8 +148,8 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    toggleVerbose: (state, { payload }) => {
-      state.verbose = payload;
+    toggleVerbose: (state) => {
+      state.verbose = !state.verbose;
     },
 
     setNumFilesProcessedPerBatch: (state, { payload }) => {
@@ -160,8 +160,8 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    toggleIgnoreOrphans: (state, { payload }) => {
-      state.ignoreOrphans = payload;
+    toggleIgnoreOrphans: (state) => {
+      state.ignoreOrphans = !state.ignoreOrphans;
     },
   },
 });
