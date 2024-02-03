@@ -69,14 +69,30 @@ ipcMain.handle(
   },
 );
 
-ipcMain.handle('deployStore', async (event, storeId, deployDir, options = {}) => {
-  const deployment = deploy(storeId, deployDir, options);
+ipcMain.handle(
+  'deployStore',
+  async (event, storeId, deployDir, deployMode, options = {}) => {
+    if (!['replace', 'additive'].includes(deployMode)) {
+      throw new Error('Invalid deploy mode. Must be "replace" or "additive"');
+    }
 
-  deployment.on('info', (message) => {
-    event.sender.send('logMessage', message);
-  });
+    const deployment = await deploy(storeId, deployDir, deployMode, options);
 
-  deployment.on('error', (error) => {
-    event.sender.send('logMessage', error);
-  });
-});
+    deployment.on('info', (message) => {
+      const numberOfSpaces = Math.floor(Math.random() * 10);
+      const spaces = Array(numberOfSpaces + 1).join('\u00A0');
+      const modifiedMessage = message + spaces;
+
+      // Send the modified message
+      event.sender.send('logMessage', modifiedMessage);
+    });
+
+    deployment.on('error', (error) => {
+      const numberOfSpaces = Math.floor(Math.random() * 10);
+      const spaces = Array(numberOfSpaces + 1).join('\u00A0');
+      const modifiedMessage = error + spaces;
+
+      event.sender.send('logMessage', modifiedMessage);
+    });
+  },
+);

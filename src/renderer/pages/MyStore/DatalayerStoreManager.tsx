@@ -4,7 +4,6 @@ import {setStoreIdToEdit, setStoreIdToView} from "@/store/slices/myDatalayerStor
 import {useDispatch} from "react-redux";
 
 const DatalayerStoreManager: React.FC = () => {
-
   const dispatch = useDispatch();
   const [storeTableContentsLoaded, setStoreTableContentsLoaded] = useState<boolean>(false);
 

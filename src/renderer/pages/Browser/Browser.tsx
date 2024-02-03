@@ -14,14 +14,15 @@ import {
 } from '@/store/slices/browser';
 import { transformToChiaProtocol } from '@/utils/chia-router';
 import { useGetOwnedStoresQuery } from '@/api/ipc/datalayer';
-import {LoadingSpinnerCard} from "@/components";
+import { LoadingSpinnerCard } from '@/components';
+import SplashScreen from '@/assets/home.jpg';
 
 const Browser: React.FC = () => {
   const dispatch = useDispatch();
   const webviewRef = useRef<WebviewTag>(null);
   const currentPage = useSelector((state: any) => selectCurrentPage(state));
   const defaultPage = useSelector((state: any) => selectDefaultPage(state));
-  const { data: ownedStores, isLoading } = useGetOwnedStoresQuery({});
+  const { data: ownedStores } = useGetOwnedStoresQuery({});
   const fallbackStoreProvider = useSelector(
     (state: any) => state.userOptions.fallbackStoreProvider,
   );
@@ -83,25 +84,28 @@ const Browser: React.FC = () => {
     [setAddressBar, fallbackStoreProvider],
   );
 
-  const handleGotoAddress = useCallback((_?: any, url: string = addressBar) => {
-    if (webviewRef.current && url === currentPage.url) {
-      webviewRef.current.reload();
-      return;
-    }
+  const handleGotoAddress = useCallback(
+    (_?: any, url: string = addressBar) => {
+      if (webviewRef.current && url === currentPage.url) {
+        webviewRef.current.reload();
+        return;
+      }
 
-    const pageState: PageState = {
-      scrollPosition: { x: 0, y: 0 },
-      formData: {},
-    };
+      const pageState: PageState = {
+        scrollPosition: { x: 0, y: 0 },
+        formData: {},
+      };
 
-    const page: VisitPagePayload = {
-      url: url,
-      title: '',
-      pageState: pageState,
-    };
+      const page: VisitPagePayload = {
+        url: url,
+        title: '',
+        pageState: pageState,
+      };
 
-    dispatch(visitPage({ page, fallbackStoreProvider, ownedStores }));
-  }, [addressBar, currentPage, dispatch, fallbackStoreProvider, ownedStores]);
+      dispatch(visitPage({ page, fallbackStoreProvider, ownedStores }));
+    },
+    [addressBar, currentPage, dispatch, fallbackStoreProvider, ownedStores],
+  );
 
   const handleGoToPrevPage = useCallback(() => {
     dispatch(goBack());
@@ -117,8 +121,8 @@ const Browser: React.FC = () => {
     );
   }, [dispatch, defaultPage, fallbackStoreProvider, ownedStores]);
 
-  if (!currentPage || isLoading) {
-    return <LoadingSpinnerCard/>;
+  if (!currentPage) {
+    return <LoadingSpinnerCard />;
   }
 
   return (
@@ -131,14 +135,21 @@ const Browser: React.FC = () => {
         onBack={handleGoToPrevPage}
         onForward={handleGoToNextPage}
         onHome={handleGoToHome}
-        ownedStores={ownedStores?.store_ids}
       />
-      <WebView
-        ref={webviewRef}
-        onDidNavigate={handleOnDidNavigate}
-        onDidNavigateInPage={handleOnDidNavigateInPage}
-        location={currentPage.url}
-      />
+      {currentPage.url === 'browser://home' ? (
+        <img
+          src={SplashScreen}
+          alt="Chia Network"
+          style={{ width: '100%', height: 'auto' }}
+        />
+      ) : (
+        <WebView
+          ref={webviewRef}
+          onDidNavigate={handleOnDidNavigate}
+          onDidNavigateInPage={handleOnDidNavigateInPage}
+          location={currentPage.url}
+        />
+      )}
     </>
   );
 };

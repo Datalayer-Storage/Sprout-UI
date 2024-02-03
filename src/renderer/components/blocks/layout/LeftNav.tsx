@@ -55,7 +55,7 @@ const LeftNav = () => {
         <Sidebar aria-label="App Navigation">
           <ButtonContainer>
             <Button pill color="light" onClick={handleToggleLeftNav}>
-              <HiOutlineArrowLeft className={buttonArrowSize}/>
+              <HiOutlineArrowLeft className={buttonArrowSize} />
             </Button>
           </ButtonContainer>
           <Sidebar.Items>
@@ -66,15 +66,7 @@ const LeftNav = () => {
                 onClick={() => navigate(ROUTES.BROWSER)}
                 icon={HiGlobeAlt}
               >
-                <FormattedMessage id="browser"/>
-              </Sidebar.Item>
-              <Sidebar.Item
-                style={{ cursor: 'pointer' }}
-                active={isActive(ROUTES.SETTINGS)}
-                onClick={() => navigate(ROUTES.SETTINGS)}
-                icon={IoSettingsOutline}
-              >
-                <FormattedMessage id="settings"/>
+                <FormattedMessage id="browser" />
               </Sidebar.Item>
               <Sidebar.Item
                 style={{ cursor: 'pointer' }}
@@ -82,7 +74,15 @@ const LeftNav = () => {
                 onClick={() => navigate(ROUTES.MY_STORE)}
                 icon={HiArchive}
               >
-                <FormattedMessage id="my-store"/>
+                <FormattedMessage id="my-store" />
+              </Sidebar.Item>
+              <Sidebar.Item
+                style={{ cursor: 'pointer' }}
+                active={isActive(ROUTES.SETTINGS)}
+                onClick={() => navigate(ROUTES.SETTINGS)}
+                icon={IoSettingsOutline}
+              >
+                <FormattedMessage id="settings" />
               </Sidebar.Item>
             </Sidebar.ItemGroup>
           </Sidebar.Items>

@@ -54,5 +54,7 @@
   "web-2-gateway-host": "Web 2 Gateway Host",
   "mirror-url-override": "Mirror URL Override",
   "num-files-processed-per-batch": "Num Files Processed Per Batch",
-  "verbose": "Verbose"
+  "verbose": "Verbose",
+  "choose-folder": "Choose Folder",
+  "waiting-for-transactions-to-confirm": "Waiting for transactions to confirm"
 }

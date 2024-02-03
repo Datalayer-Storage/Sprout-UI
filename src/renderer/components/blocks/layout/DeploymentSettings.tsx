@@ -45,7 +45,7 @@ const DatalayerHost: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setDatalayerHost(initialState.datalayerHost));
+    dispatch(setDatalayerHost(initialState.deployOptions.datalayerHost));
   }, [dispatch]);
 
   return (
@@ -83,7 +83,7 @@ const WalletHost: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setWalletHost(initialState.walletHost));
+    dispatch(setWalletHost(initialState.deployOptions.walletHost));
   }, [dispatch]);
 
   return (
@@ -121,7 +121,11 @@ const CertificateFolderPath: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setCertificateFolderPath(initialState.certificateFolderPath));
+    dispatch(
+      setCertificateFolderPath(
+        initialState.deployOptions.certificateFolderPath,
+      ),
+    );
   }, [dispatch]);
 
   return (
@@ -159,7 +163,7 @@ const DefaultWalletId: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setDefaultWalletId(initialState.defaultWalletId));
+    dispatch(setDefaultWalletId(initialState.deployOptions.defaultWalletId));
   }, [dispatch]);
 
   return (
@@ -197,7 +201,7 @@ const DefaultFee: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setDefaultFee(initialState.defaultFee));
+    dispatch(setDefaultFee(initialState.deployOptions.defaultFee));
   }, [dispatch]);
 
   return (
@@ -235,7 +239,11 @@ const DefaultMirrorCoinAmount: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setDefaultMirrorCoinAmount(initialState.defaultMirrorCoinAmount));
+    dispatch(
+      setDefaultMirrorCoinAmount(
+        initialState.deployOptions.defaultMirrorCoinAmount,
+      ),
+    );
   }, [dispatch]);
 
   return (
@@ -273,7 +281,11 @@ const MaximumRpcPayloadSize: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setMaximumRpcPayloadSize(initialState.maximumRpcPayloadSize));
+    dispatch(
+      setMaximumRpcPayloadSize(
+        initialState.deployOptions.maximumRpcPayloadSize,
+      ),
+    );
   }, [dispatch]);
 
   return (
@@ -311,7 +323,7 @@ const Web2GatewayPort: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setWeb2GatewayPort(initialState.web2GatewayPort));
+    dispatch(setWeb2GatewayPort(initialState.deployOptions.web2GatewayPort));
   }, [dispatch]);
 
   return (
@@ -349,7 +361,7 @@ const Web2GatewayHost: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setWeb2GatewayHost(initialState.web2GatewayHost));
+    dispatch(setWeb2GatewayHost(initialState.deployOptions.web2GatewayHost));
   }, [dispatch]);
 
   return (
@@ -387,7 +399,9 @@ const MirrorUrlOverride: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setMirrorUrlOverride(initialState.mirrorUrlOverride));
+    dispatch(
+      setMirrorUrlOverride(initialState.deployOptions.mirrorUrlOverride),
+    );
   }, [dispatch]);
 
   return (
@@ -425,7 +439,7 @@ const NumFilesProcessedPerBatch: React.FC = () => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setNumFilesProcessedPerBatch(initialState.numFilesProcessedPerBatch));
+    dispatch(setNumFilesProcessedPerBatch(initialState.deployOptions.numFilesProcessedPerBatch));
   }, [dispatch]);
 
   return (

@@ -4,7 +4,7 @@ export default {
   history: [] as HistoryEntry[],
   historyIndex: -1,
   defaultPage: {
-    url: 'http://duckduckgo.com',
+    url: 'browser://home',
     title: '',
     pageState: {},
     timeStamp: '',

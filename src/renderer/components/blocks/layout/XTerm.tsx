@@ -17,19 +17,23 @@ const XTerm: React.FC<TerminalComponentProps> = ({ log }) => {
     }
 
     return () => {
-      if (terminal.current) {
-        terminal.current.dispose();
-      }
+      terminal.current?.dispose();
     };
   }, []);
 
   useEffect(() => {
-    if (terminal.current) {
-      terminal.current.writeln(log);
-    }
+    terminal.current?.writeln(log);
   }, [log]);
 
-  return <div ref={terminalRef} />;
+  return (
+    <div
+      ref={terminalRef}
+      style={{
+        width: '100%',
+        textAlign: 'left',
+      }}
+    />
+  );
 };
 
-export { XTerm};
+export { XTerm };

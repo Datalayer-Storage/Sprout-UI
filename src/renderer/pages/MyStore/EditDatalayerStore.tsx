@@ -1,74 +1,112 @@
-import { Button, Card, Label } from 'flowbite-react';
+import { Button, Card, Spinner, ToggleSwitch, Tooltip } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
-import { SelectedStoreIdCard, Spacer, XTerm } from '@/components';
-import { useCallback, useState } from 'react';
-import { selectFolderDialogue } from '@/utils/os';
-import { SelectFolderDialogResponse } from '@/vite-env';
-
+import {
+  SelectedStoreIdCard,
+  Spacer,
+  XTerm,
+  FolderSelector,
+} from '@/components';
+import { useCallback, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { deployStore } from '@/utils/os';
+const { ipcRenderer } = window.require('electron');
 
 interface ChooseFolderProps {
   selectedStoreId: string;
 }
 
-const EditDatalayerStore: React.FC<ChooseFolderProps> = (
-  { selectedStoreId }: ChooseFolderProps,
-) => {
+const EditDatalayerStore: React.FC<ChooseFolderProps> = ({
+  selectedStoreId,
+}: ChooseFolderProps) => {
   const [selectedPath, setSelectedPath] = useState<string>('');
-  const [log, setLog] = useState<string>();
+  const userOptions = useSelector((state: any) => state.userOptions);
+  const [log, setLog] = useState<string>('Waiting To Deploy...');
+  const [deployMode, setDeployMode] = useState<string>('replace');
+  const [deploying, setDeploying] = useState<boolean>(false);
 
-  const handleOpenFolder = useCallback(async () => {
-    const openFolderResponse: SelectFolderDialogResponse =
-      await selectFolderDialogue();
+  useEffect(() => {
+    const handleLogMessage = (_, message: string) => {
+      if (deploying) {
+        setLog(message);
+      }
 
-    if (openFolderResponse?.success) {
-      setSelectedPath(openFolderResponse.filePath);
-    } else if (openFolderResponse?.error) {
-      console.log('failed to open folder. Error:\n', openFolderResponse.error);
-    }
-  }, []);
+      if (message.includes('Deploy operation completed successfully.')) {
+        setDeploying(false);
+      }
+    };
+
+    ipcRenderer.on('logMessage', handleLogMessage);
+
+    // Cleanup listener when component unmounts
+    return () => {
+      ipcRenderer.removeListener('logMessage', handleLogMessage);
+    };
+  }, [deploying]);
 
   const handleDeploy = useCallback(() => {
     setLog('Deploying...');
-    const deployment = deploy(selectedStoreId, selectedPath);
-
-    deployment.on('info', (message) => {
-      setLog(message);
-    });
-
-    deployment.on('error', (error) => {
-      setLog(error);
-    });
-  }, [selectedStoreId, selectedPath]);
+    setDeploying(true);
+    deployStore(
+      selectedStoreId,
+      selectedPath,
+      deployMode,
+      userOptions.deployOptions,
+    );
+  }, [selectedStoreId, selectedPath, userOptions.deployOptions, deployMode]);
 
   return (
     <>
       <SelectedStoreIdCard storeId={selectedStoreId} />
       <Spacer size={10} />
       <Card>
-        {selectedPath ? (
-          <>
-            <Label>
-              <span>
-                <FormattedMessage id="selected-directory:-" />
-                {selectedPath}
-              </span>
-            </Label>
-            <Button onClick={handleOpenFolder}>
-              <FormattedMessage id="deploy-selected-directory-to-store" />
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button onClick={handleOpenFolder}>
-              <FormattedMessage id="select-directory-to-deploy" />
-            </Button>
-          </>
-        )}
-        <Button onClick={handleDeploy}>
-          <FormattedMessage id="deploy" />
+        <FolderSelector onSelect={setSelectedPath} />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            flexDirection: 'column',
+          }}
+        >
+          <Tooltip
+            content={
+              deployMode === 'replace'
+                ? 'Missing files in the project folder will be deleted from the store'
+                : 'New files will be upserted, but missing files in the project folder will not be deleted'
+            }
+          >
+            <ToggleSwitch
+              checked={deployMode === 'replace'}
+              label={
+                deployMode === 'replace'
+                  ? 'Deploy Mode - Replace'
+                  : 'Deploy Mode - Additive'
+              }
+              onChange={() => {
+                setDeployMode(
+                  deployMode === 'replace' ? 'additive' : 'replace',
+                );
+              }}
+            />
+          </Tooltip>
+        </div>
+        <Button
+          disabled={deploying || !selectedPath}
+          style={{ width: 150 }}
+          onClick={handleDeploy}
+        >
+          {deploying ? (
+            <div>
+              {' '}
+              <Spinner />
+            </div>
+          ) : (
+            <span style={{ textTransform: 'capitalize' }}>
+              <FormattedMessage id="deploy" />
+            </span>
+          )}
         </Button>
 
-        {log && <XTerm log={log} />}
+        <XTerm log={log} />
       </Card>
     </>
   );

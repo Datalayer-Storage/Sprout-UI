@@ -26,7 +26,6 @@ enum WorkFlowSteps {
 }
 
 const MyStore: React.FC = () => {
-
   const dispatch = useDispatch();
   const [workFlowStep, setWorkFlowStep] = useState<WorkFlowSteps>(WorkFlowSteps.DISPLAY_STORES);
   const storeIdToEdit = useSelector((state: any) => getStoreToEdit(state));
@@ -50,6 +49,7 @@ const MyStore: React.FC = () => {
   const backToMyStoresLink =
     <>
       <a href="#"
+        
          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
          onClick={() => handleBackToMyStores()}>
         <FormattedMessage id="back-to-my-stores"/>
@@ -68,24 +68,24 @@ const MyStore: React.FC = () => {
     }
     case WorkFlowSteps.EDIT_STORE: {
       return (
-        <>
+        <div style={{ textAlign: 'left', margin: 10 }}>
           {backToMyStoresLink}
-          <Spacer size={10}/>
+          <Spacer size={10} />
           <span>
-            <EditDatalayerStore selectedStoreId={storeIdToEdit}/>
+            <EditDatalayerStore selectedStoreId={storeIdToEdit} />
           </span>
-          <Spacer size={10}/>
-        </>
+          <Spacer size={10} />
+        </div>
       );
     }
     case WorkFlowSteps.VIEW_STORE: {
       return (
-        <>
+        <div style={{ textAlign: 'left', margin: 10 }}>
           {backToMyStoresLink}
           <SpacerDiv>
-            <DatalayerStoreKeysTable/>
+            <DatalayerStoreKeysTable />
           </SpacerDiv>
-        </>
+        </div>
       );
     }
   }

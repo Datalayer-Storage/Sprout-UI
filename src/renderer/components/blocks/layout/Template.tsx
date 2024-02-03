@@ -36,7 +36,7 @@ const Template = () => {
             </LeftNavAside>
             <ContentContainer id="content">
               <>
-                <div style={{ height: '100%', overflowY: 'auto' }}>
+                <div style={{ height: '100%', overflowY: 'auto', padding: 10 }}>
                   <ErrorBoundary>
                     <Outlet />
                   </ErrorBoundary>

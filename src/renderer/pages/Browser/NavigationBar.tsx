@@ -4,8 +4,6 @@ import {
   Button,
   ButtonGroup,
   TextInput,
-  Dropdown,
-  DropdownItem,
 } from 'flowbite-react';
 import styled from 'styled-components';
 import {
@@ -15,6 +13,7 @@ import {
   HiRefresh,
   HiSearch,
 } from 'react-icons/hi';
+import { OwnedStoresDropDown } from '@/components';
 
 const navButtonColor: string = 'light';
 const navButtonIconSize: string = '15pt';
@@ -87,7 +86,6 @@ interface NavigationBarProps {
   onBack: () => void;
   onForward: () => void;
   onHome: () => void;
-  ownedStores?: string[];
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = ({
@@ -97,7 +95,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
   onBack,
   onForward,
   onHome,
-  ownedStores,
   onEnterDown = noop
 }) => {
   const handleOnEnterKeyDown = useCallback(
@@ -108,10 +105,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     },
     [onEnterDown],
   );
-
-  const handleOptionClick = (option: string): void => {
-    onEnterDown(null, `chia://${option}`);
-  };
 
   return (
     <>
@@ -128,30 +121,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
           onKeyDown={handleOnEnterKeyDown}
           icon={HiSearch}
         />
-        <div
-          style={{
-            height: 60,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Dropdown label="LOCAL" disabled={Boolean(ownedStores?.length)}>
-            {ownedStores?.length || 0 > 0 ? (
-              ownedStores?.map((option, index) => (
-                <DropdownItem
-                  key={index}
-                  onClick={() => handleOptionClick(option)}
-                  style={{ padding: '0.25rem', fontSize: '0.875rem' }}
-                >
-                  {option}
-                </DropdownItem>
-              ))
-            ) : (
-              <DropdownItem disabled>No options found</DropdownItem>
-            )}
-          </Dropdown>
-        </div>
+        <OwnedStoresDropDown onSelected={onEnterDown} />
       </NavigationBarDiv>
     </>
   );
