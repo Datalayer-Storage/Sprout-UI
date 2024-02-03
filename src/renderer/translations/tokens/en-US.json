@@ -56,5 +56,6 @@
   "num-files-processed-per-batch": "Num Files Processed Per Batch",
   "verbose": "Verbose",
   "choose-folder": "Choose Folder",
-  "waiting-for-transactions-to-confirm": "Waiting for transactions to confirm"
+  "waiting-for-transactions-to-confirm": "Waiting for transactions to confirm",
+  "ignore-orphans": "Ignore Orphans"
 }

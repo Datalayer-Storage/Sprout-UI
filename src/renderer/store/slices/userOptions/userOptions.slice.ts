@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 import initialState from './userOptions.initialstate';
 
 export const userOptionsSlice = createSlice({
@@ -183,8 +183,8 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    toggleVerbose: (state, { payload }) => {
-      state.deployOptions.verbose = payload;
+    toggleVerbose: (state) => {
+      state.deployOptions.verbose = !current(state).deployOptions.verbose;
     },
 
     setNumFilesProcessedPerBatch: (state, { payload }) => {
@@ -198,8 +198,8 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    toggleIgnoreOrphans: (state, { payload }) => {
-      state.deployOptions.ignoreOrphans = payload;
+    toggleIgnoreOrphans: (state) => {
+      state.deployOptions.ignoreOrphans = !current(state).deployOptions.ignoreOrphans;
     },
   },
 });
