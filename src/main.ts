@@ -4,17 +4,13 @@ import { fileURLToPath } from 'url';
 
 // Because of weirdness with tsc you need to include the .js extension
 import { startWeb2Gateway } from './web2gateway.js';
-import { mountDatalayerRpcHandles } from './datalayer-bindings.js';
-import { mountWalletRpcHandles } from './wallet-bindings.js';
-import {mountOsHandles} from "./os-bindings.js";
+import { mountHandles } from './handles/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function createWindow() {
   startWeb2Gateway();
-  mountDatalayerRpcHandles();
-  mountWalletRpcHandles();
-  mountOsHandles();
+  mountHandles();
 
   const win = new BrowserWindow({
     width: 1100,
