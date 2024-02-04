@@ -1,26 +1,20 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { fileURLToPath } from 'url';
+
+// Because of weirdness with tsc you need to include the .js extension
 import { startWeb2Gateway } from './web2gateway.js';
 import { mountDatalayerRpcHandles } from './datalayer-bindings.js';
 import { mountWalletRpcHandles } from './wallet-bindings.js';
-import { SelectFolderDialogResponse } from '@/vite-env';
-import { deploy } from 'chia-datalayer-fs-deploy';
-//import {mountOsHandles} from "./os-bindings";
-
-//todo: remove when exporting from os-bindings.ts is working
-import { dialog } from 'electron';
+import {mountOsHandles} from "./os-bindings.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-/**
- * creates the main renderer window
- */
 function createWindow() {
   startWeb2Gateway();
   mountDatalayerRpcHandles();
   mountWalletRpcHandles();
-  //mountOsHandles();
+  mountOsHandles();
 
   const win = new BrowserWindow({
     width: 1100,
@@ -53,46 +47,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-//todo: remove when exporting from os-bindings.ts is working
-ipcMain.handle(
-  'selectFolderDialog',
-  async (): Promise<SelectFolderDialogResponse> => {
-    try {
-      const result = await dialog.showOpenDialog({
-        properties: ['openDirectory'],
-      });
-      return { filePath: result.filePaths[0], error: null, success: true };
-    } catch (error: any) {
-      return { filePath: '', error, success: false };
-    }
-  },
-);
-
-ipcMain.handle(
-  'deployStore',
-  async (event, storeId, deployDir, deployMode, options = {}) => {
-    if (!['replace', 'additive'].includes(deployMode)) {
-      throw new Error('Invalid deploy mode. Must be "replace" or "additive"');
-    }
-
-    const deployment = await deploy(storeId, deployDir, deployMode, options);
-
-    deployment.on('info', (message) => {
-      const numberOfSpaces = Math.floor(Math.random() * 10);
-      const spaces = Array(numberOfSpaces + 1).join('\u00A0');
-      const modifiedMessage = message + spaces;
-
-      // Send the modified message
-      event.sender.send('logMessage', modifiedMessage);
-    });
-
-    deployment.on('error', (error) => {
-      const numberOfSpaces = Math.floor(Math.random() * 10);
-      const spaces = Array(numberOfSpaces + 1).join('\u00A0');
-      const modifiedMessage = error + spaces;
-
-      event.sender.send('logMessage', modifiedMessage);
-    });
-  },
-);

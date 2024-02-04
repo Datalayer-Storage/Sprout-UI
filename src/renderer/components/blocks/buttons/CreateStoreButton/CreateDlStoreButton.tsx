@@ -10,7 +10,7 @@ import {
   WaitingForWalletSync,
 } from '@/components';
 import {
-  useSyncStatusMutation,
+  useGetSyncStatusImmediateMutation,
   useGetWalletBalanceMutation,
 } from '@/api/ipc/wallet';
 import { ipcApi } from '@/api/ipc';
@@ -34,7 +34,7 @@ const CreateDlStoreButton: React.FC = () => {
   const [triggerCreateDataStore, { isLoading: isStoreCreating }] =
     useCreateDataStoreMutation();
   const [triggerGetSyncStatus, { isLoading: isSyncStatusLoading }] =
-    useSyncStatusMutation();
+    useGetSyncStatusImmediateMutation();
   const [triggerGetWalletBalance, { isLoading: isBalanceLoading }] =
     useGetWalletBalanceMutation();
 
