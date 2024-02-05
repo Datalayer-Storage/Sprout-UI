@@ -29,6 +29,10 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/**/*.json", "src/preload.js"],
+  "include": [
+    "src/**/*",
+    "src/**/*.json",
+    "src/preload.js"
+  ],
   "types": ["src/**/*.d.ts"]
 }

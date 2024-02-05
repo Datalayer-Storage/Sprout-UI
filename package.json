@@ -1,19 +1,26 @@
 {
   "name": "sprout-ui",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "main": "build/main.js",
+  "engineStrict": true,
+  "author": "Michael Taylor",
+  "description": "Sprout UI",
+  "engines": {
+    "node": ">=18.16.0"
+  },
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && cp src/preload.js build/preload.js && vite build",
     "electron": "tsc && cp src/preload.js build/preload.js && cross-env NODE_ENV=development electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "electron:package:mac": "npm run build && electron-builder -m -c.extraMetadata.main=build/electron.js",
-    "electron:package:win": "npm run build && electron-builder -w -c.extraMetadata.main=build/electron.js",
-    "electron:package:linux": "npm run build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+    "clean": "rm -rf dist && rm -rf build",
+    "electron:package:mac": "npm run clean && npm run build && electron-builder -m -c.extraMetadata.main=build/main.js",
+    "electron:package:win": "npm run clean && npm run build && electron-builder -w -c.extraMetadata.main=build/main.js",
+    "electron:package:linux": "npm run clean && npm run build && electron-builder -l -c.extraMetadata.main=build/main.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.1.0",
@@ -27,6 +34,7 @@
     "chia-wallet": "^1.0.15",
     "chia-web2-gateway": "^1.0.10",
     "components": "^0.1.0",
+    "express": "^4.18.2",
     "flowbite": "^2.2.1",
     "flowbite-react": "^0.7.2",
     "flowbite-typography": "^1.0.3",
@@ -39,6 +47,7 @@
     "react-webview": "^0.1.0",
     "redux-persist": "^6.0.0",
     "styled-components": "^6.1.8",
+    "uuid": "^9.0.1",
     "xterm": "^5.3.0"
   },
   "devDependencies": {
@@ -52,6 +61,7 @@
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
     "electron": "^28.2.1",
+    "electron-builder": "^24.9.1",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
@@ -60,5 +70,37 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
     "wait-on": "^7.2.0"
+  },
+  "build": {
+    "appId": "org.dlaas.sprout-ui",
+    "productName": "sprout-ui",
+    "files": [
+      "build/renderer/**/*",
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "public"
+    },
+    "mac": {
+      "target": {
+        "target": "dmg",
+        "arch": [
+          "universal"
+        ]
+      },
+      "publish": null
+    },
+    "win": {
+      "target": "nsis",
+      "publish": null
+    },
+    "linux": {
+      "target": "deb",
+      "description": "Sprout UI.",
+      "maintainer": "Michael Taylor",
+      "vendor": "https://datalayer.storage/",
+      "publish": null
+    }
   }
 }

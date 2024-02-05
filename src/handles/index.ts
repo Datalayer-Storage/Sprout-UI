@@ -6,6 +6,7 @@ import { mountWalletRpcHandles } from './wallet.handles.js';
 import { mountOsHandles } from './os.handles.js';
 import { mountDatSeederHandles } from './dat-seeder.handles.js';
 import { mountFsDeployHandles } from './chia-datalayer-fs-deploy.handles.js';
+import { mountLicenseHandles } from './license.handles.js';
 
 export const mountHandles = () => {
   mountDatalayerRpcHandles();
@@ -13,4 +14,5 @@ export const mountHandles = () => {
   mountOsHandles();
   mountDatSeederHandles();
   mountFsDeployHandles();
+  mountLicenseHandles();
 }
