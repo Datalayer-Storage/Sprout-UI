@@ -12,13 +12,6 @@ import Wallet, {
   // @ts-ignore
 } from 'chia-wallet';
 
-/**
- * defines the chia wallet electron IPC remote proceure calls for renderer processes to
- * invoke the chia wallet API's
- *
- * these calls are not accessible in the renderer process without being declared
- * in {@link src/preload.js}
- */
 export async function mountWalletRpcHandles() {
   const wallet = new Wallet();
 

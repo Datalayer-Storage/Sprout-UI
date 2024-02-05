@@ -26,13 +26,6 @@ import DataLayer, {
   // @ts-ignore
 } from 'chia-datalayer';
 
-/**
- * defines the chia datalayer electron IPC remote proceure calls for renderer processes to
- * invoke the chia wallet API's
- *
- * these calls are not accessible in the renderer process without being declared
- * in {@link src/preload.js}
- */
 export async function mountDatalayerRpcHandles() {
   const datalayer = new DataLayer({verbose: true});
 
