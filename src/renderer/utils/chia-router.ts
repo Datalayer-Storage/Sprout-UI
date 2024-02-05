@@ -1,4 +1,5 @@
 function extractSegment(url) {
+  console.log('extractSegment', url);
   // Adjusted regex to make trailing slash optional and handle potential extra slashes
   const regex = /chia:\/\/([^\/]+)[\/]?/;
   const match = url.match(regex);
@@ -11,7 +12,7 @@ export const transformToHttpProtocal = (
   ownedStores: any,
 ): string => {
   const storeId = extractSegment(url);
-  const isOwned = ownedStores?.store_ids.includes(storeId);
+  const isOwned = ownedStores?.store_ids?.includes(storeId);
   const httpPrefix = isOwned
     ? 'http://localhost:41411/'
     : `${fallbackStoreProvider}/`;

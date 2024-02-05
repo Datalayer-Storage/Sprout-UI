@@ -1,25 +1,29 @@
-import React, {useEffect} from "react";
-import {Button, Table, TableBody} from "flowbite-react";
-import {FormattedMessage} from "react-intl";
-import {useGetKeysQuery} from "@/api/ipc/datalayer";
-import {LoadingSpinnerCard, SelectedStoreIdCard, Spacer} from "@/components";
-import {useSelector} from "react-redux";
-import {getStoreToView} from "@/store/slices/myDatalayerStore";
-import {visitPage} from "@/store/slices/browser";
-import {GetKeysParams} from "chia-datalayer";
-import {decodeHex} from '@/utils/hex-utils';
-import {useNavigate} from "react-router-dom";
+import React, { useEffect } from 'react';
+import { Button, Table, TableBody } from 'flowbite-react';
+import { FormattedMessage } from 'react-intl';
+import { useGetKeysQuery } from '@/api/ipc/datalayer';
+import { LoadingSpinnerCard, SelectedStoreIdCard, Spacer } from '@/components';
+import { useSelector, useDispatch } from 'react-redux';
+import { getStoreToView } from '@/store/slices/myDatalayerStore';
+import { visitPage } from '@/store/slices/browser';
+import { GetKeysParams } from 'chia-datalayer';
+import { decodeHex } from '@/utils/hex-utils';
+import { useNavigate } from 'react-router-dom';
+import { useGetOwnedStoresQuery } from '@/api/ipc/datalayer';
 
 interface DatalayerStoreKeysTableProps {
   handleViewKeyData?: (storeId: string) => void;
   setTableContentsLoaded?: (loaded: boolean) => void;
 }
 
-const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: DatalayerStoreKeysTableProps) => {
-
+const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
+  props: DatalayerStoreKeysTableProps,
+) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const storeID: string = useSelector((state)=> getStoreToView(state));
-  const getKeysParams: GetKeysParams = {id: storeID}
+  const storeID: string = useSelector((state) => getStoreToView(state));
+  const getKeysParams: GetKeysParams = { id: storeID };
+  const { data: ownedStores } = useGetOwnedStoresQuery({});
   const fallbackStoreProvider = useSelector(
     (state: any) => state.userOptions.fallbackStoreProvider,
   );
@@ -29,31 +33,42 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: 
   const {
     handleViewKeyData = (key: string) => {
       if (storeID) {
-        const dataPage: string = "chia://" + storeID + "/" + key
-        console.log("chia url: ", dataPage);
-        visitPage({page: dataPage, fallbackStoreProvider});
-        navigate("/browser");
-        console.log("viewing store in browser");
+        const dataPage: string = 'chia://' + storeID + '/' + key;
+        console.log('chia url: ', dataPage);
+        dispatch(
+          visitPage({
+            page: { url: dataPage },
+            fallbackStoreProvider,
+            ownedStores,
+          }),
+        );
+        navigate('/browser');
+        console.log('viewing store in browser');
       }
     },
-    setTableContentsLoaded = () => {}
+    setTableContentsLoaded = () => {},
   } = props;
 
   useEffect(() => {
-    if (isLoading || error){
+    if (isLoading || error) {
       setTableContentsLoaded(false);
-    }else{
+    } else {
       setTableContentsLoaded(true);
     }
   }, [setTableContentsLoaded, isLoading, error]);
 
   const tableContents = data?.keys?.map((storeKey: string, index: number) => (
-    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800" key={index}>
+    <Table.Row
+      className="bg-white dark:border-gray-700 dark:bg-gray-800"
+      key={index}
+    >
       <Table.Cell key={index}>
-        <a href="#"
-           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-           onClick={() => handleViewKeyData(decodeHex(data.keys[index]))}>
-           {decodeHex(storeKey)}
+        <a
+          href="#"
+          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+          onClick={() => handleViewKeyData(decodeHex(data.keys[index]))}
+        >
+          {decodeHex(storeKey)}
         </a>
       </Table.Cell>
     </Table.Row>
@@ -62,47 +77,48 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (props: 
   const noDataInStore = (
     <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
       <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        <FormattedMessage id={"no-data-in-store"}/>
+        <FormattedMessage id={'no-data-in-store'} />
       </Table.Cell>
     </Table.Row>
   );
 
-  if (isLoading){
-    return (
-      <LoadingSpinnerCard/>
-    );
-  }else if (error){
+  if (isLoading) {
+    return <LoadingSpinnerCard />;
+  } else if (error) {
     return (
       <>
         <Button onClick={refetch}>
-          <FormattedMessage id={"unable-to-load-stores-click-to-retry"}/>
+          <FormattedMessage id={'unable-to-load-stores-click-to-retry'} />
         </Button>
       </>
     );
-  }else{
+  } else {
     return (
       <>
-        <SelectedStoreIdCard storeId={storeID}/>
-        <Spacer size={10}/>
+        <SelectedStoreIdCard storeId={storeID} />
+        <Spacer size={10} />
         <div className="overflow-x-auto">
           <Table>
             <Table.Head>
               <Table.HeadCell>
-                <FormattedMessage id="key"/>
+                <FormattedMessage id="key" />
               </Table.HeadCell>
               <Table.HeadCell>
-                <span className="sr-only"/>
+                <span className="sr-only" />
               </Table.HeadCell>
             </Table.Head>
             <TableBody className="divide-y">
-              { (!data?.keys?.length) ? <>{noDataInStore}</> : <>{tableContents}</>}
+              {!data?.keys?.length ? (
+                <>{noDataInStore}</>
+              ) : (
+                <>{tableContents}</>
+              )}
             </TableBody>
           </Table>
         </div>
       </>
-
     );
   }
-}
+};
 
 export { DatalayerStoreKeysTable };

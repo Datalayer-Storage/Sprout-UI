@@ -25,7 +25,7 @@ export const browserSlice = createSlice({
         timeStamp: timestamp,
       };
 
-      const currentPage = state.history[state.historyIndex];
+      const currentPage = current(state).history[state.historyIndex];
 
       if (!isEqual(currentPage, newEntry)) {        
         const history = current(state).history;
