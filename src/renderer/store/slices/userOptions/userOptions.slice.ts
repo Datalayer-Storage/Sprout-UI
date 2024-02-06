@@ -1,6 +1,6 @@
-import { createSlice} from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import initialState from './userOptions.initialstate';
-import {DeploymentSettingPayload} from "@/components";
+import {DeploymentSettingPayload} from "@/vite-env";
 
 export const userOptionsSlice = createSlice({
   name: 'userOptions',

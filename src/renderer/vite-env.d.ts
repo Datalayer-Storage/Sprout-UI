@@ -14,3 +14,19 @@ export interface SelectFolderDialogResponse {
   error: Error | null;
   success: boolean;
 }
+
+interface SettingToggleProps {
+  labelTranslationId: string;
+  settingKey: string;
+}
+
+interface SettingTextInputProps {
+  labelTranslationId: string;
+  settingKey: string;
+  inputType: string;
+}
+
+interface DeploymentSettingPayload {
+  settingKey: string;
+  value: string | number | boolean | null;
+}

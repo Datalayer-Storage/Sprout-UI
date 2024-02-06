@@ -20,9 +20,9 @@ const Settings: React.FC = () => {
       <div style={{ width: '100%' }}>
         <Web2GatewaySettings />
         <Spacer size={10} />
-        <AccessSettings />
-        <Spacer size={10} />
         <DeploymentSettings />
+        <Spacer size={10} />
+        <AccessSettings />
       </div>
     </SettingsDiv>
   );

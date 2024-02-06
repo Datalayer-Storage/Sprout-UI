@@ -1,8 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
 import {useCallback, useEffect, useRef} from "react";
 import {getAccessKey, getAccessSecret, setAccessKey, setAccessSecret} from "@/store/slices/userOptions";
-import {Button, Card, TextInput} from "flowbite-react";
+import {Button, Card, Label, TextInput} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
+import {Spacer} from "@/components";
 
 const AccessSettings: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,12 +36,13 @@ const AccessSettings: React.FC = () => {
   return (
     <Card>
       <h5>
-        <FormattedMessage id="data-layer-storage-settings" />
+        <FormattedMessage id="access-settings" />
       </h5>
+      <Spacer size={5}/>
       <div>
-        <div className="mb-2 block">
+        <Label htmlFor={"accessKey"}>
           <FormattedMessage id="access-key" />
-        </div>
+        </Label>
         <TextInput
           id="acessKey"
           type="text"
@@ -48,17 +50,17 @@ const AccessSettings: React.FC = () => {
           required
         />
       </div>
-      <div>
-        <div className="mb-2 block">
+      <Label>
+        <Label htmlFor={"accessSecret"}>
           <FormattedMessage id="access-secret" />
-        </div>
+        </Label>
         <TextInput
           id="accessSecret"
           type="text"
           ref={accessSecretTextInput}
           required
         />
-      </div>
+      </Label>
       <div style={{ height: '20px' }} />
       <Button type="submit" onClick={onSave} style={{ width: '100%' }}>
         <FormattedMessage id="save" />
