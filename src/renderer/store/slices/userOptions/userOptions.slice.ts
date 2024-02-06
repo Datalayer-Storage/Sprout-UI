@@ -1,5 +1,6 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 import initialState from './userOptions.initialstate';
+import {DeploymentSettingPayload} from "@/vite-env";
 
 export const userOptionsSlice = createSlice({
   name: 'userOptions',
@@ -45,186 +46,60 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    setDatalayerHost: (state, { payload }) => {
-      if (typeof payload === 'string' && payload) {
-        state.deployOptions.datalayerHost = payload;
-      } else {
-        console.error(
-          'Invalid datalayerHost. Host must be a string and must not be null',
-        );
-      }
-    },
+    setDeploymentSetting: (state, { payload }) => {
 
-    setWalletHost: (state, { payload }) => {
-      if (typeof payload === 'string' && payload) {
-        state.deployOptions.walletHost = payload;
-      } else {
-        console.error(
-          'Invalid walletHost. Host must be a string and must not be null',
-        );
-      }
-    },
+      const { settingKey, value }: DeploymentSettingPayload = payload;
 
-    setCertificateFolderPath: (state, { payload }) => {
-      if (typeof payload === 'string' && payload) {
-        state.deployOptions.certificateFolderPath = payload;
-      } else {
-        console.error(
-          'Invalid certificateFolderPath. Path must be a string and must not be null',
-        );
-      }
-    },
+      if (settingKey) {
+        if (typeof value === 'boolean' && (typeof initialState.deployOptions[settingKey] === 'boolean')) {
+          state.deployOptions[settingKey] = value;
+        } else if (typeof value === 'string') {
 
-    setDefaultWalletId: (state, { payload }) => {
-      try {
-        const value = parseInt(payload);
-        if (Number.isNaN(value)) {
-          state.deployOptions.defaultWalletId = null;
+          const numericValue: number = parseInt(value);
+          const valueIsNaN: boolean = Number.isNaN(numericValue);
+          if (valueIsNaN && (typeof initialState.deployOptions[settingKey] === 'number')) {
+            state.deployOptions[settingKey] = null;
+          } else if (typeof initialState.deployOptions[settingKey] === 'number') {
+            state.deployOptions[settingKey] = numericValue;
+          } else if (settingKey === 'mirrorUrlOverride' && value === ''){
+            // special case for mirror url override
+            state.deployOptions.mirrorUrlOverride = null;
+          } else {
+            state.deployOptions[settingKey] = value;
+          }
+
+        } else if (typeof value === 'number') {
+          if (Number.isNaN(value)) {
+            state.deployOptions[settingKey] = null;
+          } else {
+            state.deployOptions[settingKey] = value;
+          }
+        } else if (value === null &&
+            typeof initialState.deployOptions[settingKey] === 'number' ||
+            settingKey === 'mirrorUrlOverride') {
+          state.deployOptions[settingKey] = null;
         } else {
-          state.deployOptions.defaultWalletId = value;
+          console.error(
+            'Invalid deployment setting value for key:', settingKey,
+            '. value must be of type', typeof initialState.deployOptions[settingKey]
+          );
         }
-      } catch (error) {
+      } else{
         console.error(
-          'Invalid defaultWalletId. ID must be a number and must not be null',
-          error,
+          'Invalid deployment setting key:', settingKey
         );
       }
-    },
-
-    setDefaultFee: (state, { payload }) => {
-      try {
-        const value = parseInt(payload);
-        if (Number.isNaN(value)) {
-          state.deployOptions.defaultFee = null;
-        } else {
-          state.deployOptions.defaultFee = value;
-        }
-      } catch (error) {
-        console.error(
-          'Invalid defaultFee. Fee must be a number and must not be null',
-          error,
-        );
-      }
-    },
-
-    setDefaultMirrorCoinAmount: (state, { payload }) => {
-      try {
-        const value = parseInt(payload);
-        if (Number.isNaN(value)) {
-          state.deployOptions.defaultMirrorCoinAmount = null;
-        } else {
-          state.deployOptions.defaultMirrorCoinAmount = value;
-        }
-      } catch (error) {
-        console.error(
-          'Invalid defaultMirrorCoinAmount. Amount must be a number and must not be null',
-          error,
-        );
-      }
-    },
-
-    setMaximumRpcPayloadSize: (state, { payload }) => {
-      try {
-        const value = parseInt(payload);
-        if (Number.isNaN(value)) {
-          state.deployOptions.maximumRpcPayloadSize = null;
-        } else {
-          state.deployOptions.maximumRpcPayloadSize = value;
-        }
-      } catch (error) {
-        console.error(
-          'Invalid maximumRpcPayloadSize. Size must be a number and must not be null',
-          error,
-        );
-      }
-    },
-
-    setWeb2GatewayPort: (state, { payload }) => {
-      try {
-        const value: number = parseInt(payload);
-        if (Number.isNaN(value)) {
-          state.deployOptions.web2GatewayPort = null;
-        } else {
-          state.deployOptions.web2GatewayPort = value;
-        }
-      } catch (error) {
-        console.error(
-          'Invalid web2GatewayPort. Port must be a number and must not be null',
-          error,
-        );
-      }
-    },
-
-    setWeb2GatewayHost: (state, { payload }) => {
-      if (typeof payload === 'string' && payload) {
-        state.deployOptions.web2GatewayHost = payload;
-      } else {
-        console.error(
-          'Invalid web2GatewayHost. Host must be a string and must not be null',
-        );
-      }
-    },
-
-    toggleForceIp4Mirror: (state, { payload }) => {
-      if (typeof payload === 'boolean' && payload) {
-        state.deployOptions.forceIp4Mirror = payload; // No change needed
-      } else {
-        console.error(
-          'Invalid forceIp4Mirror. Value must be a boolean and must not be null',
-        );
-      }
-    },
-
-    setMirrorUrlOverride: (state, { payload }) => {
-      if (payload === '') {
-        state.deployOptions.mirrorUrlOverride = null;
-      } else {
-        state.deployOptions.mirrorUrlOverride = payload;
-      }
-    },
-
-    toggleVerbose: (state) => {
-      state.deployOptions.verbose = !current(state).deployOptions.verbose;
-    },
-
-    setNumFilesProcessedPerBatch: (state, { payload }) => {
-      try {
-        state.deployOptions.numFilesProcessedPerBatch = parseInt(payload);
-      } catch (error) {
-        console.error(
-          'Invalid numFilesProcessedPerBatch. Value must not be null',
-          error,
-        );
-      }
-    },
-
-    toggleIgnoreOrphans: (state) => {
-      state.deployOptions.ignoreOrphans = !current(state).deployOptions.ignoreOrphans;
     },
   },
 });
 
 export const {
   toggleTheme,
+  setStoreLabel,
   setAccessKey,
   setAccessSecret,
   setFallbackStoreProvider,
-  setDatalayerHost,
-  setWalletHost,
-  setCertificateFolderPath,
-  setDefaultWalletId,
-  setDefaultFee,
-  setDefaultMirrorCoinAmount,
-  setMaximumRpcPayloadSize,
-  setWeb2GatewayPort,
-  setWeb2GatewayHost,
-  toggleForceIp4Mirror,
-  setMirrorUrlOverride,
-  toggleVerbose,
-  setNumFilesProcessedPerBatch,
-  toggleIgnoreOrphans,
-  setStoreLabel,
-  setProjectPath,
+  setDeploymentSetting,
 } = userOptionsSlice.actions;
 
 export default userOptionsSlice.reducer;
