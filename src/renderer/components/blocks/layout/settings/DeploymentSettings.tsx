@@ -51,7 +51,7 @@ const DatalayerHost: React.FC = () => {
   const handleReset = useCallback(() => {
     const payload: DeploymentSettingPayload = {
       settingKey: 'datalayerHost',
-      value: initialState.deployOptions.datalayerHost,
+      value: initialState.deployOptions['datalayerHost']
     }
     dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
@@ -253,7 +253,7 @@ const DefaultFee: React.FC = () => {
         <TextInput
           id="defualtFee"
           type="number"
-          value={deployOptions.defaultFee}
+          value={deployOptions.defaultFee || ''}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -299,7 +299,7 @@ const DefaultMirrorCoinAmount: React.FC = () => {
         <TextInput
           id="defaultMirrorCoinAmount"
           type="number"
-          value={deployOptions.defaultMirrorCoinAmount}
+          value={deployOptions.defaultMirrorCoinAmount || ''}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -454,7 +454,7 @@ const Web2GatewayHost: React.FC = () => {
 const MirrorUrlOverride: React.FC = () => {
 
   const dispatch = useDispatch();
-  const mirrorUrlOverride = useSelector((state: any) => state.userOptions.deployOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
     const payload: DeploymentSettingPayload = {
@@ -482,8 +482,8 @@ const MirrorUrlOverride: React.FC = () => {
         </LabelBox>
         <TextInput
           id="mirrorUrlOverride"
-          type="number"
-          value={mirrorUrlOverride || ''}
+          type="text"
+          value={deployOptions.mirrorUrlOverride || ''}
           onChange={handleOnChange}
           style={textInputStyle}
           required
