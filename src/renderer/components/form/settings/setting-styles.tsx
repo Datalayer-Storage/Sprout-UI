@@ -20,7 +20,7 @@ export const LabelBox = styled('div')`
 
 export const textInputStyle = {
   maxWidth: '100%',
-  width: '500px',
+  width: '400px',
   marginLeft: '10px',
   marginRight: '10px',
 }

@@ -20,7 +20,7 @@ const Web2GateWaySettingInput: React.FC<SettingTextInputProps> = (props) => {
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setFallbackStoreProvider[initialState.fallbackStoreProvider]);
+    dispatch(setFallbackStoreProvider(initialState.fallbackStoreProvider));
   }, [dispatch]);
 
   return (

@@ -24,7 +24,7 @@ const DeploymentOptionToggle: React.FC<SettingToggleProps> = (props) => {
 
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-center gap-2">
         <LabelBox>
           <Label htmlFor={settingKey}>
             <FormattedMessage id={labelTranslationId} />
