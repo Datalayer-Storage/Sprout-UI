@@ -1,11 +1,6 @@
 import {useDispatch, useSelector} from "react-redux";
 import React, {useCallback} from "react";
-import {
-  setCertificateFolderPath,
-  setDatalayerHost, setDefaultFee, setDefaultMirrorCoinAmount,
-  setDefaultWalletId, setMaximumRpcPayloadSize, setMirrorUrlOverride, setNumFilesProcessedPerBatch,
-  setWalletHost, setWeb2GatewayHost, setWeb2GatewayPort, toggleIgnoreOrphans, toggleVerbose
-} from "@/store/slices/userOptions";
+import {setDeploymentSetting} from "@/store/slices/userOptions";
 import initialState from "@/store/slices/userOptions/userOptions.initialstate";
 import {Button, Card, Checkbox, Label, TextInput} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
@@ -35,17 +30,30 @@ const textInputStyle = {
   marginRight: '10px',
 }
 
+interface DeploymentSettingPayload {
+  settingKey: string;
+  value: string | number | boolean | null;
+}
+
 const DatalayerHost: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-    dispatch(setDatalayerHost(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'datalayerHost',
+      value: event.target.value,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setDatalayerHost(initialState.deployOptions.datalayerHost));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'datalayerHost',
+      value: initialState.deployOptions.datalayerHost,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -59,7 +67,7 @@ const DatalayerHost: React.FC = () => {
         <TextInput
           id="datalayerHost"
           type="text"
-          value={userOptionsStore.datalayerHost}
+          value={deployOptions.datalayerHost}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -76,14 +84,22 @@ const DatalayerHost: React.FC = () => {
 const WalletHost: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions)  ;
 
   const handleOnChange = useCallback((event) => {
-    dispatch(setWalletHost(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'walletHost',
+      value: event.target.value,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setWalletHost(initialState.deployOptions.walletHost));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'walletHost',
+      value: initialState.deployOptions.walletHost,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -97,7 +113,7 @@ const WalletHost: React.FC = () => {
         <TextInput
           id="walletHost"
           type="text"
-          value={userOptionsStore.walletHost}
+          value={deployOptions.walletHost}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -114,17 +130,23 @@ const WalletHost: React.FC = () => {
 const CertificateFolderPath: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-    dispatch(setCertificateFolderPath(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'certificateFolderPath',
+      value: event.target.value,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'certificateFolderPath',
+      value: initialState.deployOptions.certificateFolderPath,
+    }
     dispatch(
-      setCertificateFolderPath(
-        initialState.deployOptions.certificateFolderPath,
-      ),
+      setDeploymentSetting(payload)
     );
   }, [dispatch]);
 
@@ -139,7 +161,7 @@ const CertificateFolderPath: React.FC = () => {
         <TextInput
           id="certificateFolderPath"
           type="text"
-          value={userOptionsStore.certificateFolderPath}
+          value={deployOptions.certificateFolderPath}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -156,14 +178,22 @@ const CertificateFolderPath: React.FC = () => {
 const DefaultWalletId: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-    dispatch(setDefaultWalletId(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'defaultWalletId',
+      value: event.target.value,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setDefaultWalletId(initialState.deployOptions.defaultWalletId));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'defaultWalletId',
+      value: initialState.deployOptions.defaultWalletId,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -177,7 +207,7 @@ const DefaultWalletId: React.FC = () => {
         <TextInput
           id="defaultWalletId"
           type="number"
-          value={userOptionsStore.defaultWalletId}
+          value={deployOptions.defaultWalletId || ''}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -194,14 +224,22 @@ const DefaultWalletId: React.FC = () => {
 const DefaultFee: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-      dispatch(setDefaultFee(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'defaultFee',
+      value: event.target.value,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setDefaultFee(initialState.deployOptions.defaultFee));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'defaultFee',
+      value: initialState.deployOptions.defaultFee,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -215,7 +253,7 @@ const DefaultFee: React.FC = () => {
         <TextInput
           id="defualtFee"
           type="number"
-          value={userOptionsStore.defaultFee}
+          value={deployOptions.defaultFee}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -232,18 +270,22 @@ const DefaultFee: React.FC = () => {
 const DefaultMirrorCoinAmount: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-      dispatch(setDefaultMirrorCoinAmount(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'defaultMirrorCoinAmount',
+      value: event.target.value
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(
-      setDefaultMirrorCoinAmount(
-        initialState.deployOptions.defaultMirrorCoinAmount,
-      ),
-    );
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'defaultMirrorCoinAmount',
+      value: initialState.deployOptions.defaultMirrorCoinAmount,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -257,7 +299,7 @@ const DefaultMirrorCoinAmount: React.FC = () => {
         <TextInput
           id="defaultMirrorCoinAmount"
           type="number"
-          value={userOptionsStore.defaultMirrorCoinAmount}
+          value={deployOptions.defaultMirrorCoinAmount}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -274,18 +316,22 @@ const DefaultMirrorCoinAmount: React.FC = () => {
 const MaximumRpcPayloadSize: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-      dispatch(setMaximumRpcPayloadSize(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'maximumRpcPayloadSize',
+      value: event.target.value
+    }
+      dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(
-      setMaximumRpcPayloadSize(
-        initialState.deployOptions.maximumRpcPayloadSize,
-      ),
-    );
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'maximumRpcPayloadSize',
+      value: initialState.deployOptions.maximumRpcPayloadSize,
+    }
+    dispatch(setDeploymentSetting(payload),);
   }, [dispatch]);
 
   return (
@@ -299,7 +345,7 @@ const MaximumRpcPayloadSize: React.FC = () => {
         <TextInput
           id="maximumRpcPayloadSize"
           type="number"
-          value={userOptionsStore.maximumRpcPayloadSize || ''}
+          value={deployOptions.maximumRpcPayloadSize || ''}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -316,14 +362,22 @@ const MaximumRpcPayloadSize: React.FC = () => {
 const Web2GatewayPort: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptions = useSelector((state: any) => state.userOptions);
+  const userOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-      dispatch(setWeb2GatewayPort(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'web2GatewayPort',
+      value: event.target.value
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setWeb2GatewayPort(initialState.deployOptions.web2GatewayPort));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'web2GatewayPort',
+      value: initialState.deployOptions.web2GatewayPort,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -354,14 +408,22 @@ const Web2GatewayPort: React.FC = () => {
 const Web2GatewayHost: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-      dispatch(setWeb2GatewayHost(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'web2GatewayHost',
+      value: event.target.value
+    }
+      dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setWeb2GatewayHost(initialState.deployOptions.web2GatewayHost));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'web2GatewayHost',
+      value: initialState.deployOptions.web2GatewayHost,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -375,7 +437,7 @@ const Web2GatewayHost: React.FC = () => {
         <TextInput
           id="web2GatewayHost"
           type="text"
-          value={userOptionsStore.web2GatewayHost}
+          value={deployOptions.web2GatewayHost}
           onChange={handleOnChange}
           style={textInputStyle}
           required
@@ -392,16 +454,22 @@ const Web2GatewayHost: React.FC = () => {
 const MirrorUrlOverride: React.FC = () => {
 
   const dispatch = useDispatch();
-  const mirrorUrlOverride = useSelector((state: any) => state.userOptions);
+  const mirrorUrlOverride = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-    dispatch(setMirrorUrlOverride(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'mirrorUrlOverride',
+      value: event.target.value
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(
-      setMirrorUrlOverride(initialState.deployOptions.mirrorUrlOverride),
-    );
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'mirrorUrlOverride',
+      value: initialState.deployOptions.mirrorUrlOverride,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -432,14 +500,22 @@ const MirrorUrlOverride: React.FC = () => {
 const NumFilesProcessedPerBatch: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptions = useSelector((state: any) => state.userOptions);
+  const userOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback((event) => {
-      dispatch(setNumFilesProcessedPerBatch(event.target.value));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'numFilesProcessedPerBatch',
+      value: event.target.value
+    }
+      dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   const handleReset = useCallback(() => {
-    dispatch(setNumFilesProcessedPerBatch(initialState.deployOptions.numFilesProcessedPerBatch));
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'numFilesProcessedPerBatch',
+      value: initialState.deployOptions.numFilesProcessedPerBatch,
+    }
+    dispatch(setDeploymentSetting(payload));
   }, [dispatch]);
 
   return (
@@ -470,11 +546,15 @@ const NumFilesProcessedPerBatch: React.FC = () => {
 const Verbose: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback(() => {
-    dispatch(toggleVerbose());
-  }, [dispatch]);
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'verbose',
+      value: !deployOptions.verbose
+    }
+    dispatch(setDeploymentSetting(payload));
+  }, [dispatch, deployOptions.verbose]);
 
   return (
     <>
@@ -487,7 +567,7 @@ const Verbose: React.FC = () => {
         <Checkbox
           id="verbose"
           onChange={handleOnChange}
-          checked={userOptionsStore.verbose}
+          checked={deployOptions.verbose}
         />
       </div>
       <Spacer size={5}/>
@@ -498,11 +578,15 @@ const Verbose: React.FC = () => {
 const IgnoreOrphans: React.FC = () => {
 
   const dispatch = useDispatch();
-  const userOptionsStore = useSelector((state: any) => state.userOptions);
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const handleOnChange = useCallback(() => {
-    dispatch(toggleIgnoreOrphans());
-  }, [dispatch]);
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'ignoreOrphans',
+      value: !deployOptions.ignoreOrphans
+    }
+    dispatch(setDeploymentSetting(payload));
+  }, [dispatch, deployOptions.ignoreOrphans]);
 
   return (
     <>
@@ -515,7 +599,39 @@ const IgnoreOrphans: React.FC = () => {
         <Checkbox
           id="ignoreOrphans"
           onChange={handleOnChange}
-          checked={userOptionsStore.ignoreOrphans}
+          checked={deployOptions.ignoreOrphans}
+        />
+      </div>
+      <Spacer size={5}/>
+    </>
+  );
+}
+
+const ForceIp4Mirror: React.FC = () => {
+
+  const dispatch = useDispatch();
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
+
+  const handleOnChange = useCallback(() => {
+    const payload: DeploymentSettingPayload = {
+      settingKey: 'forceIp4Mirror',
+      value: !deployOptions.forceIp4Mirror
+    }
+    dispatch(setDeploymentSetting(payload));
+  }, [dispatch, deployOptions.forceIp4Mirror]);
+
+  return (
+    <>
+      <div className="flex items-center gap-2">
+        <LabelBox>
+          <Label htmlFor="forceIp4Mirror">
+            <FormattedMessage id="force-ip4-mirror" />
+          </Label>
+        </LabelBox>
+        <Checkbox
+          id="forceIp4Mirror"
+          onChange={handleOnChange}
+          checked={deployOptions.forceIp4Mirror}
         />
       </div>
       <Spacer size={5}/>
@@ -541,10 +657,12 @@ const DeploymentSettings: React.FC = () => {
       <Web2GatewayHost />
       <MirrorUrlOverride />
       <NumFilesProcessedPerBatch />
+      <ForceIp4Mirror />
       <IgnoreOrphans />
       <Verbose />
     </Card>
   );
 }
 
+export type { DeploymentSettingPayload };
 export { DeploymentSettings };

@@ -1,5 +1,6 @@
 import { createSlice, current } from '@reduxjs/toolkit';
 import initialState from './userOptions.initialstate';
+import {DeploymentSettingPayload} from "@/components";
 
 export const userOptionsSlice = createSlice({
   name: 'userOptions',
@@ -45,19 +46,59 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    setDatalayerHost: (state, { payload }) => {
-      if (typeof payload === 'string' && payload) {
-        state.deployOptions.datalayerHost = payload;
-      } else {
+    setDeploymentSetting: (state, { payload }) => {
+
+      const { settingKey, value }: DeploymentSettingPayload = payload;
+
+      if (settingKey){
+        if (typeof value === 'boolean' && (typeof settingKey === typeof state.deployOptions[settingKey])) {
+          state.deployOptions[settingKey] = value;
+        }else if (typeof value === 'string') {
+
+          const numericValue: number = parseInt(value);
+          const valueIsNaN: boolean = Number.isNaN(numericValue);
+          console.log("numericValue:", numericValue, 'valueIsNaN:', valueIsNaN,
+            'type of setting:', typeof initialState.deployOptions.defaultWalletId);
+
+          if (valueIsNaN && (typeof initialState.deployOptions[settingKey] === 'number')) {
+            state.deployOptions[settingKey] = null;
+          }else if (valueIsNaN && (typeof initialState.deployOptions[settingKey] === 'string')){
+            state.deployOptions[settingKey] = value;
+          } else if (typeof initialState.deployOptions[settingKey] === 'number'){
+            state.deployOptions[settingKey] = value;
+          } else {
+            console.error(
+              'Invalid deployment setting value:', value, '\nfor key:', settingKey
+            );
+          }
+        }else if (typeof value === 'number') {
+          if (Number.isNaN(value)){
+            state.deployOptions[settingKey] = null;
+          }else{
+            state.deployOptions[settingKey] = value;
+          }
+        } else if (value === null && typeof initialState.deployOptions[settingKey] === 'number'){
+          state.deployOptions[settingKey] = null;
+        }else{
+          console.error(
+            'Invalid deployment setting value type must be string, number, or null. got type:',  typeof value
+          );
+        }
+      }else if (settingKey === 'MirrorUrlOverride' && value === ''){
+        // special case for mirror url override
+        state.deployOptions.mirrorUrlOverride = null;
+      }else{
         console.error(
-          'Invalid datalayerHost. Host must be a string and must not be null',
+          'Invalid deployment setting key:', settingKey
         );
       }
     },
 
     setWalletHost: (state, { payload }) => {
       if (typeof payload === 'string' && payload) {
+        console.log('setting wallethost:', payload);
         state.deployOptions.walletHost = payload;
+        console.log('wallethost now:', state.deployOptions.walletHost);
       } else {
         console.error(
           'Invalid walletHost. Host must be a string and must not be null',
@@ -206,25 +247,11 @@ export const userOptionsSlice = createSlice({
 
 export const {
   toggleTheme,
+  setStoreLabel,
   setAccessKey,
   setAccessSecret,
   setFallbackStoreProvider,
-  setDatalayerHost,
-  setWalletHost,
-  setCertificateFolderPath,
-  setDefaultWalletId,
-  setDefaultFee,
-  setDefaultMirrorCoinAmount,
-  setMaximumRpcPayloadSize,
-  setWeb2GatewayPort,
-  setWeb2GatewayHost,
-  toggleForceIp4Mirror,
-  setMirrorUrlOverride,
-  toggleVerbose,
-  setNumFilesProcessedPerBatch,
-  toggleIgnoreOrphans,
-  setStoreLabel,
-  setProjectPath,
+  setDeploymentSetting,
 } = userOptionsSlice.actions;
 
 export default userOptionsSlice.reducer;

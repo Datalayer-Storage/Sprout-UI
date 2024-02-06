@@ -57,5 +57,6 @@
   "verbose": "Verbose",
   "choose-folder": "Choose Folder",
   "waiting-for-transactions-to-confirm": "Waiting for transactions to confirm",
-  "ignore-orphans": "Ignore Orphans"
+  "ignore-orphans": "Ignore Orphans",
+  "force-ip4-mirror": "Force IP4 Mirror"
 }
