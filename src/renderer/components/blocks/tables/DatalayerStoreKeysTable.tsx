@@ -7,14 +7,15 @@ import { LoadingSpinnerCard, SelectedStoreIdCard, Spacer } from '@/components';
 import { GetKeysParams } from 'chia-datalayer';
 import { decodeHex } from '@/utils/hex-utils';
 import {useLocation} from "react-router-dom";
+import _ from "lodash";
 
 interface DatalayerStoreKeysTableProps {
-  handleViewKeyData?: (storeId: string) => void;
+  onViewKeyData?: (storeId: string) => void;
   setTableContentsLoaded?: (loaded: boolean) => void;
 }
 
 const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
-  { handleViewKeyData, setTableContentsLoaded}: DatalayerStoreKeysTableProps,
+  { onViewKeyData = _.noop, setTableContentsLoaded}: DatalayerStoreKeysTableProps,
 ) => {
 
   const passedState = useLocation().state;
@@ -47,9 +48,7 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
         <a
           href="#"
           className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-          onClick={handleViewKeyData?
-            () => handleViewKeyData(decodeHex(data.keys[index])) : () => {}
-          }
+          onClick={() => onViewKeyData(decodeHex(data.keys[index]))}
         >
           {decodeHex(storeKey)}
         </a>
