@@ -32,7 +32,7 @@ const ViewStore: React.FC = () => {
   }, [ownedStores, fallbackStoreProvider, navigate, dispatch]);
 
   return (
-    <DatalayerStoreKeysTable handleViewKeyData={handleViewKeyData}/>
+    <DatalayerStoreKeysTable onViewKeyData={handleViewKeyData}/>
   );
 }
 
