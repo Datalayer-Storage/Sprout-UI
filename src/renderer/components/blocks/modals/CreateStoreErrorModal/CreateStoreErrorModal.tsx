@@ -9,9 +9,8 @@ interface CreateStoreErrorModalProps {
   errorMessage?: string;
 }
 
-const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (props: CreateStoreErrorModalProps) => {
-
-  const { showModal, setShowModal, errorMessage} = props;
+const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (
+  { showModal, setShowModal, errorMessage}: CreateStoreErrorModalProps) => {
 
   return (
     <Modal show={showModal} onClose={() => setShowModal(false)}>

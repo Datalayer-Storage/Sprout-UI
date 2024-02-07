@@ -12,9 +12,8 @@ import {
 } from "@/components";
 import {DeploymentSettingPayload, SettingTextInputProps} from "@/vite-env";
 
-const DeployOptionInput: React.FC<SettingTextInputProps> = (props) => {
-
-  const { labelTranslationId, settingKey, inputType } = props;
+const DeployOptionInput: React.FC<SettingTextInputProps> = (
+  { labelTranslationId, settingKey, inputType }) => {
 
   const dispatch = useDispatch();
   const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);

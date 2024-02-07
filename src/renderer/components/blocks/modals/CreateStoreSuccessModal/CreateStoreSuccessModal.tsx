@@ -7,9 +7,8 @@ interface CreateStoreSuccessModalProps {
   setShowModal: (showModal: boolean) => void;
 }
 
-const CreatStoreSuccessModal: React.FC<CreateStoreSuccessModalProps> = (props: CreateStoreSuccessModalProps) => {
-
-  const { showModal, setShowModal } = props;
+const CreatStoreSuccessModal: React.FC<CreateStoreSuccessModalProps> = (
+  {showModal, setShowModal}: CreateStoreSuccessModalProps) => {
 
   return (
     <Modal show={showModal} onClose={() => setShowModal(false)}>

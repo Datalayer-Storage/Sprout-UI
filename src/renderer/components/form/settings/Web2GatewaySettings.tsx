@@ -8,9 +8,8 @@ import {SettingTextInputProps} from "@/vite-env";
 import {LabelBox, SettingHorizontalFlexBox, Spacer, textInputStyle} from "@/components";
 
 //todo: make this component generic. Specific to fallbackStoreProvider currently
-const Web2GateWaySettingInput: React.FC<SettingTextInputProps> = (props) => {
-
-  const { labelTranslationId, settingKey, inputType } = props;
+const Web2GateWaySettingInput: React.FC<SettingTextInputProps> = (
+  { labelTranslationId, settingKey, inputType }: SettingTextInputProps) => {
 
   const dispatch = useDispatch();
   const userOptionsSlice = useSelector((state: any) => state.userOptions);

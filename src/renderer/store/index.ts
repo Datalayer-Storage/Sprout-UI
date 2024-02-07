@@ -16,7 +16,7 @@ import {
   persistStore,
 } from 'redux-persist';
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
-import {browserReducer, myDatalayerStoreReducer} from './slices';
+import {browserReducer} from './slices';
 
 const persistUserOptionsConfig = {
   key: 'userOptions',
@@ -32,7 +32,6 @@ const store = configureStore({
     userOptions: persistReducer(persistUserOptionsConfig, userOptionsReducer),
     [ipcApi.reducerPath]: ipcApi.reducer,
     browser: browserReducer,
-    myDatalayerStore: myDatalayerStoreReducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

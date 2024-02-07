@@ -4,25 +4,18 @@ import { FormattedMessage } from 'react-intl';
 import { useGetOwnedStoresQuery } from '@/api/ipc/datalayer';
 import { LoadingSpinnerCard, Spacer } from '@/components';
 import { useSelector } from 'react-redux';
+import {Link} from "react-router-dom";
+import ROUTES from '@/routes/route-constants'
 
 interface OwnedStoreSelectionTableProps {
-  handleEditStore?: (storeId: string) => void;
-  handleViewStore?: (storeId: string) => void;
   setTableContentsLoaded?: (loaded: boolean) => void;
 }
 
 const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
-  props: OwnedStoreSelectionTableProps,
+  {setTableContentsLoaded}: OwnedStoreSelectionTableProps
 ) => {
   const userOptions = useSelector((state: any) => state.userOptions);
   const { data, isLoading, error, refetch } = useGetOwnedStoresQuery({});
-
-  /** defines default functions for optional props */
-  const {
-    handleEditStore = () => {},
-    handleViewStore = () => {},
-    setTableContentsLoaded = () => {},
-  } = props;
 
   const [numStores, setNumStores] = useState<number>(0);
 
@@ -35,9 +28,9 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
   }, [data]);
 
   useEffect(() => {
-    if (isLoading || error) {
+    if ((isLoading || error) && setTableContentsLoaded) {
       setTableContentsLoaded(false);
-    } else {
+    } else if (setTableContentsLoaded) {
       setTableContentsLoaded(true);
     }
   }, [setTableContentsLoaded, isLoading, error]);
@@ -51,44 +44,37 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white truncate ...">
           {userOptions.storeLabels?.[storeId] || storeId}
         </Table.Cell>
-
-        {props?.handleEditStore && (
-          <>
-            <Table.Cell key={index}>
-              <a
-                href="#"
-                className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                onClick={() => handleEditStore(data.store_ids[index])}
-              >
-                <FormattedMessage id={'edit'} />
-              </a>
-            </Table.Cell>
-          </>
-        )}
-        {props?.handleViewStore && (
-          <>
-            <Table.Cell key={index}>
-              <a
-                href="#"
-                className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                onClick={() => handleViewStore(data.store_ids[index])}
-              >
-                <FormattedMessage id={'view'} />
-              </a>
-            </Table.Cell>
-          </>
-        )}
+          <Table.Cell>
+            <Link
+              to={ROUTES.EDIT_STORE}
+              className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+              state={{storeId: data.store_ids[index]}}
+            >
+              <FormattedMessage id={'edit'} />
+            </Link>
+          </Table.Cell>
+          <Table.Cell>
+            <Link
+              to={ROUTES.VIEW_STORE}
+              className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+              state={{storeId: data.store_ids[index]}}
+            >
+              <FormattedMessage id={'view'} />
+            </Link>
+          </Table.Cell>
       </Table.Row>
     ),
   );
 
-  const noStoresFound = (
-    <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-        <FormattedMessage id={'no-stores-found'} />
-      </Table.Cell>
-    </Table.Row>
-  );
+  const NoStoresFound: React.FC = () => {
+    return(
+      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
+        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+          <FormattedMessage id={'no-stores-found'} />
+        </Table.Cell>
+      </Table.Row>
+    );
+  }
 
   if (isLoading) {
     return <LoadingSpinnerCard />;
@@ -117,7 +103,7 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
           </Table.Head>
           <TableBody className="divide-y">
             {!data?.store_ids?.length ? (
-              <>{noStoresFound}</>
+              <NoStoresFound/>
             ) : (
               <>{tableContents}</>
             )}

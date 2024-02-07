@@ -32,7 +32,9 @@ const SelectedStoreIdCard: React.FC<SelectedStoreIdCardProps> = ({
         <FormattedMessage id="store-id" />:
         <span style={{ marginLeft: 5 }}>{storeId}</span>
       </div>
-      <Label htmlFor="store-id">Label</Label>
+      <Label htmlFor="store-id">
+        <FormattedMessage id={"label"}/>
+      </Label>
       <TextInput onChange={handleStoreLabelChange} value={label || ''} />
     </Card>
   );

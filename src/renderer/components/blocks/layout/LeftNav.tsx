@@ -5,9 +5,8 @@ import {
   HiOutlineArrowLeft, 
   HiOutlineArrowRight,
   HiGlobeAlt,
-  HiArchive
 } from 'react-icons/hi';
-import { FaRegRectangleList, FaFilePen } from 'react-icons/fa6'
+import { FaRegRectangleList } from 'react-icons/fa6'
 import { IoSettingsOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
@@ -15,7 +14,6 @@ import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import ROUTES from '@/routes/route-constants';
 import { useNavigate } from 'react-router-dom';
-import {FLUSH} from "redux-persist";
 
 const ButtonContainer = styled('div')`
   display: flex;
@@ -88,30 +86,6 @@ const LeftNav = () => {
               (leftNavExpanded) ?
                 <FormattedMessage id="my-stores" /> :
                 <FaRegRectangleList/>
-            }
-          </Sidebar.Item>
-          <Sidebar.Item
-            style={{ cursor: 'pointer' }}
-            active={isActive(ROUTES.EDIT_STORE)}
-            onClick={() => navigate(ROUTES.EDIT_STORE)}
-            icon={leftNavExpanded && FaFilePen}
-          >
-            {
-              (leftNavExpanded) ?
-                <FormattedMessage id="edit-store" /> :
-                <FaFilePen/>
-            }
-          </Sidebar.Item>
-          <Sidebar.Item
-            style={{ cursor: 'pointer' }}
-            active={isActive(ROUTES.VIEW_STORE)}
-            onClick={() => navigate(ROUTES.VIEW_STORE)}
-            icon={leftNavExpanded && HiArchive}
-          >
-            {
-              (leftNavExpanded) ?
-                <FormattedMessage id="view-store" /> :
-                <HiArchive/>
             }
           </Sidebar.Item>
           <Sidebar.Item

@@ -7,9 +7,8 @@ interface WalletNotSyncedErrorModalProps {
   setShowModal: (showModal: boolean) => void;
 }
 
-const WalletNotSyncedErrorModal: React.FC<WalletNotSyncedErrorModalProps> = (props: WalletNotSyncedErrorModalProps) => {
-
-  const { showModal, setShowModal } = props;
+const WalletNotSyncedErrorModal: React.FC<WalletNotSyncedErrorModalProps> = (
+  { showModal, setShowModal }: WalletNotSyncedErrorModalProps) => {
 
   return (
     <Modal show={showModal} onClose={() => setShowModal(false)}>

@@ -7,9 +7,8 @@ interface WalletBalanceInsufficientModalProps {
   setShowModal: (showModal: boolean) => void;
 }
 
-const WalletBalanceInsufficientErrorModal: React.FC<WalletBalanceInsufficientModalProps> = (props: WalletBalanceInsufficientModalProps) => {
-
-  const { showModal, setShowModal } = props;
+const WalletBalanceInsufficientErrorModal: React.FC<WalletBalanceInsufficientModalProps> = (
+  { showModal, setShowModal }: WalletBalanceInsufficientModalProps) => {
 
   return (
     <Modal show={showModal} onClose={() => setShowModal(false)}>

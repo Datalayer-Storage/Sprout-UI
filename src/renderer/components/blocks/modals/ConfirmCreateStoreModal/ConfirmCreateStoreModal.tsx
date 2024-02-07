@@ -8,9 +8,8 @@ interface CreateStoreSuccessModalProps {
   onCreateStore: () => void;
 }
 
-const ConfirmCreateStoreModal: React.FC<CreateStoreSuccessModalProps> = (props: CreateStoreSuccessModalProps) => {
-
-  const { showModal, setShowModal, onCreateStore } = props;
+const ConfirmCreateStoreModal: React.FC<CreateStoreSuccessModalProps> = (
+  {showModal, setShowModal, onCreateStore}: CreateStoreSuccessModalProps) => {
 
   const accept = () => {
     setShowModal(false);

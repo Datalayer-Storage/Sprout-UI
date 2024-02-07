@@ -7,9 +7,8 @@ import {Spacer} from "@/components";
 import {DeploymentSettingPayload, SettingToggleProps} from "@/vite-env";
 import {LabelBox} from "@/components";
 
-const DeploymentOptionToggle: React.FC<SettingToggleProps> = (props) => {
-
-  const { labelTranslationId, settingKey } = props;
+const DeploymentOptionToggle: React.FC<SettingToggleProps> = (
+  { labelTranslationId, settingKey }) => {
 
   const dispatch = useDispatch();
   const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
