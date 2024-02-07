@@ -72,6 +72,14 @@ const AppNavigator: React.FC = () => {
               element={<Pages.MyStore/>}
             />
             <Route
+              path={ROUTES.EDIT_STORE}
+              element={<Pages.EditStore/>}
+            />
+            <Route
+              path={ROUTES.VIEW_STORE}
+              element={<Pages.ViewStore/>}
+            />
+            <Route
               path="*"
               element={<Navigate replace to={ROUTES.BROWSER} />}
             />

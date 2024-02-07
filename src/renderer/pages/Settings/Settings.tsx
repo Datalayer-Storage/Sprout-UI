@@ -5,6 +5,7 @@ import {
   AccessSettings,
   Web2GatewaySettings
 } from '@/components';
+import React from "react";
 
 const SettingsDiv = styled('div')`
   height: 100%;

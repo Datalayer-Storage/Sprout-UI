@@ -1,6 +1,8 @@
 export default {
-  MY_STORE: '/MyStore',
+  MY_STORE: '/MyStores',
   BROWSER: '/Browser',
   SETTINGS: '/Settings',
-  LICENSE: '/License'
+  LICENSE: '/License',
+  EDIT_STORE: '/EditStore',
+  VIEW_STORE: '/ViewStore',
 };

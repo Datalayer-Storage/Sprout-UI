@@ -1,5 +1,5 @@
 {
-  "my-store": "My Store",
+  "my-stores": "My Stores",
   "browser": "Browser",
   "settings": "Settings",
   "access-settings": "Access Settings",
@@ -9,6 +9,8 @@
   "edit": "Edit",
   "error": "Error",
   "view": "View",
+  "view-store": "View Store",
+  "edit-store": "Edit Store",
   "back-to-my-stores": "Back to My Stores",
   "key": "Key",
   "success": "Success",
