@@ -3,10 +3,10 @@ import { Button, Spinner } from 'flowbite-react';
 import { useCreateDataStoreMutation } from '@/api/ipc/datalayer';
 import { FormattedMessage } from 'react-intl';
 import {
-  WalletNotSyncedErrorModal,
+  WalletNotSyncedError,
   WalletBalanceInsufficientErrorModal,
   CreatStoreSuccessModal,
-  CreateStoreErrorModal,
+  CreateStoreError,
   WaitingForWalletSync,
 } from '@/components';
 import {
@@ -14,7 +14,7 @@ import {
   useGetWalletBalanceMutation,
 } from '@/api/ipc/wallet';
 import { ipcApi } from '@/api/ipc';
-import { ConfirmCreateStoreModal } from '@/components/blocks/modals/ConfirmCreateStoreModal';
+import { ConfirmCreateStore } from '@/components';
 import { useDispatch } from 'react-redux';
 
 const CreateDlStoreButton: React.FC = () => {
@@ -84,7 +84,7 @@ const CreateDlStoreButton: React.FC = () => {
             </span>
           )}
         </Button>
-        <ConfirmCreateStoreModal
+        <ConfirmCreateStore
           showModal={showConfirmStoreCreationModal}
           setShowModal={setShowConfirmStoreCreationModal}
           onCreateStore={handleCreateDataStore}
@@ -93,12 +93,12 @@ const CreateDlStoreButton: React.FC = () => {
           showModal={showSuccessModal}
           setShowModal={setShowSuccessModal}
         />
-        <CreateStoreErrorModal
+        <CreateStoreError
           showModal={showErrorModal}
           setShowModal={setShowErrorModal}
           errorMessage={createStoreErrorMsg}
         />
-        <WalletNotSyncedErrorModal
+        <WalletNotSyncedError
           showModal={showNotSyncedModal}
           setShowModal={setShowNotSyncedModal}
         />

@@ -1,12 +1,14 @@
-import React, {useCallback, useEffect} from "react";
-import {DatalayerStoreKeysTable, SelectedStoreIdCard, Spacer} from "@/components";
+import React, {useCallback, useEffect, useState} from "react";
+import {DatalayerStoreKeysTable, InvalidStoreIdError, SelectedStoreIdCard, Spacer} from "@/components";
 import {visitPage} from "@/store/slices/browser";
 import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
+import ROUTES from "@/routes/route-constants";
 
 const ViewStore: React.FC = () => {
 
+  const [showInvalidStoreIdModal, setShowInvalidStoreIdModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data: ownedStores } = useGetOwnedStoresQuery({});
@@ -18,14 +20,17 @@ const ViewStore: React.FC = () => {
 
   useEffect(() => {
     if (!storeId){
-      console.error('ViewStore received invalid storeId:', storeId);
+      setShowInvalidStoreIdModal(true);
     }
   }, [storeId]);
+
+  const handleModalClose = useCallback(() => {
+    navigate(ROUTES.MY_STORES);
+  }, [navigate]);
 
   const handleViewKeyData = useCallback((key: string) => {
     if (storeId) {
       const dataPage: string = 'chia://' + storeId + '/' + key;
-      console.log('chia url: ', dataPage);
       dispatch(
         visitPage({
           page: { url: dataPage },
@@ -34,7 +39,6 @@ const ViewStore: React.FC = () => {
         }),
       );
       navigate('/browser');
-      console.log('viewing store in browser');
     }
   }, [storeId, dispatch, fallbackStoreProvider, ownedStores, navigate]);
 
@@ -43,8 +47,12 @@ const ViewStore: React.FC = () => {
       <SelectedStoreIdCard storeId={storeId} />
       <Spacer size={10} />
       <DatalayerStoreKeysTable onViewKeyData={handleViewKeyData}/>
+      <InvalidStoreIdError
+        showModal={showInvalidStoreIdModal}
+        setShowModal={setShowInvalidStoreIdModal}
+        onClose={handleModalClose}
+      />
     </>
-
   );
 }
 

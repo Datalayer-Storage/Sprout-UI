@@ -8,7 +8,7 @@ interface CreateStoreSuccessModalProps {
   onCreateStore: () => void;
 }
 
-const ConfirmCreateStoreModal: React.FC<CreateStoreSuccessModalProps> = (
+const ConfirmCreateStore: React.FC<CreateStoreSuccessModalProps> = (
   {showModal, setShowModal, onCreateStore}: CreateStoreSuccessModalProps) => {
 
   const accept = () => {
@@ -47,4 +47,4 @@ const ConfirmCreateStoreModal: React.FC<CreateStoreSuccessModalProps> = (
   );
 }
 
-export { ConfirmCreateStoreModal }
+export { ConfirmCreateStore }
