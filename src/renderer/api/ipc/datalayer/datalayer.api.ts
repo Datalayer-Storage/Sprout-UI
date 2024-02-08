@@ -145,5 +145,5 @@ export const {
   useCreateDataStoreMutation,
   useGetOwnedStoresQuery,
   useGetKeysQuery,
-  useGetValueQuery,
+  useGetSubscriptionsQuery
 } = datalayerApi;

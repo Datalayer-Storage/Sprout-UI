@@ -5,4 +5,5 @@ export default {
   LICENSE: '/License',
   EDIT_STORE: '/EditStore',
   VIEW_STORE: '/ViewStore',
+  SUBSCRIPTIONS: 'Subscriptions'
 };

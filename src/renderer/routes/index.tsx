@@ -80,6 +80,10 @@ const AppNavigator: React.FC = () => {
               element={<Pages.ViewStore/>}
             />
             <Route
+              path={ROUTES.SUBSCRIPTIONS}
+              element={<Pages.Subscriptions/>}
+            />
+            <Route
               path="*"
               element={<Navigate replace to={ROUTES.BROWSER} />}
             />

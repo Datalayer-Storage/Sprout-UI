@@ -1,9 +1,9 @@
-import React, {useCallback} from "react";
-import {DatalayerStoreKeysTable} from "@/components";
+import React, {useCallback, useEffect} from "react";
+import {DatalayerStoreKeysTable, SelectedStoreIdCard, Spacer} from "@/components";
 import {visitPage} from "@/store/slices/browser";
 import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
 import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 const ViewStore: React.FC = () => {
 
@@ -13,11 +13,18 @@ const ViewStore: React.FC = () => {
   const fallbackStoreProvider = useSelector(
     (state: any) => state.userOptions.fallbackStoreProvider
   );
-  const storeID: string = 'todo'
+  const location = useLocation();
+  const storeId = location.state?.storeId;
+
+  useEffect(() => {
+    if (!storeId){
+      console.error('EditStore received invalid storeId:', storeId);
+    }
+  }, [storeId]);
 
   const handleViewKeyData = useCallback((key: string) => {
-    if (storeID) {
-      const dataPage: string = 'chia://' + storeID + '/' + key;
+    if (storeId) {
+      const dataPage: string = 'chia://' + storeId + '/' + key;
       console.log('chia url: ', dataPage);
       dispatch(
         visitPage({
@@ -29,10 +36,14 @@ const ViewStore: React.FC = () => {
       navigate('/browser');
       console.log('viewing store in browser');
     }
-  }, [ownedStores, fallbackStoreProvider, navigate, dispatch]);
+  }, [storeId, dispatch, fallbackStoreProvider, ownedStores, navigate]);
 
   return (
-    <DatalayerStoreKeysTable onViewKeyData={handleViewKeyData}/>
+    <>
+      <SelectedStoreIdCard storeId={storeId} />
+      <Spacer size={10} />
+      <DatalayerStoreKeysTable onViewKeyData={handleViewKeyData}/>
+    </>
   );
 }
 

@@ -5,9 +5,11 @@ import {
   HiOutlineArrowLeft, 
   HiOutlineArrowRight,
   HiGlobeAlt,
+  HiOutlineInboxIn,
+  HiOutlineCollection
 } from 'react-icons/hi';
-import { FaRegRectangleList } from 'react-icons/fa6'
-import { IoSettingsOutline } from 'react-icons/io5';
+//import { IoSettingsOutline } from 'react-icons/io5';
+import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -80,24 +82,36 @@ const LeftNav = () => {
             style={{ cursor: 'pointer',  }}
             active={isActive(ROUTES.MY_STORE)}
             onClick={() => navigate(ROUTES.MY_STORE)}
-            icon={leftNavExpanded && FaRegRectangleList}
+            icon={leftNavExpanded && HiOutlineCollection}
           >
             {
               (leftNavExpanded) ?
                 <FormattedMessage id="my-stores" /> :
-                <FaRegRectangleList/>
+                <HiOutlineCollection/>
+            }
+          </Sidebar.Item>
+          <Sidebar.Item
+            style={{ cursor: 'pointer',  }}
+            active={isActive(ROUTES.SUBSCRIPTIONS)}
+            onClick={() => navigate(ROUTES.SUBSCRIPTIONS)}
+            icon={leftNavExpanded && HiOutlineInboxIn}
+          >
+            {
+              (leftNavExpanded) ?
+                <FormattedMessage id="Subscriptions" /> :
+                <HiOutlineInboxIn/>
             }
           </Sidebar.Item>
           <Sidebar.Item
             style={{ cursor: 'pointer' }}
             active={isActive(ROUTES.SETTINGS)}
             onClick={() => navigate(ROUTES.SETTINGS)}
-            icon={leftNavExpanded && IoSettingsOutline}
+            icon={leftNavExpanded && LuSettings}
           >
             {
               (leftNavExpanded) ?
                 <FormattedMessage id="settings" /> :
-                <IoSettingsOutline/>
+                <LuSettings/>
             }
           </Sidebar.Item>
         </Sidebar.ItemGroup>
