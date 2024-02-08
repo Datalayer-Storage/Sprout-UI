@@ -9,7 +9,7 @@ interface CreateStoreErrorModalProps {
   errorMessage?: string;
 }
 
-const CreateStoreError: React.FC<CreateStoreErrorModalProps> = (
+const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (
   { showModal, setShowModal, errorMessage}: CreateStoreErrorModalProps) => {
 
   return (
@@ -32,4 +32,4 @@ const CreateStoreError: React.FC<CreateStoreErrorModalProps> = (
   );
 }
 
-export { CreateStoreError };
+export { CreateStoreErrorModal };

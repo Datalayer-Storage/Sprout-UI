@@ -8,7 +8,7 @@ interface InvalidStoreIdErrorModalProps {
   onClose?: () => void;
 }
 
-const InvalidStoreIdError: React.FC<InvalidStoreIdErrorModalProps> = (
+const InvalidStoreIdErrorModal: React.FC<InvalidStoreIdErrorModalProps> = (
   { showModal, setShowModal, onClose = () => {} }: InvalidStoreIdErrorModalProps) => {
 
   const handleClose = useCallback(() => {
@@ -34,4 +34,4 @@ const InvalidStoreIdError: React.FC<InvalidStoreIdErrorModalProps> = (
   );
 }
 
-export { InvalidStoreIdError };
+export { InvalidStoreIdErrorModal };

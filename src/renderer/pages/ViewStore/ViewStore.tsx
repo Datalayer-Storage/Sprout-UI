@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from "react";
-import {DatalayerStoreKeysTable, InvalidStoreIdError, SelectedStoreIdCard, Spacer} from "@/components";
+import {DatalayerStoreKeysTable, InvalidStoreIdErrorModal, SelectedStoreIdCard, Spacer} from "@/components";
 import {visitPage} from "@/store/slices/browser";
 import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
 import {useDispatch, useSelector} from "react-redux";
@@ -47,7 +47,7 @@ const ViewStore: React.FC = () => {
       <SelectedStoreIdCard storeId={storeId} />
       <Spacer size={10} />
       <DatalayerStoreKeysTable onViewKeyData={handleViewKeyData}/>
-      <InvalidStoreIdError
+      <InvalidStoreIdErrorModal
         showModal={showInvalidStoreIdModal}
         setShowModal={setShowInvalidStoreIdModal}
         onClose={handleModalClose}
