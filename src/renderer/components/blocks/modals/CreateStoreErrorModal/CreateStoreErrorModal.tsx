@@ -21,9 +21,11 @@ const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <span>
-              <FormattedMessage id="error-occured-while-creating-store-ensure-chia-services-are-running-and-accessible"/>
+              <FormattedMessage id="error-occurred-while-creating-store"/>
               <Spacer size={5}/>
-              {errorMessage}
+              {
+                errorMessage || <FormattedMessage id="ensure-chia-services-are-running-and-accessible."/>
+              }
             </span>
           </p>
         </div>

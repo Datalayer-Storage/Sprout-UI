@@ -5,7 +5,7 @@ import { ipcApi } from "@/api";
  */
 import {
   Config as WalletConfig,
-  GetPrivateKeyResponse,
+  GetPrivateKeyRequest,
   SpendableCoinRequest,
   CoinRecordsByNameRequest,
   PushTxRequest,
@@ -39,7 +39,7 @@ const walletApi = ipcApi.injectEndpoints({
       query: () => ({ channel: 'walletGetCoinRecords', args: {} }),
     }),
 
-    getPrivateKey: builder.query<GetPrivateKeyResponse, any>({
+    getPrivateKey: builder.query<GetPrivateKeyRequest, any>({
       query: () => ({ channel: 'getPrivateKey', args: {} }),
     }),
 

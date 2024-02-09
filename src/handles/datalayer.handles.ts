@@ -26,8 +26,14 @@ import DataLayer, {
   // @ts-ignore
 } from 'chia-datalayer';
 
+import Wallet, {
+  SpendableCoinRequest,
+  SendTransactionRequest
+} from 'chia-wallet';
+
 export async function mountDatalayerRpcHandles() {
   const datalayer = new DataLayer({verbose: true});
+  const wallet = new Wallet({verbose: true})
 
   ipcMain.handle('datalayerGetConfig', () => {
     return datalayer.getConfig();
@@ -53,8 +59,36 @@ export async function mountDatalayerRpcHandles() {
 
   ipcMain.handle(
     'datalayerCreateDataStore',
-    (_, createDataStoreParams: CreateDataStoreParams, options: Options) => {
-      return datalayer.createDataStore(createDataStoreParams, options);
+    async (_, createDataStoreParams: CreateDataStoreParams, options: Options) => {
+
+      const networkInfo = await wallet.getNetworkInfo({});
+      const network = networkInfo.network_name;
+
+      const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
+      const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest);
+      const usageFee: number = 0.01;
+
+      // ensure that the user has at least 2 coins: 1 for the usage fee and 1 for the datastore fee
+      if (spendableCoins.confirmed_records.length > 1) {
+
+        if (network === 'mainnet'){
+          const request: SendTransactionRequest = {
+            wallet_id: 1,
+            address: 'xch1djjwc54ax3gz4n5fthkt5q4nhgerlx8e5n92435gr3scdsxrcf6sh55z5w',
+            amount: usageFee
+          };
+          await wallet.sendTransaction(request);
+        }
+
+        setTimeout(() => {
+          return datalayer.createDataStore(createDataStoreParams, options);
+        }, 1000);
+      } else {
+        return {
+          success: false,
+          message: "Insufficient coins. Please ensure that you have at least 2 spendable coins in your wallet."
+        }
+      }
     },
   );
 

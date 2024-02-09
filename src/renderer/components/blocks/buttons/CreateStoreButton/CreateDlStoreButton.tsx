@@ -31,7 +31,7 @@ const CreateDlStoreButton: React.FC = () => {
 
   const [createStoreErrorMsg, setCreateStoreErrorMsg] = useState('');
 
-  const [triggerCreateDataStore, { isLoading: isStoreCreating }] =
+  const [triggerCreateDataStore, { isLoading: isStoreCreating}] =
     useCreateDataStoreMutation();
   const [triggerGetSyncStatus, { isLoading: isSyncStatusLoading }] =
     useGetSyncStatusImmediateMutation();
@@ -70,7 +70,7 @@ const CreateDlStoreButton: React.FC = () => {
       setShowErrorModal(true);
       setCreateStoreErrorMsg(createDataStoreResponse?.error);
     }
-  }, [triggerCreateDataStore, triggerGetSyncStatus, triggerGetWalletBalance]);
+  }, [triggerCreateDataStore, triggerGetSyncStatus, triggerGetWalletBalance, dispatch]);
 
   return (
     <>
