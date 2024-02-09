@@ -4,23 +4,27 @@ import { useCreateDataStoreMutation } from '@/api/ipc/datalayer';
 import { FormattedMessage } from 'react-intl';
 import {
   WalletNotSyncedErrorModal,
-  WalletBalanceInsufficientErrorModal,
+  SpendableCoinsInsufficientErrorModal,
   CreatStoreSuccessModal,
   CreateStoreErrorModal,
-  WaitingForWalletSync,
+  WaitingForWalletSync, WalletBalanceInsufficientErrorModal,
 } from '@/components';
 import {
+  useGetSpendableCoinsImmediateMutation,
   useGetSyncStatusImmediateMutation,
   useGetWalletBalanceMutation,
 } from '@/api/ipc/wallet';
 import { ipcApi } from '@/api/ipc';
 import { ConfirmCreateStoreModal } from '@/components/blocks/modals/ConfirmCreateStoreModal';
 import { useDispatch } from 'react-redux';
+import {SpendableCoinRequest} from "chia-wallet";
 
 const CreateDlStoreButton: React.FC = () => {
   const dispatch = useDispatch();
   const [showNotSyncedModal, setShowNotSyncedModal] = useState(false);
   const [showInsufficientBalanceModal, setShowInsufficientBalanceModal] =
+    useState(false);
+  const [showSpendableCoinsInsufficientModal, setShowSpendableCoinsInsufficientModal] =
     useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -37,9 +41,23 @@ const CreateDlStoreButton: React.FC = () => {
     useGetSyncStatusImmediateMutation();
   const [triggerGetWalletBalance, { isLoading: isBalanceLoading }] =
     useGetWalletBalanceMutation();
+  const [triggerGetSpendableCoinsImmediate] = useGetSpendableCoinsImmediateMutation();
 
   const handleCreateDataStore = useCallback(async () => {
     const syncStatusResponse = await triggerGetSyncStatus({});
+
+    const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
+    const spendableCoinsResponse =
+      await triggerGetSpendableCoinsImmediate(spendableCoinRequest);
+    console.log('spendableCoinsResponse', spendableCoinsResponse);
+
+    // @ts-ignore
+    if (!(spendableCoinsResponse?.data?.confirmed_records?.length) ||
+      // @ts-ignore
+      spendableCoinsResponse?.data?.confirmed_records?.length < 1) {
+      setShowSpendableCoinsInsufficientModal(true);
+      return;
+    }
 
     // @ts-ignore
     if (!syncStatusResponse?.data?.synced) {
@@ -105,6 +123,10 @@ const CreateDlStoreButton: React.FC = () => {
         <WalletBalanceInsufficientErrorModal
           showModal={showInsufficientBalanceModal}
           setShowModal={setShowInsufficientBalanceModal}
+        />
+        <SpendableCoinsInsufficientErrorModal
+          showModal={showSpendableCoinsInsufficientModal}
+          setShowModal={setShowSpendableCoinsInsufficientModal}
         />
         {showWaitingForWalletSyncModal && (
           <WaitingForWalletSync

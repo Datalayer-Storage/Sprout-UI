@@ -16,16 +16,17 @@ import React, { useCallback, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { deployStore } from '@/utils/os';
 import {useLocation} from "react-router-dom";
-import {DeployFolderErrorModal} from "@/components/blocks/modals/DeployFolderErrorModal";
-import Wallet, {SpendableCoinRequest} from "chia-wallet";
+import {SpendableCoinsInsufficientErrorModal} from "@/components";
+import {SpendableCoinRequest} from "chia-wallet";
+import {useGetSpendableCoinsImmediateMutation} from "@/api/ipc/wallet";
 const { ipcRenderer } = window.require('electron');
 
 const EditStore: React.FC = () => {
-  const wallet = new Wallet({verbose: true})
   const [selectedPath, setSelectedPath] = useState<string>('');
-  const [errorMsg, setErrorMsg] = useState<string>('');
-  const [showDeployFolderErrorModal, setShowDeployFolderErrorModal] = useState<boolean>(false);
+  const [showSpendableCoinsInsufficientModal, setShowSpendableCoinsInsufficientModal] =
+    useState(false);
   const userOptions = useSelector((state: any) => state.userOptions);
+  const [triggerGetSpendableCoins] = useGetSpendableCoinsImmediateMutation();
   const [log, setLog] = useState<string>('Waiting To Deploy...');
   const [deployMode, setDeployMode] = useState<string>('replace');
   const [deploying, setDeploying] = useState<boolean>(false);
@@ -59,25 +60,24 @@ const EditStore: React.FC = () => {
 
   const handleDeploy = useCallback(async () => {
 
-    const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
-    const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest);
+    const spendableCoinRequest: SpendableCoinRequest = {wallet_id: 1};
+    const spendableCoinsResponse = await triggerGetSpendableCoins(spendableCoinRequest);
 
-    if (spendableCoins.confirmed_records.length > 1) {
-      setLog('Deploying...');
-      setDeploying(true);
-      deployStore(
-        storeId,
-        selectedPath,
-        deployMode,
-        userOptions.deployOptions,
-      );
-    } else {
-      setErrorMsg("You must have at least 2 coins to deploy a folder.")
-      setShowDeployFolderErrorModal(true);
+    // @ts-ignore
+    if (!(spendableCoinsResponse?.data?.length) || spendableCoinsResponse.data.length < 1) {
+      setShowSpendableCoinsInsufficientModal(true);
+      return;
     }
 
-
-  }, [storeId, selectedPath, userOptions.deployOptions, deployMode, wallet]);
+    setLog('Deploying...');
+    setDeploying(true);
+    deployStore(
+      storeId,
+      selectedPath,
+      deployMode,
+      userOptions.deployOptions,
+    );
+  }, [storeId, selectedPath, userOptions.deployOptions, deployMode, triggerGetSpendableCoins]);
 
   return (
     <>
@@ -130,15 +130,13 @@ const EditStore: React.FC = () => {
             </span>
           )}
         </Button>
-
+        <SpendableCoinsInsufficientErrorModal
+          showModal={showSpendableCoinsInsufficientModal}
+          setShowModal={setShowSpendableCoinsInsufficientModal}
+        />
         <XTerm log={log} />
       </Card>
-      <DeployFolderErrorModal
-        showModal={showDeployFolderErrorModal}
-        setShowModal={setShowDeployFolderErrorModal}
-        errorMessage={errorMsg}
-        setErrorMessage={setErrorMsg}
-      />
+
     </>
   );
 };

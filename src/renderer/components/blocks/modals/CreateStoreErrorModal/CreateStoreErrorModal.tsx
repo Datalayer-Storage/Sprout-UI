@@ -1,7 +1,6 @@
 import React from "react";
 import { Modal } from "flowbite-react";
 import {FormattedMessage} from "react-intl";
-import {Spacer} from "@/components";
 
 interface CreateStoreErrorModalProps {
   showModal: boolean;
@@ -22,7 +21,7 @@ const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <span>
               <FormattedMessage id="error-occurred-while-creating-store"/>
-              <Spacer size={5}/>
+              {' '}
               {
                 errorMessage || <FormattedMessage id="ensure-chia-services-are-running-and-accessible."/>
               }

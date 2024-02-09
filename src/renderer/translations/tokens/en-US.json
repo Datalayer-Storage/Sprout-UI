@@ -36,11 +36,11 @@
   "invalid-component-state": "INVALID COMPONENT STATE",
   "browse-...": "Browse ...",
   "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
-  "your-balance-must-be-at-least-one-Mojo-to-create-a-store.": "Your balance must be at least 1 Mojo to create a store.",
+  "your-balance-must-be-at-least-one-Mojo-to-create-a-store": "Your balance must be at least 1 Mojo to create a store.",
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
   "ensure-chia-services-are-running-and-accessible.": "Ensure Chia services are running and accessible.",
-  "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!":
-    "Creating a store is a permanent action that cannot be un-done!",
+  "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
+    : "Creating a store is a permanent action that cannot be un-done!",
   "do-you-want-to-proceed-with-store-creation?": "Do you want to proceed with store creation?",
   "yes-create-store": "Yes, Create Store",
   "no-cancel-store-creation": "No, Cancel Store Creation",
@@ -64,5 +64,8 @@
   "waiting-for-transactions-to-confirm": "Waiting for transactions to confirm",
   "ignore-orphans": "Ignore Orphans",
   "force-ip4-mirror": "Force IP4 Mirror",
-  "cannot-deploy-folder": "Cannot deploy folder"
+  "cannot-deploy-folder": "Cannot deploy folder",
+  "insufficient-spendable-coins": "Insufficient spendable coins",
+  "you-must-have-at-least-1-spendable-coin-in-your-wallet-for-this-action"
+    : "You must have at least 1 spendable coin in your wallet for this action."
 }
