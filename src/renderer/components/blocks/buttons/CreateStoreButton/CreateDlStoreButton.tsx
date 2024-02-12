@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Button, Spinner } from 'flowbite-react';
+import {Button, Spinner} from 'flowbite-react';
 import { useCreateDataStoreMutation } from '@/api/ipc/datalayer';
 import { FormattedMessage } from 'react-intl';
 import {
@@ -7,7 +7,7 @@ import {
   SpendableCoinsInsufficientErrorModal,
   CreatStoreSuccessModal,
   CreateStoreErrorModal,
-  WaitingForWalletSync, WalletBalanceInsufficientErrorModal,
+  WaitingForWalletSync, WalletBalanceInsufficientErrorModal, FeeNoticeTooltip,
 } from '@/components';
 import {
   useGetSpendableCoinsImmediateMutation,
@@ -52,9 +52,7 @@ const CreateDlStoreButton: React.FC = () => {
     console.log('spendableCoinsResponse', spendableCoinsResponse);
 
     // @ts-ignore
-    if (!(spendableCoinsResponse?.data?.confirmed_records?.length) ||
-      // @ts-ignore
-      spendableCoinsResponse?.data?.confirmed_records?.length < 1) {
+    if (spendableCoinsResponse?.data?.confirmed_records?.length < 1) {
       setShowSpendableCoinsInsufficientModal(true);
       return;
     }
@@ -88,20 +86,26 @@ const CreateDlStoreButton: React.FC = () => {
       setShowErrorModal(true);
       setCreateStoreErrorMsg(createDataStoreResponse?.error);
     }
-  }, [triggerCreateDataStore, triggerGetSyncStatus, triggerGetWalletBalance, dispatch]);
+  }, [
+    triggerGetSyncStatus,
+    triggerGetSpendableCoinsImmediate,
+    triggerGetWalletBalance,
+    triggerCreateDataStore,
+    dispatch
+  ]);
 
   return (
     <>
       <div>
-        <Button onClick={() => setShowConfirmStoreCreationModal(true)}>
-          {isSyncStatusLoading || isBalanceLoading || isStoreCreating ? (
-            <Spinner />
-          ) : (
-            <span>
+        <FeeNoticeTooltip>
+          <Button onClick={() => setShowConfirmStoreCreationModal(true)}>
+            {isSyncStatusLoading || isBalanceLoading || isStoreCreating ? (
+              <Spinner />
+            ) : (
               <FormattedMessage id="create-new-store" />
-            </span>
-          )}
-        </Button>
+            )}
+          </Button>
+        </FeeNoticeTooltip>
         <ConfirmCreateStoreModal
           showModal={showConfirmStoreCreationModal}
           setShowModal={setShowConfirmStoreCreationModal}

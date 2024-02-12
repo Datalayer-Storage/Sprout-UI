@@ -40,7 +40,7 @@
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
   "ensure-chia-services-are-running-and-accessible.": "Ensure Chia services are running and accessible.",
   "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
-    : "Creating a store is a permanent action that cannot be un-done!",
+  : "Creating a store is a permanent action that cannot be un-done!",
   "do-you-want-to-proceed-with-store-creation?": "Do you want to proceed with store creation?",
   "yes-create-store": "Yes, Create Store",
   "no-cancel-store-creation": "No, Cancel Store Creation",
@@ -67,5 +67,17 @@
   "cannot-deploy-folder": "Cannot deploy folder",
   "insufficient-spendable-coins": "Insufficient spendable coins",
   "you-must-have-at-least-1-spendable-coin-in-your-wallet-for-this-action"
-    : "You must have at least 1 spendable coin in your wallet for this action."
+  : "You must have at least 1 spendable coin in your wallet for this action.",
+  "this-action-will-incur-a-fee": "This action will incur a fee",
+  "missing-files-in-project-folder-will-be-deleted-from-the-store"
+  : "Missing files in the project folder will be deleted from the store",
+  "new-files-will-be-upserted,-but-missing-files-in-the-project-folder-will-not-be-deleted"
+  : "New files will be upserted, but missing files in the project folder will not be deleted",
+  "deploy-mode---replace": "Deploy Mode - Replace",
+  "deploy-mode---additive": "Deploy Mode - Additive",
+  "this-action-will-incur-a-non-refundable-fee-of-0.01-xch-in-addition-to-standard-chia-blockchain-fees"
+  : "This action will incur a non-refundable fee of 0.01 XCH in addition to standard Chia blockchain fees.",
+  "do-you-want-to-proceed-with-folder-deploy?": "Do you want to proceed with folder deploy?",
+  "yes-deploy-folder": "Yes, Deploy Folder",
+  "no-cancel-folder-deploy": "No, Cancel Folder Deploy"
 }

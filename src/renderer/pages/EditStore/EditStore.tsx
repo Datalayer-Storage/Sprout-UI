@@ -10,7 +10,7 @@ import {
   SelectedStoreIdCard,
   Spacer,
   XTerm,
-  FolderSelector,
+  FolderSelector, FeeNoticeTooltip,
 } from '@/components';
 import React, { useCallback, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -19,12 +19,14 @@ import {useLocation} from "react-router-dom";
 import {SpendableCoinsInsufficientErrorModal} from "@/components";
 import {SpendableCoinRequest} from "chia-wallet";
 import {useGetSpendableCoinsImmediateMutation} from "@/api/ipc/wallet";
+import {ConfirmDeployFolderModal} from "@/components/blocks/modals/ConfirmDeployFolderModal/ConfirmDeployFolderModal";
 const { ipcRenderer } = window.require('electron');
 
 const EditStore: React.FC = () => {
   const [selectedPath, setSelectedPath] = useState<string>('');
   const [showSpendableCoinsInsufficientModal, setShowSpendableCoinsInsufficientModal] =
     useState(false);
+  const [showConfirmDeployFolderModal, setShowConfirmDeployFolderModal] = useState(false);
   const userOptions = useSelector((state: any) => state.userOptions);
   const [triggerGetSpendableCoins] = useGetSpendableCoinsImmediateMutation();
   const [log, setLog] = useState<string>('Waiting To Deploy...');
@@ -64,7 +66,10 @@ const EditStore: React.FC = () => {
     const spendableCoinsResponse = await triggerGetSpendableCoins(spendableCoinRequest);
 
     // @ts-ignore
-    if (!(spendableCoinsResponse?.data?.length) || spendableCoinsResponse.data.length < 1) {
+    console.log('!!!!', spendableCoinsResponse?.data?.confirmed_records?.length, spendableCoinsResponse?.data?.confirmed_records?.length < 1);
+
+    // @ts-ignore
+    if (spendableCoinsResponse?.data?.confirmed_records?.length < 1) {
       setShowSpendableCoinsInsufficientModal(true);
       return;
     }
@@ -89,54 +94,63 @@ const EditStore: React.FC = () => {
           style={{
             display: 'flex',
             justifyContent: 'flex-start',
-            flexDirection: 'column',
+            flexDirection: 'row',
           }}
         >
+          <ToggleSwitch
+            checked={deployMode === 'replace'}
+            onChange={() => {
+              setDeployMode(
+                deployMode === 'replace' ? 'additive' : 'replace',
+              );
+            }}
+          />
           <Tooltip
             content={
               deployMode === 'replace'
-                ? 'Missing files in the project folder will be deleted from the store'
-                : 'New files will be upserted, but missing files in the project folder will not be deleted'
+                ? <FormattedMessage id="missing-files-in-project-folder-will-be-deleted-from-the-store"/>
+                : <FormattedMessage
+                  id="new-files-will-be-upserted,-but-missing-files-in-the-project-folder-will-not-be-deleted"/>
             }
           >
-            <ToggleSwitch
-              checked={deployMode === 'replace'}
-              label={
+            <div style={{marginLeft: 10}}>
+              {
                 deployMode === 'replace'
-                  ? 'Deploy Mode - Replace'
-                  : 'Deploy Mode - Additive'
+                  ? <FormattedMessage id="deploy-mode---replace"/>
+                  : <FormattedMessage id="deploy-mode---additive"/>
               }
-              onChange={() => {
-                setDeployMode(
-                  deployMode === 'replace' ? 'additive' : 'replace',
-                );
-              }}
-            />
+            </div>
           </Tooltip>
         </div>
-        <Button
-          disabled={deploying || !selectedPath}
-          style={{ width: 150 }}
-          onClick={handleDeploy}
-        >
+        <FeeNoticeTooltip>
+          <Button
+            disabled={deploying || !selectedPath}
+            style={{width: 150}}
+            onClick={() => setShowConfirmDeployFolderModal(true)}
+          >
           {deploying ? (
-            <div>
-              {' '}
-              <Spinner />
-            </div>
-          ) : (
-            <span style={{ textTransform: 'capitalize' }}>
+              <div>
+                {' '}
+                <Spinner />
+              </div>
+            ) : (
+              <span style={{ textTransform: 'capitalize' }}>
               <FormattedMessage id="deploy" />
             </span>
-          )}
-        </Button>
+            )}
+          </Button>
+        </FeeNoticeTooltip>
         <SpendableCoinsInsufficientErrorModal
           showModal={showSpendableCoinsInsufficientModal}
           setShowModal={setShowSpendableCoinsInsufficientModal}
         />
         <XTerm log={log} />
       </Card>
-
+      <ConfirmDeployFolderModal
+        showModal={showConfirmDeployFolderModal}
+        setShowModal={setShowConfirmDeployFolderModal}
+        onDeployFolder={handleDeploy}
+      />
     </>
   );
 };
