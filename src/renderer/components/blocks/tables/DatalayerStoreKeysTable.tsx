@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Table, TableBody } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 import { useGetKeysQuery } from '@/api/ipc/datalayer';
-import { LoadingSpinnerCard, SelectedStoreIdCard, Spacer } from '@/components';
+import { LoadingSpinnerCard} from '@/components';
 
 import { GetKeysParams } from 'chia-datalayer';
 import { decodeHex } from '@/utils/hex-utils';
@@ -22,14 +22,6 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
   console.log("passedState", passedState);
   const getKeysParams: GetKeysParams = { id: passedState };
   const { data, isLoading, error, refetch } = useGetKeysQuery(getKeysParams);
-  const location = useLocation();
-  const storeId = location.state?.storeId;
-
-  useEffect(() => {
-    if (!storeId){
-      console.error('EditStore received invalid storeId:', storeId);
-    }
-  }, [storeId]);
 
   useEffect(() => {
     if ((isLoading || error) && setTableContentsLoaded) {
@@ -79,8 +71,6 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
   } else {
     return (
       <>
-        <SelectedStoreIdCard storeId={storeId} />
-        <Spacer size={10} />
         <div className="overflow-x-auto">
           <Table>
             <Table.Head>

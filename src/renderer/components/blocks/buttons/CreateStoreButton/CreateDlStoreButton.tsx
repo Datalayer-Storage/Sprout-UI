@@ -7,14 +7,14 @@ import {
   WalletBalanceInsufficientErrorModal,
   CreatStoreSuccessModal,
   CreateStoreErrorModal,
-  WaitingForWalletSync,
+  WaitingForWalletSyncModal,
 } from '@/components';
 import {
   useGetSyncStatusImmediateMutation,
   useGetWalletBalanceMutation,
 } from '@/api/ipc/wallet';
 import { ipcApi } from '@/api/ipc';
-import { ConfirmCreateStoreModal } from '@/components/blocks/modals/ConfirmCreateStoreModal';
+import { ConfirmCreateStoreModal } from '@/components';
 import { useDispatch } from 'react-redux';
 
 const CreateDlStoreButton: React.FC = () => {
@@ -107,7 +107,7 @@ const CreateDlStoreButton: React.FC = () => {
           setShowModal={setShowInsufficientBalanceModal}
         />
         {showWaitingForWalletSyncModal && (
-          <WaitingForWalletSync
+          <WaitingForWalletSyncModal
             onClose={() => setShowWaitingForWalletSyncModal(false)}
           />
         )}

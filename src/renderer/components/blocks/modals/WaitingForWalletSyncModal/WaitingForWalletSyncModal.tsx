@@ -11,7 +11,7 @@ interface WaitingForWalletSyncProps {
   onClose: () => void;
 }
 
-const WaitingForWalletSync: React.FC<WaitingForWalletSyncProps> = ({
+const WaitingForWalletSyncModal: React.FC<WaitingForWalletSyncProps> = ({
   onClose = _.noop,
 }: WaitingForWalletSyncProps) => {
   const { data: syncStatus } = useGetWalletSyncStatusQuery(null, {
@@ -49,4 +49,4 @@ const WaitingForWalletSync: React.FC<WaitingForWalletSyncProps> = ({
   );
 };
 
-export { WaitingForWalletSync };
+export { WaitingForWalletSyncModal };

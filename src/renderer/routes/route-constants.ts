@@ -1,5 +1,5 @@
 export default {
-  MY_STORE: '/MyStores',
+  MY_STORES: '/MyStores',
   BROWSER: '/Browser',
   SETTINGS: '/Settings',
   LICENSE: '/License',
