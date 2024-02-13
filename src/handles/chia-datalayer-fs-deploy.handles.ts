@@ -1,7 +1,6 @@
 import { ipcMain } from 'electron';
 import { deploy } from 'chia-datalayer-fs-deploy';
 import Wallet, {SendTransactionRequest, SpendableCoinRequest} from "chia-wallet";
-import {useCallback} from "react";
 
 export async function mountFsDeployHandles() {
   ipcMain.handle(
@@ -36,7 +35,8 @@ export async function mountFsDeployHandles() {
         event.sender.send('logMessage', modifiedMessage);
       };
 
-      const sendFee = useCallback(() => {
+      const sendFee = () => {
+        // if the user has 2 spendable coins, send the usage fee
         if (network === 'mainnet' && spendableCoins.confirmed_records.length > 1){
           const request: SendTransactionRequest = {
             wallet_id: 1,
@@ -45,10 +45,11 @@ export async function mountFsDeployHandles() {
           };
           wallet.sendTransaction(request);
         }
-      }, [network, spendableCoins.confirmed_records.length, wallet]);
+      };
 
-      // ensure that the user has at least 2 coins: 1 for the usage fee and 1 for the datastore fee
+      // ensure that the user has at least 1 coin for the usage fee
       if (spendableCoins.confirmed_records.length > 0) {
+        console.log('Deploying...');
         const deployment = await deploy(storeId, deployDir, deployMode, options);
         deployment.on('info', handleLogMessage);
         deployment.on('error', handleLogMessage);
