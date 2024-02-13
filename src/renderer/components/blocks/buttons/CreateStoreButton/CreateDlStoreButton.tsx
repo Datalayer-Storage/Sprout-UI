@@ -7,8 +7,8 @@ import {
   SpendableCoinsInsufficientErrorModal,
   CreatStoreSuccessModal,
   CreateStoreErrorModal,
-  WaitingForWalletSync,
   WalletBalanceInsufficientErrorModal,
+  WaitingForWalletSyncModal,
 } from '@/components';
 import {
   useGetSpendableCoinsImmediateMutation,
@@ -16,7 +16,7 @@ import {
   useGetWalletBalanceMutation,
 } from '@/api/ipc/wallet';
 import { ipcApi } from '@/api/ipc';
-import { ConfirmCreateStoreModal } from '@/components/blocks/modals/ConfirmCreateStoreModal';
+import { ConfirmCreateStoreModal } from '@/components';
 import { useDispatch } from 'react-redux';
 import {SpendableCoinRequest} from "chia-wallet";
 
@@ -138,7 +138,7 @@ const CreateDlStoreButton: React.FC = () => {
           setShowModal={setShowSpendableCoinsInsufficientModal}
         />
         {showWaitingForWalletSyncModal && (
-          <WaitingForWalletSync
+          <WaitingForWalletSyncModal
             onClose={() => setShowWaitingForWalletSyncModal(false)}
           />
         )}
