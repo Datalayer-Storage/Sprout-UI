@@ -49,7 +49,6 @@ const CreateDlStoreButton: React.FC = () => {
     const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
     const spendableCoinsResponse =
       await triggerGetSpendableCoinsImmediate(spendableCoinRequest);
-    console.log('spendableCoinsResponse', spendableCoinsResponse);
 
     // @ts-ignore
     if (spendableCoinsResponse?.data?.confirmed_records?.length < 1) {

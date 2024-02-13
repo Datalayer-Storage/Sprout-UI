@@ -26,53 +26,53 @@ const walletApi = ipcApi.injectEndpoints({
     }),
 
     setConfig: builder.mutation<WalletConfig, any>({
-      query: (args) => ({ channel: 'walletSetConfig', args: args }),
+      query: (args) => ({ channel: 'walletSetConfig', args }),
       // @ts-ignore
       invalidatesTags: () => [configTag],
     }),
 
     getLoggedInFingerprint: builder.query<any, any>({
-      query: (args) => ({ channel: 'walletGetLoggedInFingerprint', args: args }),
+      query: (args) => ({ channel: 'walletGetLoggedInFingerprint', args }),
     }),
 
     getCoinRecords: builder.query<any, any>({
-      query: (args) => ({ channel: 'walletGetCoinRecords', args: args }),
+      query: (args) => ({ channel: 'walletGetCoinRecords', args }),
     }),
 
     getPrivateKey: builder.query<GetPrivateKeyRequest, any>({
-      query: (args) => ({ channel: 'getPrivateKey', args: args }),
+      query: (args) => ({ channel: 'getPrivateKey', args }),
     }),
 
     getCoinRecordsByName: builder.query<CoinRecordsByNameRequest, any>({
-      query: (args) => ({ channel: 'walletGetCoinRecordsByName', args: args }),
+      query: (args) => ({ channel: 'walletGetCoinRecordsByName', args }),
     }),
 
     getSpendableCoins: builder.query<SpendableCoinRequest, any>({
-      query: (args) => ({ channel: 'walletGetSpendableCoins', args: args }),
+      query: (args) => ({ channel: 'walletGetSpendableCoins', args }),
     }),
 
     getSpendableCoinsImmediate: builder.mutation<SpendableCoinRequest, any>({
-      query: (args) => ({ channel: 'walletGetSpendableCoins', args: args }),
+      query: (args) => ({ channel: 'walletGetSpendableCoins', args }),
     }),
 
     pushTxRequest: builder.mutation<PushTxRequest, any>({
-      query: (args) => ({ channel: 'walletPushTx', args: args }),
+      query: (args) => ({ channel: 'walletPushTx', args }),
     }),
 
     getWalletSyncStatus: builder.query<any, any>({
-      query: (args) => ({ channel: 'walletGetSyncStatus', args: args }),
+      query: (args) => ({ channel: 'walletGetSyncStatus', args }),
     }),
 
     getSyncStatusImmediate: builder.mutation<any, any>({
-      query: (args) => ({ channel: 'walletGetSyncStatus', args: args }),
+      query: (args) => ({ channel: 'walletGetSyncStatus', args }),
     }),
 
     getWalletBalance: builder.mutation<any, any>({
-      query: (args) => ({ channel: 'walletGetWalletBalance', args: args }),
+      query: (args) => ({ channel: 'walletGetWalletBalance', args }),
     }),
 
     getTransactions: builder.query<any, any>({
-      query: (args) => ({ channel: 'walletGetTransactions', args: args }),
+      query: (args) => ({ channel: 'walletGetTransactions', args }),
     }),
   }),
 });

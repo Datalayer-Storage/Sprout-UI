@@ -66,9 +66,6 @@ const EditStore: React.FC = () => {
     const spendableCoinsResponse = await triggerGetSpendableCoins(spendableCoinRequest);
 
     // @ts-ignore
-    console.log('!!!!', spendableCoinsResponse?.data?.confirmed_records?.length, spendableCoinsResponse?.data?.confirmed_records?.length < 1);
-
-    // @ts-ignore
     if (spendableCoinsResponse?.data?.confirmed_records?.length < 1) {
       setShowSpendableCoinsInsufficientModal(true);
       return;
