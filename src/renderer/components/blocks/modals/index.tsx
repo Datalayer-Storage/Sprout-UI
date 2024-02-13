@@ -4,3 +4,4 @@ export * from './CreateStoreSuccessModal';
 export * from './CreateStoreErrorModal';
 export * from './WaitingForWalletSync';
 export * from './SpendableCoinsInsufficientErrorModal'
+export * from './ConfirmDeployFolderModal';

@@ -19,7 +19,7 @@ import {useLocation} from "react-router-dom";
 import {SpendableCoinsInsufficientErrorModal} from "@/components";
 import {SpendableCoinRequest} from "chia-wallet";
 import {useGetSpendableCoinsImmediateMutation} from "@/api/ipc/wallet";
-import {ConfirmDeployFolderModal} from "@/components/blocks/modals/ConfirmDeployFolderModal/ConfirmDeployFolderModal";
+import {ConfirmDeployFolderModal} from "@/components";
 const { ipcRenderer } = window.require('electron');
 
 const EditStore: React.FC = () => {
