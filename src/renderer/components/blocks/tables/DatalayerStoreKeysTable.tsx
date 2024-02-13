@@ -19,7 +19,6 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
 ) => {
 
   const passedState = useLocation().state;
-  console.log("passedState", passedState);
   const getKeysParams: GetKeysParams = { id: passedState };
   const { data, isLoading, error, refetch } = useGetKeysQuery(getKeysParams);
   const location = useLocation();

@@ -18,7 +18,6 @@ const ViewStore: React.FC = () => {
   const handleViewKeyData = useCallback((key: string) => {
     if (storeID) {
       const dataPage: string = 'chia://' + storeID + '/' + key;
-      console.log('chia url: ', dataPage);
       dispatch(
         visitPage({
           page: { url: dataPage },
@@ -27,7 +26,6 @@ const ViewStore: React.FC = () => {
         }),
       );
       navigate('/browser');
-      console.log('viewing store in browser');
     }
   }, [ownedStores, fallbackStoreProvider, navigate, dispatch]);
 
