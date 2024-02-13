@@ -7,7 +7,8 @@ import {
   SpendableCoinsInsufficientErrorModal,
   CreatStoreSuccessModal,
   CreateStoreErrorModal,
-  WaitingForWalletSync, WalletBalanceInsufficientErrorModal, FeeNoticeTooltip,
+  WaitingForWalletSync,
+  WalletBalanceInsufficientErrorModal,
 } from '@/components';
 import {
   useGetSpendableCoinsImmediateMutation,
@@ -96,15 +97,20 @@ const CreateDlStoreButton: React.FC = () => {
   return (
     <>
       <div>
-        <FeeNoticeTooltip>
+        <div style={{display: "flex", alignContent: "center", justifyContent: "left"}}>
           <Button onClick={() => setShowConfirmStoreCreationModal(true)}>
             {isSyncStatusLoading || isBalanceLoading || isStoreCreating ? (
-              <Spinner />
+              <Spinner/>
             ) : (
-              <FormattedMessage id="create-new-store" />
+              <FormattedMessage id="create-new-store"/>
             )}
           </Button>
-        </FeeNoticeTooltip>
+          <div style={{display: "flex", flexDirection: "column", justifyContent: "center", marginLeft: "5px"}}>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <FormattedMessage id="0.01-xch-fee"/>
+            </p>
+          </div>
+        </div>
         <ConfirmCreateStoreModal
           showModal={showConfirmStoreCreationModal}
           setShowModal={setShowConfirmStoreCreationModal}
@@ -141,4 +147,4 @@ const CreateDlStoreButton: React.FC = () => {
   );
 };
 
-export { CreateDlStoreButton };
+export {CreateDlStoreButton};

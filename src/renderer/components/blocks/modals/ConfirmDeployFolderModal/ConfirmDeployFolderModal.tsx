@@ -42,7 +42,7 @@ const ConfirmDeployFolderModal: React.FC<ConfirmDeployFolderProps> = (
           <FormattedMessage id="yes-deploy-folder"/>
         </Button>
         <Button color="gray" onClick={cancel}>
-          <FormattedMessage id="no-cancel-deploy"/>
+          <FormattedMessage id="no-cancel-folder-deploy"/>
         </Button>
       </Modal.Footer>
     </Modal>

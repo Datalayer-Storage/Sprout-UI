@@ -68,7 +68,7 @@
   "insufficient-spendable-coins": "Insufficient spendable coins",
   "you-must-have-at-least-1-spendable-coin-in-your-wallet-for-this-action"
   : "You must have at least 1 spendable coin in your wallet for this action.",
-  "this-action-will-incur-a-fee": "This action will incur a fee",
+  "0.01-xch-fee": "0.01 XCH Fee",
   "missing-files-in-project-folder-will-be-deleted-from-the-store"
   : "Missing files in the project folder will be deleted from the store",
   "new-files-will-be-upserted,-but-missing-files-in-the-project-folder-will-not-be-deleted"

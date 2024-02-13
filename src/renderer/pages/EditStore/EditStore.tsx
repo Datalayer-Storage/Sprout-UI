@@ -10,7 +10,7 @@ import {
   SelectedStoreIdCard,
   Spacer,
   XTerm,
-  FolderSelector, FeeNoticeTooltip,
+  FolderSelector
 } from '@/components';
 import React, { useCallback, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -119,24 +119,31 @@ const EditStore: React.FC = () => {
             </div>
           </Tooltip>
         </div>
-        <FeeNoticeTooltip>
+        <div style={{display: "flex", alignContent: "center", justifyContent: "left"}}>
           <Button
             disabled={deploying || !selectedPath}
             style={{width: 150}}
             onClick={() => setShowConfirmDeployFolderModal(true)}
           >
-          {deploying ? (
+            {deploying ? (
               <div>
                 {' '}
                 <Spinner />
               </div>
             ) : (
               <span style={{ textTransform: 'capitalize' }}>
-              <FormattedMessage id="deploy" />
-            </span>
+            <FormattedMessage id="deploy" />
+          </span>
             )}
           </Button>
-        </FeeNoticeTooltip>
+          <div style={{display: "flex", flexDirection: "column", justifyContent: "center", marginLeft: "5px"}}>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <FormattedMessage id="0.01-xch-fee"/>
+            </p>
+          </div>
+
+        </div>
+
         <SpendableCoinsInsufficientErrorModal
           showModal={showSpendableCoinsInsufficientModal}
           setShowModal={setShowSpendableCoinsInsufficientModal}

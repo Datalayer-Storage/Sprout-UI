@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron';
 import { deploy } from 'chia-datalayer-fs-deploy';
-import Wallet, {SendTransactionRequest, SpendableCoinRequest} from "chia-wallet";
+import Wallet, {SpendableCoinRequest} from "chia-wallet";
+import {sendFee} from "../utils/send-fee.js";
 
 export async function mountFsDeployHandles() {
   ipcMain.handle(
@@ -17,13 +18,12 @@ export async function mountFsDeployHandles() {
 
       const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
       const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest, options);
-      const usageFee: number = 0.01;
 
       // Function to generate a string with a random number of spaces
       // This is so no 2 lines of the log look the same (needed for log rendering)
       const addRandomSpaces = (message) => {
         if (message.includes('Deploy operation completed successfully.')) {
-          sendFee();
+          sendFee(network, spendableCoins.confirmed_records.length);
         }
         const numberOfSpaces = Math.floor(Math.random() * 10);
         return `${message}${' '.repeat(numberOfSpaces)}`;
@@ -33,18 +33,6 @@ export async function mountFsDeployHandles() {
       const handleLogMessage = (message) => {
         const modifiedMessage = addRandomSpaces(message);
         event.sender.send('logMessage', modifiedMessage);
-      };
-
-      const sendFee = () => {
-        // if the user has 2 spendable coins, send the usage fee
-        if (network === 'mainnet' && spendableCoins.confirmed_records.length > 1){
-          const request: SendTransactionRequest = {
-            wallet_id: 1,
-            address: 'xch1djjwc54ax3gz4n5fthkt5q4nhgerlx8e5n92435gr3scdsxrcf6sh55z5w',
-            amount: usageFee
-          };
-          wallet.sendTransaction(request);
-        }
       };
 
       // ensure that the user has at least 1 coin for the usage fee
