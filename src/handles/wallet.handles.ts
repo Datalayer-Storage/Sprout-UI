@@ -5,7 +5,7 @@ import { ipcMain } from 'electron';
  */
 import Wallet, {
   Config as WalletConfig,
-  GetPrivateKeyResponse,
+  GetPrivateKeyRequest,
   SpendableCoinRequest,
   CoinRecordsByNameRequest,
   PushTxRequest,
@@ -33,7 +33,7 @@ export async function mountWalletRpcHandles() {
 
   ipcMain.handle(
     'walletGetPrivateKey',
-    (_, getPrivateKeyResponse: GetPrivateKeyResponse, options: any) => {
+    (_, getPrivateKeyResponse: GetPrivateKeyRequest, options: any) => {
       return wallet.getPrivateKey(getPrivateKeyResponse, options);
     },
   );
@@ -48,7 +48,7 @@ export async function mountWalletRpcHandles() {
   ipcMain.handle(
     'walletGetSpendableCoins',
     (_, spendableCoinRequest: SpendableCoinRequest, options?: any) => {
-      return wallet.getSpendablCoins(spendableCoinRequest, options);
+      return wallet.getSpendableCoins(spendableCoinRequest, options);
     },
   );
 

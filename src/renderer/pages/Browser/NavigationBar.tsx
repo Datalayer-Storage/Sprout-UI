@@ -46,7 +46,7 @@ interface NavButton {
 const BackButton: React.FC<NavButton> = ({ onClick }) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiChevronDoubleLeft font-size={navButtonIconSize} />
+      <HiChevronDoubleLeft fontSize={navButtonIconSize} />
     </StyledNavButton>
   );
 };
@@ -54,7 +54,7 @@ const BackButton: React.FC<NavButton> = ({ onClick }) => {
 const ForwardButton: React.FC<NavButton> = ({ onClick }) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiChevronDoubleRight font-size={navButtonIconSize} />
+      <HiChevronDoubleRight fontSize={navButtonIconSize} />
     </StyledNavButton>
   );
 };

@@ -13,14 +13,13 @@ const WalletBalanceInsufficientErrorModal: React.FC<WalletBalanceInsufficientMod
   return (
     <Modal show={showModal} onClose={() => setShowModal(false)}>
       <Modal.Header>
-        <FormattedMessage id="unable-to-create-new-store"/>
+        <FormattedMessage id="insufficient-wallet-balance"/>
       </Modal.Header>
       <Modal.Body>
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <span>
-              <FormattedMessage id="your-chia-wallet-is-not-synced"/>
-              <FormattedMessage id="please-try-again-later"/>
+              <FormattedMessage id="your-balance-must-be-at-least-one-Mojo-to-create-a-store"/>
             </span>
           </p>
         </div>
