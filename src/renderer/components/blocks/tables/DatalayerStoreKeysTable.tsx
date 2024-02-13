@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Table, TableBody } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 import { useGetKeysQuery } from '@/api/ipc/datalayer';
-import { LoadingSpinnerCard } from '@/components';
+import { LoadingSpinnerCard} from '@/components';
 
 import { GetKeysParams } from 'chia-datalayer';
 import { decodeHex } from '@/utils/hex-utils';

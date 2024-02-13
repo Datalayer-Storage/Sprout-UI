@@ -80,8 +80,8 @@ const LeftNav = () => {
           </Sidebar.Item>
           <Sidebar.Item
             style={{ cursor: 'pointer',  }}
-            active={isActive(ROUTES.MY_STORE)}
-            onClick={() => navigate(ROUTES.MY_STORE)}
+            active={isActive(ROUTES.MY_STORES)}
+            onClick={() => navigate(ROUTES.MY_STORES)}
             icon={leftNavExpanded && HiOutlineCollection}
           >
             {

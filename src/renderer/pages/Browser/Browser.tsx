@@ -56,7 +56,6 @@ const Browser: React.FC = () => {
 
   const handleOnDidNavigateInPage = useCallback(
     (location) => {
-      console.log('handleOnDidNavigateInPage', location);
       setAddressBar(transformToChiaProtocol(location, fallbackStoreProvider));
 
       const pageState: PageState = {

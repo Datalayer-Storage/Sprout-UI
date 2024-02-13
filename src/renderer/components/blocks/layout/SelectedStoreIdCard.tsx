@@ -15,14 +15,11 @@ const SelectedStoreIdCard: React.FC<SelectedStoreIdCardProps> = ({
   const dispatch = useDispatch();
   const userOptionsStore = useSelector((state: any) => state.userOptions);
 
-  console.log(userOptionsStore.storeLabels);
-
   const label = useMemo(() => {
     return userOptionsStore.storeLabels?.[storeId];
   }, [storeId, userOptionsStore.storeLabels]);
 
   const handleStoreLabelChange = (event) => {
-    console.log('event.target.value', event.target.value);
     dispatch(setStoreLabel({ storeId, label: event.target.value }));
   };
 

@@ -68,7 +68,7 @@ const AppNavigator: React.FC = () => {
               element={<Pages.Settings/>}
             />
             <Route
-              path={ROUTES.MY_STORE}
+              path={ROUTES.MY_STORES}
               element={<Pages.MyStores/>}
             />
             <Route
