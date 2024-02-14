@@ -18,6 +18,8 @@
   "important": "Important",
   "reset": "Reset",
   "label": "Label",
+  "size": "Size",
+  "fee": "Fee",
   "invalid-store-id": "Invalid Store ID",
   "selected-store-id": "Selected store ID:",
   "store-id": "Store ID",
@@ -70,15 +72,17 @@
   "you-must-have-at-least-1-spendable-coin-in-your-wallet-for-this-action"
   : "You must have at least 1 spendable coin in your wallet for this action.",
   "0.01-xch-fee": "0.01 XCH Fee",
+  "0.01-xch-per-100-megabytes-deployed": "0.01 XCH per 100 Megabytes deployed",
   "missing-files-in-project-folder-will-be-deleted-from-the-store"
   : "Missing files in the project folder will be deleted from the store",
   "new-files-will-be-upserted,-but-missing-files-in-the-project-folder-will-not-be-deleted"
   : "New files will be upserted, but missing files in the project folder will not be deleted",
   "deploy-mode---replace": "Deploy Mode - Replace",
   "deploy-mode---additive": "Deploy Mode - Additive",
-  "this-action-will-incur-a-non-refundable-fee-of-0.01-xch-in-addition-to-standard-chia-blockchain-fees"
-  : "This action will incur a non-refundable fee of 0.01 XCH in addition to standard Chia blockchain fees.",
+  "this-action-will-incur-a-non-refundable-fee-of": "This action will incur a non-refundable fee of",
+  "xch-in-addition-to-standard-chia-blockchain-fees": "XCH in addition to standard Chia blockchain fees.",
   "do-you-want-to-proceed-with-folder-deploy?": "Do you want to proceed with folder deploy?",
   "yes-deploy-folder": "Yes, Deploy Folder",
-  "no-cancel-folder-deploy": "No, Cancel Folder Deploy"
+  "no-cancel-folder-deploy": "No, Cancel Folder Deploy",
+  "of-data-will-be-deployed": "of data will be deployed."
 }

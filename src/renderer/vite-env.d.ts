@@ -10,7 +10,9 @@ interface Window {
 }
 
 export interface SelectFolderDialogResponse {
-  filePath: string;
+  folderPath: string;
+  folderSizeMb: number;
+  fee: number;
   error: Error | null;
   success: boolean;
 }

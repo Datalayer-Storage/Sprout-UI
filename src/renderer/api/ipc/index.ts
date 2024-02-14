@@ -20,7 +20,6 @@ const ipcRendererBaseQuery = async ({
 }: ipcRendererBaseQueryArgs) => {
   try {
     const result = await ipcRenderer.invoke(channel, args);
-    console.log('!!!!', result)
     return { data: result };
   } catch (error) {
     return {

@@ -1,7 +1,8 @@
 import { ipcMain } from 'electron';
 import { deploy } from 'chia-datalayer-fs-deploy';
 import Wallet, {SpendableCoinRequest} from "chia-wallet";
-import {sendFee} from "../utils/send-fee.js";
+import {calcSizeBasedDeployFee, sendVariableFee} from "../utils/fees.js";
+import {calcFolderSize} from "../utils/calc-folder-size.js";
 
 export async function mountFsDeployHandles() {
   ipcMain.handle(
@@ -23,7 +24,9 @@ export async function mountFsDeployHandles() {
       // This is so no 2 lines of the log look the same (needed for log rendering)
       const addRandomSpaces = (message) => {
         if (message.includes('Deploy operation completed successfully.')) {
-          sendFee(network, spendableCoins.confirmed_records.length);
+          const folderSizeMb = calcFolderSize(deployDir);
+          const fee = calcSizeBasedDeployFee(folderSizeMb);
+          sendVariableFee(network, spendableCoins.confirmed_records.length, fee);
         }
         const numberOfSpaces = Math.floor(Math.random() * 10);
         return `${message}${' '.repeat(numberOfSpaces)}`;

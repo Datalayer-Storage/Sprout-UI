@@ -20,10 +20,14 @@ import {SpendableCoinsInsufficientErrorModal} from "@/components";
 import {SpendableCoinRequest} from "chia-wallet";
 import {useGetSpendableCoinsImmediateMutation} from "@/api/ipc/wallet";
 import {ConfirmDeployFolderModal} from "@/components";
+
 const { ipcRenderer } = window.require('electron');
+
 
 const EditStore: React.FC = () => {
   const [selectedPath, setSelectedPath] = useState<string>('');
+  const [selectedFolderSizeMb, setSelectedFolderSizeMb] = useState<number>(0);
+  const [deployFee, setDeployFee] = useState<number>(0);
   const [showSpendableCoinsInsufficientModal, setShowSpendableCoinsInsufficientModal] =
     useState(false);
   const [showConfirmDeployFolderModal, setShowConfirmDeployFolderModal] = useState(false);
@@ -80,13 +84,19 @@ const EditStore: React.FC = () => {
       userOptions.deployOptions,
     );
   }, [storeId, selectedPath, userOptions.deployOptions, deployMode, triggerGetSpendableCoins]);
+  
+  const handleSelectFolder = useCallback((selectedFolderPath: string, folderSizeMb: number, fee: number) => {
+    setSelectedPath(selectedFolderPath);
+    setSelectedFolderSizeMb(folderSizeMb);
+    setDeployFee(fee);
+  }, [setSelectedPath, setDeployFee])
 
   return (
     <>
       <SelectedStoreIdCard storeId={storeId} />
       <Spacer size={10} />
       <Card>
-        <FolderSelector onSelect={setSelectedPath} />
+        <FolderSelector onSelect={handleSelectFolder} />
         <div
           style={{
             display: 'flex',
@@ -132,28 +142,35 @@ const EditStore: React.FC = () => {
               </div>
             ) : (
               <span style={{ textTransform: 'capitalize' }}>
-            <FormattedMessage id="deploy" />
-          </span>
+                <FormattedMessage id="deploy" />
+              </span>
             )}
           </Button>
-          <div style={{display: "flex", flexDirection: "column", justifyContent: "center", marginLeft: "5px"}}>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              <FormattedMessage id="0.01-xch-fee"/>
-            </p>
+          <div style={{display: "flex", flexDirection: "column", justifyContent: "left", marginLeft: "10px"}}>
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "left"}}>
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                <FormattedMessage id="size"/>: {selectedFolderSizeMb.toFixed(2)} MB
+              </p>
+            </div>
+            <Tooltip content={<FormattedMessage id={"0.01-xch-per-100-megabytes-deployed"}/>}>
+              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                <FormattedMessage id="fee"/>: {deployFee} XCH
+              </p>
+            </Tooltip>
           </div>
-
         </div>
-
-        <SpendableCoinsInsufficientErrorModal
-          showModal={showSpendableCoinsInsufficientModal}
-          setShowModal={setShowSpendableCoinsInsufficientModal}
-        />
         <XTerm log={log} />
       </Card>
       <ConfirmDeployFolderModal
         showModal={showConfirmDeployFolderModal}
         setShowModal={setShowConfirmDeployFolderModal}
+        folderSizeMb={selectedFolderSizeMb}
+        fee={deployFee}
         onDeployFolder={handleDeploy}
+      />
+      <SpendableCoinsInsufficientErrorModal
+        showModal={showSpendableCoinsInsufficientModal}
+        setShowModal={setShowSpendableCoinsInsufficientModal}
       />
     </>
   );
