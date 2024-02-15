@@ -4,9 +4,10 @@ import { Button } from 'flowbite-react';
 import { 
   HiOutlineArrowLeft, 
   HiOutlineArrowRight,
-  HiGlobeAlt,
+  HiOutlineGlobeAlt,
   HiOutlineInboxIn,
-  HiOutlineCollection
+  HiOutlineArchive,
+  //HiOutlineCollection
 } from 'react-icons/hi';
 //import { IoSettingsOutline } from 'react-icons/io5';
 import { LuSettings } from 'react-icons/lu';
@@ -70,24 +71,24 @@ const LeftNav = () => {
             style={{ cursor: 'pointer', justifyContent: 'center' }}
             active={isActive(ROUTES.BROWSER)}
             onClick={() => navigate(ROUTES.BROWSER)}
-            icon={leftNavExpanded && HiGlobeAlt}
+            icon={leftNavExpanded && HiOutlineGlobeAlt}
           >
             {
               (leftNavExpanded) ?
                 <FormattedMessage id="browser" /> :
-                <HiGlobeAlt/>
+                <HiOutlineGlobeAlt/>
             }
           </Sidebar.Item>
           <Sidebar.Item
             style={{ cursor: 'pointer',  }}
             active={isActive(ROUTES.MY_STORES)}
             onClick={() => navigate(ROUTES.MY_STORES)}
-            icon={leftNavExpanded && HiOutlineCollection}
+            icon={leftNavExpanded && HiOutlineArchive}
           >
             {
               (leftNavExpanded) ?
                 <FormattedMessage id="my-stores" /> :
-                <HiOutlineCollection/>
+                <HiOutlineArchive/>
             }
           </Sidebar.Item>
           <Sidebar.Item
@@ -98,7 +99,7 @@ const LeftNav = () => {
           >
             {
               (leftNavExpanded) ?
-                <FormattedMessage id="Subscriptions" /> :
+                <FormattedMessage id="subscriptions" /> :
                 <HiOutlineInboxIn/>
             }
           </Sidebar.Item>

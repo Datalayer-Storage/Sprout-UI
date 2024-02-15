@@ -1,10 +1,9 @@
 import _ from 'lodash';
 import { useMemo } from 'react';
 import { Caption2, Caption1 } from '@/components';
-import { withTheme } from 'styled-components';
 import { FormattedMessage } from 'react-intl';
 
-const DataTable = withTheme(({ columns, data, isLoading = false }) => {
+const DataTable = (({ columns, data, isLoading = false }) => {
   const columnMap = useMemo(() => {
     return columns.reduce((map, curr) => {
       map[curr.key] = curr;
