@@ -34,8 +34,8 @@ export const sendVariableFee = (network: string, numSpendableCoins: number, fee:
 export const calcSizeBasedDeployFee = (sizeMb: number): number => {
   const fee: number = (sizeMb / 100) * feePer100Mb;
 
-  if (fee < 1e-9){ // check: fee is less than a mojo
-    return 0;
+  if (fee < stdFee){ // check: fee is less than a mojo
+    return stdFee;
   } else {
     return fee;
   }

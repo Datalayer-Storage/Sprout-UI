@@ -72,7 +72,7 @@
   "you-must-have-at-least-1-spendable-coin-in-your-wallet-for-this-action"
   : "You must have at least 1 spendable coin in your wallet for this action.",
   "0.01-xch-fee": "0.01 XCH Fee",
-  "0.01-xch-per-100-megabytes-deployed": "0.01 XCH per 100 Megabytes deployed",
+  "0.01-xch-per-100-megabytes-deployed-min-fee-of-0.01-xch": "0.01 XCH per 100 Megabytes deployed. Min fee of 0.01 XCH",
   "missing-files-in-project-folder-will-be-deleted-from-the-store"
   : "Missing files in the project folder will be deleted from the store",
   "new-files-will-be-upserted,-but-missing-files-in-the-project-folder-will-not-be-deleted"

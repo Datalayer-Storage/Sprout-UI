@@ -152,7 +152,7 @@ const EditStore: React.FC = () => {
                 <FormattedMessage id="size"/>: {selectedFolderSizeMb.toFixed(2)} MB
               </p>
             </div>
-            <Tooltip content={<FormattedMessage id={"0.01-xch-per-100-megabytes-deployed"}/>}>
+            <Tooltip content={<FormattedMessage id={"0.01-xch-per-100-megabytes-deployed-min-fee-of-0.01-xch"}/>}>
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 <FormattedMessage id="fee"/>: {deployFee} XCH
               </p>
