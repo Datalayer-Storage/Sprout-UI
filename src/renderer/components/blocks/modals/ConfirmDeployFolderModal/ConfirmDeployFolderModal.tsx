@@ -5,11 +5,13 @@ import {FormattedMessage} from "react-intl";
 interface ConfirmDeployFolderProps {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
+  folderSizeMb: number;
+  fee: number;
   onDeployFolder: () => void;
 }
 
 const ConfirmDeployFolderModal: React.FC<ConfirmDeployFolderProps> = (
-  {showModal, setShowModal, onDeployFolder}: ConfirmDeployFolderProps) => {
+  {showModal, setShowModal, folderSizeMb, fee, onDeployFolder}: ConfirmDeployFolderProps) => {
 
   const accept = () => {
     setShowModal(false);
@@ -27,11 +29,16 @@ const ConfirmDeployFolderModal: React.FC<ConfirmDeployFolderProps> = (
       </Modal.Header>
       <Modal.Body>
         <div className="space-y-6">
-          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            <FormattedMessage
-              id="this-action-will-incur-a-non-refundable-fee-of-0.01-xch-in-addition-to-standard-chia-blockchain-fees"
-            />
-          </p>
+          <div className="space-y-2">
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>
+              {" " + fee + " "}
+              <FormattedMessage id="xch-in-addition-to-standard-chia-blockchain-fees"/>
+            </p>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              {folderSizeMb.toFixed(2) + " MB "} <FormattedMessage id="of-data-will-be-deployed"/>
+            </p>
+          </div>
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <FormattedMessage id="do-you-want-to-proceed-with-folder-deploy?"/>
           </p>
