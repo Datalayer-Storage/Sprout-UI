@@ -21,6 +21,7 @@
   "subscriptions": "Subscriptions",
   "invalid-store-id": "Invalid Store ID",
   "selected-store-id": "Selected store ID:",
+  "subscription-store-id": "Subscription Store ID",
   "store-id": "Store ID",
   "store-count": "Store Count: ",
   "select-directory-to-deploy": "Select directory to deploy",
