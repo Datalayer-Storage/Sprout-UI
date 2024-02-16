@@ -9,7 +9,6 @@ export const browserSlice = createSlice({
   initialState,
   reducers: {
     visitPage: (state, { payload }) => {
-      console.log('visitPage', payload);
       const timestamp: string = new Date().toDateString();
 
       const { page, fallbackStoreProvider, ownedStores } = payload;

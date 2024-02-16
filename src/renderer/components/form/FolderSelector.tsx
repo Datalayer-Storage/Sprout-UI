@@ -5,7 +5,10 @@ import { selectFolderDialogue } from '@/utils/os';
 import { SelectFolderDialogResponse } from '@/vite-env';
 
 interface FolderSelectorProps {
-  onSelect: (path: string) => void;
+  onSelect: (
+    path: string,
+    sizeMb: number,
+    fee: number) => void;
 }
 
 const FolderSelector: React.FC<FolderSelectorProps> = ({ onSelect }) => {
@@ -15,8 +18,8 @@ const FolderSelector: React.FC<FolderSelectorProps> = ({ onSelect }) => {
     const openFolderResponse: SelectFolderDialogResponse = await selectFolderDialogue();
 
     if (openFolderResponse?.success) {
-      setInputValue(openFolderResponse.filePath);
-      onSelect(openFolderResponse.filePath);
+      setInputValue(openFolderResponse.folderPath);
+      onSelect(openFolderResponse.folderPath, openFolderResponse.folderSizeMb, openFolderResponse.fee);
     } else if (openFolderResponse?.error) {
       console.error('Failed to open folder. Error:\n', openFolderResponse.error);
     }
@@ -24,11 +27,9 @@ const FolderSelector: React.FC<FolderSelectorProps> = ({ onSelect }) => {
 
   return (
     <div className="flex w-full">
-
-        <Button style={{width: 150, marginRight: 5}} onClick={handleOpenFolder} className="capitalize">
-          <FormattedMessage id="choose-folder" />
-        </Button>
-
+      <Button style={{width: 150, marginRight: 5}} onClick={handleOpenFolder} className="capitalize">
+        <FormattedMessage id="choose-folder" />
+      </Button>
       <TextInput
         type="text"
         value={inputValue}
