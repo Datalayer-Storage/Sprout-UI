@@ -22,8 +22,10 @@ import {
   SubscribeParams,
   UnsubscribeParams,
   WalletLogInParams,
-  // @ts-ignore
 } from 'chia-datalayer';
+
+// @ts-ignore
+import {BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
 const configTag: string = 'datalayerConfig';
 const mirrorsTag: string = 'mirrors';
@@ -105,6 +107,18 @@ const datalayerApi = ipcApi.injectEndpoints({
       query: (args) => ({ channel: 'datalayerGetSubscriptions', args }),
       //@ts-ignore
       providesTags: () => [subscriptionsTag],
+      transformResponse(baseQueryReturnValue: BaseQueryResult<{id: string, storeId: string}[]>):
+        Promise<{id: string, storeId: string}[]> | [] {
+        return {
+          ...baseQueryReturnValue,
+          store_ids:
+            baseQueryReturnValue.store_ids ?
+            baseQueryReturnValue.store_ids.map((storeId: string) => ({
+              id: storeId,
+              storeId
+            })) : []
+        };
+      }
     }),
 
     getValue: builder.query<any, GetValueParams>({
@@ -118,7 +132,7 @@ const datalayerApi = ipcApi.injectEndpoints({
     }),
 
     subscribe: builder.mutation<any, SubscribeParams>({
-      query: (args) => ({ channel: 'datalayerRemoveSubscriptions', args }),
+      query: (args) => ({ channel: 'datalayerSubscribe', args }),
       //@ts-ignore
       invalidatesTags: () => [subscriptionsTag],
     }),

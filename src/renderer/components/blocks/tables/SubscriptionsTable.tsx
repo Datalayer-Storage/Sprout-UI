@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {DataTable, LoadingSpinnerCard, StoreId} from "@/components";
 import {useGetSubscriptionsQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
@@ -6,7 +6,7 @@ import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
 import {Button} from 'flowbite-react';
 import {SetStoreLabelModal} from "@/components/blocks/modals/SetStoreLabelModal";
-import {useSelector} from "react-redux";
+import {FauxLinkButton} from "@/components/blocks/buttons/FauxLinkButton/FauxLinkButton";
 
 interface SubscriptionsTableProps {
   setTableContentsLoaded?: (loaded: boolean) => void;
@@ -14,8 +14,6 @@ interface SubscriptionsTableProps {
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContentsLoaded}) => {
 
-  const storeId: string = "storeId";
-  const view: string = "view";
   const {
     data: subscriptionsData,
     isLoading: subscriptionQueryLoading,
@@ -23,7 +21,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     refetch: refetchSubscriptions
   } = useGetSubscriptionsQuery({});
   const [storeIdToEdit, setStoreIdToEdit] = useState<string>('');
-  const userOptions = useSelector((state: any) => state.userOptions);
 
   useEffect(() => {
     if (setTableContentsLoaded && subscriptionsData?.success && !subscriptionQueryLoading && !getSubscriptionsError){
@@ -32,6 +29,10 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       setTableContentsLoaded(false);
     }
   }, [subscriptionsData, subscriptionQueryLoading, getSubscriptionsError, setTableContentsLoaded]);
+
+  const handleUnsubscribe = useCallback((storeId: string) => {
+    console.log('unsubscribe', storeId);
+  }, []);
 
   const ReloadButton: React.FC = () => {
     return (
@@ -48,7 +49,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
   const columns = useMemo(() => [
     {
       title: <FormattedMessage id={"subscription-store-id"}/>,
-      key: storeId,
+      key: "storeId",
       render: (row: any) => {
         return (
           <StoreId storeId={row.storeId} setStoreIdToEdit={setStoreIdToEdit}/>
@@ -57,7 +58,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     },
     {
       title: '',
-      key: view,
+      key: "view",
       render: (row: any) => {
         return (
           <Link
@@ -69,10 +70,19 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
           </Link>
         );
       }
+    },
+    {
+      title: '',
+      key: "unsubscribe",
+      render: (row: any) => {
+        return (
+          <FauxLinkButton onClick={() => handleUnsubscribe(row.storeId)}>
+            <FormattedMessage id={'unsubscribe'}/>
+          </FauxLinkButton>
+        );
+      }
     }
-  ], [userOptions.storeLabels, setStoreIdToEdit]);
-
-  const tableData: {storeId: string}[] = subscriptionsData?.store_ids?.map(storeId => ({storeId}));
+  ], [handleUnsubscribe]);
 
   return (
     <>
@@ -81,7 +91,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         : // not loading, handle error or display data
         (getSubscriptionsError || !subscriptionsData?.success
           ? <ReloadButton/>
-          : <DataTable columns={columns} data={tableData} isLoading={subscriptionQueryLoading}/>
+          : <DataTable columns={columns} data={subscriptionsData?.store_ids} isLoading={subscriptionQueryLoading}/>
         )
       }
       <SetStoreLabelModal

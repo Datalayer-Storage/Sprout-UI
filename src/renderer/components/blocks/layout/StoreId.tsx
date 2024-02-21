@@ -39,9 +39,7 @@ const StoreId: React.FC<StoreIdProps> = ({storeId, setStoreIdToEdit}) => {
               justifyContent: 'center',
             }}
             >
-              <p>
-                {storeLabel && <div>{storeId}</div>}
-              </p>
+              {storeLabel && <p>{storeId}</p>}
             </div>
           </div>
         }

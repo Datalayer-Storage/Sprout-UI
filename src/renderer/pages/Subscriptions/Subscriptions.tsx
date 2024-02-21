@@ -18,12 +18,13 @@ const Subscriptions: React.FC = () => {
           <div style={{
             display: "flex",
             flexDirection: 'column',
-            justifyContent:'center',
+            justifyContent: 'center',
             inlineSize: 'min-content',
-            whiteSpace: 'nowrap'}}>
-            <Tooltip content={<FormattedMessage id={"add-store-subscription-tooltip"}/>}>
+            whiteSpace: 'nowrap'
+          }}>
+            <Tooltip content={<FormattedMessage id={"add-store-subscription"}/>}>
               <p>
-                <FormattedMessage id={"store-id-to-subscribe-to"}/>
+                <FormattedMessage id={"store-id"}/>
               </p>
             </Tooltip>
           </div>
