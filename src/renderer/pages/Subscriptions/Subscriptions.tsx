@@ -1,15 +1,37 @@
 import {Spacer, SubscriptionsTable} from "@/components";
-import {useCallback, useState} from "react";
-import {Button, TextInput, Tooltip} from "flowbite-react";
+import React, {useCallback, useEffect, useState} from "react";
+import {Button, Spinner, TextInput, Tooltip} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
+import {useSubscribeMutation} from "@/api/ipc/datalayer";
+import {AddSubscriptionErrorModal} from "@/components";
 
 const Subscriptions: React.FC = () => {
 
+  const [subscriptionStoreIdToAdd, setSubscriptionStoreIdToAdd] = useState<string>('');
   const [subscriptionsLoaded, setSubscriptionsLoaded] = useState<boolean>(false);
+  const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const [triggerSubscribe, {
+    isLoading: subscribeMutationLoading,
+    error: subscribeError
+  }] = useSubscribeMutation();
+
+  // console statements
+  console.log(`loading status: ${subscribeMutationLoading}`);
+  console.log(`error status: ${subscribeError}`);
+
+  const handleTextInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSubscriptionStoreIdToAdd(event.target.value || '');
+  }, []);
 
   const handleAddSubscription = useCallback(() => {
+    triggerSubscribe({id: subscriptionStoreIdToAdd});
+  }, [triggerSubscribe, subscriptionStoreIdToAdd]);
 
-  }, [])
+  useEffect(() => {
+    if (subscribeError){
+      setShowErrorModal(true);
+    }
+  }, [subscribeError, subscribeMutationLoading]);
 
   return (
     <>
@@ -29,17 +51,21 @@ const Subscriptions: React.FC = () => {
             </Tooltip>
           </div>
           <div style={{width: "100%", marginLeft: '10px', marginRight: '10px'}}>
-            <TextInput/>
+            <TextInput onChange={handleTextInputChange}/>
           </div>
           <Button
-            onClick={handleAddSubscription}
-            style={{inlineSize: 'min-content', whiteSpace: 'nowrap'}}>
+            disabled={subscriptionStoreIdToAdd.length < 64 || subscriptionStoreIdToAdd.length > 64}
+            onClick={() => handleAddSubscription()}
+            style={{inlineSize: 'min-content', whiteSpace: 'nowrap'}}
+          >
+            {subscribeMutationLoading && <Spinner/>}
             <FormattedMessage id={"add-store-subscription"}/>
           </Button>
         </div>
       }
       <Spacer size={10}/>
       <SubscriptionsTable setTableContentsLoaded={setSubscriptionsLoaded}/>
+      <AddSubscriptionErrorModal showModal={showErrorModal} setShowModal={setShowErrorModal}/>
     </>
   );
 }
