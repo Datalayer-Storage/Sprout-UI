@@ -52,6 +52,8 @@
   "do-you-want-to-proceed-with-store-creation?": "Do you want to proceed with store creation?",
   "yes-create-store": "Yes, Create Store",
   "no-cancel-store-creation": "No, Cancel Store Creation",
+  "yes-unsubscribe": "Yes, unsubscribe",
+  "no-cancel": "No, cancel",
   "web2-gateway-settings" :"Web2 Gateway Settings",
   "data-layer-storage-settings" :"Data Layer Storage Settings",
   "deployment-settings" :"Deployment Settings",
@@ -89,5 +91,10 @@
   "do-you-want-to-proceed-with-folder-deploy?": "Do you want to proceed with folder deploy?",
   "yes-deploy-folder": "Yes, Deploy Folder",
   "no-cancel-folder-deploy": "No, Cancel Folder Deploy",
-  "of-data-will-be-deployed": "of data will be deployed."
+  "of-data-will-be-deployed": "of data will be deployed.",
+  "unsubscribing-from-this-store-will-remove-its-associated-data-from-this-device"
+  : "Unsubscribing from this store will remove its associated data from this device.",
+  "this-subscription-will-appear-in-your-subscriptions-list-until-all-of-its-local-data-has-been-removed"
+  : "This subscription will appear in your subscriptions list until all of its local data has been removed.",
+  "do-you-want-to-unsubscribe-from-this-store?": "Do you want to unsubscribe from this store?"
 }

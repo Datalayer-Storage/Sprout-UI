@@ -10,14 +10,11 @@ const Subscriptions: React.FC = () => {
   const [subscriptionStoreIdToAdd, setSubscriptionStoreIdToAdd] = useState<string>('');
   const [subscriptionsLoaded, setSubscriptionsLoaded] = useState<boolean>(false);
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
-  const [triggerSubscribe, {
-    isLoading: subscribeMutationLoading,
-    error: subscribeError
-  }] = useSubscribeMutation();
 
-  // console statements
-  console.log(`loading status: ${subscribeMutationLoading}`);
-  console.log(`error status: ${subscribeError}`);
+  const [triggerSubscribe, {
+    data: subscribeMutationData,
+    isLoading: subscribeMutationLoading
+  }] = useSubscribeMutation();
 
   const handleTextInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSubscriptionStoreIdToAdd(event.target.value || '');
@@ -28,10 +25,16 @@ const Subscriptions: React.FC = () => {
   }, [triggerSubscribe, subscriptionStoreIdToAdd]);
 
   useEffect(() => {
-    if (subscribeError){
+    if (subscribeMutationData?.error){
       setShowErrorModal(true);
     }
-  }, [subscribeError, subscribeMutationLoading]);
+  }, [subscribeMutationData]);
+
+  useEffect(() => {
+    if (subscribeMutationData?.success) {
+      setSubscriptionStoreIdToAdd('');
+    }
+  }, [subscribeMutationData]);
 
   return (
     <>
@@ -65,7 +68,11 @@ const Subscriptions: React.FC = () => {
       }
       <Spacer size={10}/>
       <SubscriptionsTable setTableContentsLoaded={setSubscriptionsLoaded}/>
-      <AddSubscriptionErrorModal showModal={showErrorModal} setShowModal={setShowErrorModal}/>
+      <AddSubscriptionErrorModal
+        showModal={showErrorModal}
+        setShowModal={setShowErrorModal}
+        errorMessage={subscribeMutationData?.error}
+      />
     </>
   );
 }

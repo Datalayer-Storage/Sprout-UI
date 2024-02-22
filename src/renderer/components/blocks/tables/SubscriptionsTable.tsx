@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {DataTable, LoadingSpinnerCard, StoreId} from "@/components";
-import {useGetSubscriptionsQuery} from "@/api/ipc/datalayer";
+import {ConfirmUnsubscribeModal, DataTable, LoadingSpinnerCard, StoreId} from "@/components";
+import {useGetSubscriptionsQuery, useUnsubscribeMutation} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
@@ -14,13 +14,19 @@ interface SubscriptionsTableProps {
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContentsLoaded}) => {
 
+  const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState('');
+  const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
+  const [triggerUnsubscribe] = useUnsubscribeMutation();
   const {
     data: subscriptionsData,
     isLoading: subscriptionQueryLoading,
     error: getSubscriptionsError,
     refetch: refetchSubscriptions
   } = useGetSubscriptionsQuery({});
-  const [storeIdToEdit, setStoreIdToEdit] = useState<string>('');
+
+  const handleUnsubscribe = useCallback((storeId: string) => {
+    triggerUnsubscribe({id: storeId})
+  }, [triggerUnsubscribe]);
 
   useEffect(() => {
     if (setTableContentsLoaded && subscriptionsData?.success && !subscriptionQueryLoading && !getSubscriptionsError){
@@ -29,10 +35,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       setTableContentsLoaded(false);
     }
   }, [subscriptionsData, subscriptionQueryLoading, getSubscriptionsError, setTableContentsLoaded]);
-
-  const handleUnsubscribe = useCallback((storeId: string) => {
-    console.log('unsubscribe', storeId);
-  }, []);
 
   const ReloadButton: React.FC = () => {
     return (
@@ -52,7 +54,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       key: "storeId",
       render: (row: any) => {
         return (
-          <StoreId storeId={row.storeId} setStoreIdToEdit={setStoreIdToEdit}/>
+          <StoreId storeId={row.storeId} setStoreIdToEdit={setStoreIdToLabel}/>
         );
       }
     },
@@ -75,14 +77,17 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       title: '',
       key: "unsubscribe",
       render: (row: any) => {
+
         return (
-          <FauxLinkButton onClick={() => handleUnsubscribe(row.storeId)}>
+          <FauxLinkButton onClick={() => setStoreIdToUnsubscribe(row.storeId)}>
             <FormattedMessage id={'unsubscribe'}/>
           </FauxLinkButton>
         );
       }
     }
-  ], [handleUnsubscribe]);
+  ], [setStoreIdToUnsubscribe]);
+
+  console.log(subscriptionsData?.store_ids);
 
   return (
     <>
@@ -95,9 +100,13 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         )
       }
       <SetStoreLabelModal
-        storeId={storeIdToEdit}
-        setStoreId={setStoreIdToEdit}
+        storeId={storeIdToLabel}
+        setStoreId={setStoreIdToLabel}
       />
+      <ConfirmUnsubscribeModal
+        storeId={storeIdToUnsubscribe}
+        setStoreId={setStoreIdToUnsubscribe}
+        onUnsubscribe={handleUnsubscribe}/>
     </>
   );
 }

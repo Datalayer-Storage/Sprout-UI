@@ -140,13 +140,13 @@ const datalayerApi = ipcApi.injectEndpoints({
     unsubscribe: builder.mutation<any, UnsubscribeParams>({
       query: (args) => ({ channel: 'datalayerUnsubscribe', args }),
       //@ts-ignore
-      invalidates: () => [subscriptionsTag],
+      invalidatesTags: () => [subscriptionsTag],
     }),
 
     updateDataStore: builder.mutation<any, BatchUpdateParams>({
       query: (args) => ({ channel: 'datalayerUpdateDataStore', args }),
       //@ts-ignore
-      invalidates: () => [dataStoresTag],
+      invalidatesTags: () => [dataStoresTag],
     }),
 
     walletLogin: builder.mutation<any, WalletLogInParams>({
@@ -160,5 +160,6 @@ export const {
   useGetOwnedStoresQuery,
   useGetKeysQuery,
   useGetSubscriptionsQuery,
-  useSubscribeMutation
+  useSubscribeMutation,
+  useUnsubscribeMutation
 } = datalayerApi;
