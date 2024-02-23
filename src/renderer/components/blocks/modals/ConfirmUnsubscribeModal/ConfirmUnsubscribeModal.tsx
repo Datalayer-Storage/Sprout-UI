@@ -62,7 +62,7 @@ const ConfirmUnsubscribeModal: React.FC<ConfirmUnsubscribeModalProps> = (
           <FormattedMessage id="yes-unsubscribe"/>
         </Button>
         <Button color="gray" onClick={cancel}>
-          <FormattedMessage id="no-cancel"/>
+          <FormattedMessage id="cancel"/>
         </Button>
       </Modal.Footer>
     </Modal>
