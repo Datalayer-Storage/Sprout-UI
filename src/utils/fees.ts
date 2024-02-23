@@ -15,7 +15,7 @@ export const sendFixedFee = (network: string, numSpendableCoins: number) => {
       address: walletAddress,
       amount: xchToMojos(stdFeeXch)
     };
-    wallet.sendTransaction(request);
+    return wallet.sendTransaction(request);
   }
 };
 
