@@ -32,7 +32,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
   }, []);
 
   const handleEditStoreLabel = useCallback((storeId: string) => {
-    console.log('handleEditStoreLabel');
     setStoreIdToLabel(storeId);
     setShowStoreLabelModal(true);
   }, []);
