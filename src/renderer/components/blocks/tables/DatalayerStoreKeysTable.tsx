@@ -15,17 +15,18 @@ interface DatalayerStoreKeysTableProps {
 }
 
 const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
-  { onViewKeyData = _.noop, setTableContentsLoaded}: DatalayerStoreKeysTableProps,
+  { onViewKeyData = _.noop, setTableContentsLoaded = _.noop }: DatalayerStoreKeysTableProps,
 ) => {
 
-  const passedState = useLocation().state;
-  const getKeysParams: GetKeysParams = { id: passedState };
+  const location = useLocation();
+  const storeId = location.state?.storeId;
+  const getKeysParams: GetKeysParams = { id: storeId };
   const { data, isLoading, error, refetch } = useGetKeysQuery(getKeysParams);
 
   useEffect(() => {
-    if ((isLoading || error) && setTableContentsLoaded) {
+    if (isLoading || error) {
       setTableContentsLoaded(false);
-    } else if (setTableContentsLoaded) {
+    } else {
       setTableContentsLoaded(true);
     }
   }, [setTableContentsLoaded, isLoading, error]);

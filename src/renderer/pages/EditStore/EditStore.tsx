@@ -7,7 +7,7 @@ import {
 } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 import {
-  SelectedStoreIdCard,
+  SetStoreLabel,
   Spacer,
   XTerm,
   FolderSelector
@@ -93,7 +93,9 @@ const EditStore: React.FC = () => {
 
   return (
     <>
-      <SelectedStoreIdCard storeId={storeId} />
+      <Card>
+        <SetStoreLabel storeId={storeId} />
+      </Card>
       <Spacer size={10} />
       <Card>
         <FolderSelector onSelect={handleSelectFolder} />

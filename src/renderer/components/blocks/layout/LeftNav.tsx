@@ -4,10 +4,12 @@ import { Button } from 'flowbite-react';
 import { 
   HiOutlineArrowLeft, 
   HiOutlineArrowRight,
-  HiGlobeAlt,
+  HiOutlineGlobeAlt,
+  HiOutlineInboxIn,
+  HiOutlineArchive,
 } from 'react-icons/hi';
-import { FaRegRectangleList } from 'react-icons/fa6'
-import { IoSettingsOutline } from 'react-icons/io5';
+//import { IoSettingsOutline } from 'react-icons/io5';
+import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
@@ -68,36 +70,48 @@ const LeftNav = () => {
             style={{ cursor: 'pointer', justifyContent: 'center' }}
             active={isActive(ROUTES.BROWSER)}
             onClick={() => navigate(ROUTES.BROWSER)}
-            icon={leftNavExpanded && HiGlobeAlt}
+            icon={leftNavExpanded && HiOutlineGlobeAlt}
           >
             {
               (leftNavExpanded) ?
                 <FormattedMessage id="browser" /> :
-                <HiGlobeAlt/>
+                <HiOutlineGlobeAlt/>
             }
           </Sidebar.Item>
           <Sidebar.Item
             style={{ cursor: 'pointer',  }}
             active={isActive(ROUTES.MY_STORES)}
             onClick={() => navigate(ROUTES.MY_STORES)}
-            icon={leftNavExpanded && FaRegRectangleList}
+            icon={leftNavExpanded && HiOutlineArchive}
           >
             {
               (leftNavExpanded) ?
                 <FormattedMessage id="my-stores" /> :
-                <FaRegRectangleList/>
+                <HiOutlineArchive/>
+            }
+          </Sidebar.Item>
+          <Sidebar.Item
+            style={{ cursor: 'pointer',  }}
+            active={isActive(ROUTES.SUBSCRIPTIONS)}
+            onClick={() => navigate(ROUTES.SUBSCRIPTIONS)}
+            icon={leftNavExpanded && HiOutlineInboxIn}
+          >
+            {
+              (leftNavExpanded) ?
+                <FormattedMessage id="subscriptions" /> :
+                <HiOutlineInboxIn/>
             }
           </Sidebar.Item>
           <Sidebar.Item
             style={{ cursor: 'pointer' }}
             active={isActive(ROUTES.SETTINGS)}
             onClick={() => navigate(ROUTES.SETTINGS)}
-            icon={leftNavExpanded && IoSettingsOutline}
+            icon={leftNavExpanded && LuSettings}
           >
             {
               (leftNavExpanded) ?
                 <FormattedMessage id="settings" /> :
-                <IoSettingsOutline/>
+                <LuSettings/>
             }
           </Sidebar.Item>
         </Sidebar.ItemGroup>

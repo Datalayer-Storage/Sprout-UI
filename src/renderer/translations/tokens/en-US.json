@@ -13,11 +13,15 @@
   "edit-store": "Edit Store",
   "back-to-my-stores": "Back to My Stores",
   "key": "Key",
+  "and": "and",
   "deploy": "Deploy",
   "success": "Success",
   "important": "Important",
   "reset": "Reset",
-  "label": "Label",
+  "store-label": "Store Label",
+  "subscriptions": "Subscriptions",
+  "unsubscribe": "Unsubscribe",
+  "set-store-label": "Set Store Label",
   "size": "Size",
   "fee": "Fee",
   "invalid-store-id": "Invalid Store ID",
@@ -28,7 +32,7 @@
   "no-data-in-store": "No data in store",
   "no-stores-found": "No Stores Found",
   "create-new-store": "Create New Store",
-  "unable-to-load-stores-click-to-retry": "Unable to load stores. Click to retry.",
+  "unable-to-load-click-to-retry": "Unable to load. Click to retry.",
   "insufficient-wallet-balance": "Insufficient wallet balance.",
   "please-try-again-later": "Please try again later.",
   "loading-...": "Loading ...",
@@ -39,12 +43,14 @@
   "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
   "your-balance-must-be-at-least-one-Mojo-to-create-a-store": "Your balance must be at least 1 Mojo to create a store.",
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
-  "ensure-chia-services-are-running-and-accessible.": "Ensure Chia services are running and accessible.",
+  "ensure-chia-services-are-running-and-accessible": "Ensure Chia services are running and accessible.",
   "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
   : "Creating a store is a permanent action that cannot be un-done!",
   "do-you-want-to-proceed-with-store-creation?": "Do you want to proceed with store creation?",
   "yes-create-store": "Yes, Create Store",
   "no-cancel-store-creation": "No, Cancel Store Creation",
+  "yes-unsubscribe": "Yes, unsubscribe",
+  "cancel": "Cancel",
   "web2-gateway-settings" :"Web2 Gateway Settings",
   "data-layer-storage-settings" :"Data Layer Storage Settings",
   "deployment-settings" :"Deployment Settings",
@@ -82,5 +88,15 @@
   "do-you-want-to-proceed-with-folder-deploy?": "Do you want to proceed with folder deploy?",
   "yes-deploy-folder": "Yes, Deploy Folder",
   "no-cancel-folder-deploy": "No, Cancel Folder Deploy",
-  "of-data-will-be-deployed": "of data will be deployed."
+  "of-data-will-be-deployed": "of data will be deployed.",
+  "unsubscribing-from-this-store-will-remove-its-associated-data-from-this-device"
+  : "Unsubscribing from this store will remove its associated data from this device.",
+  "this-subscription-will-appear-in-your-subscriptions-list-until-all-of-its-local-data-has-been-removed"
+  : "This subscription will appear in your subscriptions list until all of its local data has been removed.",
+  "do-you-want-to-unsubscribe-from-this-store?": "Do you want to unsubscribe from this store?",
+  "unable-to-add-subscription": "Unable to add subscription",
+  "you-cannot-subscribe-to-your-own-store": "You cannot subscribe to your own store.",
+  "confirm-entered-store-id-is-correct-and-references-a-valid-store"
+  : "Confirm entered store ID is correct and references a valid store.",
+  "no-data-found": "No data found"
 }

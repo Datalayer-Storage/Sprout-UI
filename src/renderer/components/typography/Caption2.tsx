@@ -13,7 +13,7 @@ const Content = styled('span')`
   font-weight: 700;
   font-size: 14px;
   line-height: 150%;
-  color: ${(props) => props.color || props.theme.surface.slot1.text.hex};
+  color: ${(props) => props.color || 'black'};
 `;
 
 const Caption2: React.FC<Caption2Props> = ({ children, style, color }) => 

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Card, Table, TableBody } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
-import { useGetOwnedStoresQuery } from '@/api/ipc/datalayer';
+import {useGetOwnedStoresQuery} from '@/api/ipc/datalayer';
 import { LoadingSpinnerCard, Spacer } from '@/components';
 import { useSelector } from 'react-redux';
 import {Link} from "react-router-dom";
@@ -15,7 +15,12 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
   {setTableContentsLoaded}: OwnedStoreSelectionTableProps
 ) => {
   const userOptions = useSelector((state: any) => state.userOptions);
-  const { data, isLoading, error, refetch } = useGetOwnedStoresQuery({});
+  const {
+    data,
+    isLoading,
+    error,
+    refetch,
+  } = useGetOwnedStoresQuery({});
 
   const [numStores, setNumStores] = useState<number>(0);
 
@@ -82,7 +87,7 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
     return (
       <>
         <Button onClick={refetch}>
-          <FormattedMessage id={'unable-to-load-stores-click-to-retry'} />
+          <FormattedMessage id={'unable-to-load-click-to-retry'} />
         </Button>
       </>
     );
