@@ -8,11 +8,19 @@ export const appSlice = createSlice({
     setLocale: (state, { payload }) => {
       state.locale = payload;
     },
+
+    invalidateCheckForTXToken: (state) => {
+      state.checkForPendingTxToken = Math.random();
+      setTimeout(() => {
+        state.checkForPendingTxToken = Math.random();
+      }, 1000);
+    }
   },
 });
 
 export const {
   setLocale,
+  invalidateCheckForTXToken
 } = appSlice.actions;
 
 export default appSlice.reducer;

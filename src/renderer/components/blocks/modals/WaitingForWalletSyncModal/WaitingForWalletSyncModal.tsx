@@ -1,42 +1,35 @@
-import _ from 'lodash';
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Modal, Spinner } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
-import {
-  useGetWalletSyncStatusQuery,
-  useGetTransactionsQuery,
-} from '@/api/ipc/wallet';
+import { useGetWalletSyncStatusQuery, useGetWalletBalanceQuery } from '@/api/ipc/wallet';
 
-interface WaitingForWalletSyncProps {
-  onClose: () => void;
-}
+const WaitingForWalletSyncModal: React.FC = () => {
+  const appStore = useSelector((state: any) => state.app);
 
-const WaitingForWalletSyncModal: React.FC<WaitingForWalletSyncProps> = ({
-  onClose = _.noop,
-}: WaitingForWalletSyncProps) => {
-  const { data: syncStatus } = useGetWalletSyncStatusQuery(null, {
-    pollingInterval: 6000,
+  const { data: syncStatus, refetch: refetchSyncStatus } = useGetWalletSyncStatusQuery(null, {
+    pollingInterval: 3000,
+    refetchOnMountOrArgChange: true
   });
 
-  const { data: transactionData } = useGetTransactionsQuery(null, {
+  const { data: walletData, refetch: refetchWalletBalance } = useGetWalletBalanceQuery(null, {
     pollingInterval: 5000,
+    refetchOnMountOrArgChange: true
   });
 
   useEffect(() => {
-    if (!transactionData || !syncStatus) {
-      return;
-    }
-    const unconfirmedTransactions = transactionData.transactions.some(
-      (transaction) => !transaction.confirmed,
-    );
+    refetchSyncStatus();
+    refetchWalletBalance();
+    setTimeout(() => {
+      refetchSyncStatus();
+      refetchWalletBalance();
+    }, 2000);
+  }, [appStore.checkForPendingTxToken, refetchSyncStatus, refetchWalletBalance]);
 
-    if (syncStatus?.synced && !unconfirmedTransactions) {
-      onClose();
-    }
-  }, [syncStatus, onClose, transactionData]);
+  console.log(syncStatus?.synced, walletData?.wallet_balance?.pending_coin_removal_count)
 
   return (
-    <Modal show={true}>
+    <Modal show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count)}>
       <Modal.Header>
         <FormattedMessage id="waiting-for-transactions-to-confirm" />
       </Modal.Header>

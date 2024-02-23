@@ -13,7 +13,7 @@ export async function mountOsHandles() {
         });
         const selectedFilePath: string = result.filePaths[0];
         console.log('Selected folder path:', selectedFilePath);
-        const selectedFolderSize = calcFolderSize(selectedFilePath);
+        const selectedFolderSize = await calcFolderSize(selectedFilePath);
         const fee = calcSizeBasedDeployFee(selectedFolderSize);
 
         return {
