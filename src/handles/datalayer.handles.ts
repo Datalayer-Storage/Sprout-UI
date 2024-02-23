@@ -84,19 +84,31 @@ export async function mountDatalayerRpcHandles() {
   });
 
   ipcMain.handle('datalayerGetKeys', (_, getKeysParams: GetKeysParams, options: Options) => {
-    return datalayer.getKeys(getKeysParams, options);
+    return datalayer.getKeys(getKeysParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetKeysValues', (_, getKeysValuesParams: GetKeysValuesParams, options: Options) => {
-    return datalayer.getKeysValues(getKeysValuesParams, options);
+    return datalayer.getKeysValues(getKeysValuesParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetKvDiff', (_, getKvDiffParams: GetKvDiffParams, options: Options) => {
-    return datalayer.getKvDiff(getKvDiffParams, options);
+    return datalayer.getKvDiff(getKvDiffParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetMirrors', (_, getMirrorsParams: GetMirrorsParams, options: Options) => {
-    return datalayer.getMirrors(getMirrorsParams, options);
+    return datalayer.getMirrors(getMirrorsParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetOwnedStores', () => {
@@ -104,19 +116,31 @@ export async function mountDatalayerRpcHandles() {
   });
 
   ipcMain.handle('datalayerGetRoot', (_, getRootParams: GetRootParams, options: Options) => {
-    return datalayer.getRoot(getRootParams, options);
+    return datalayer.getRoot(getRootParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetRootHistory', (_, getRootHistoryParams: GetRootHistoryParams, options: Options) => {
-    return datalayer.getRootHistory(getRootHistoryParams, options);
+    return datalayer.getRootHistory(getRootHistoryParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetSyncStatus', (_, getSyncStatusParams: GetSyncStatusParams, options: Options) => {
-    return datalayer.getSyncStatus(getSyncStatusParams, options);
+    return datalayer.getSyncStatus(getSyncStatusParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetSubscriptions', (_, options: Options) => {
-    return datalayer.getSubscriptions(options);
+    return datalayer.getSubscriptions({
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerGetValue', (_, getValueParams: GetValueParams, options: Options) => {
@@ -135,11 +159,17 @@ export async function mountDatalayerRpcHandles() {
   );
 
   ipcMain.handle('datalayerSubscribe', (_, subscribeParams: SubscribeParams, options: Options) => {
-    return datalayer.subscribe(subscribeParams, options);
+    return datalayer.subscribe(subscribeParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerUnsubscribe', (_, unsubscribeParams: UnsubscribeParams, options: Options) => {
-    return datalayer.unsubscribe(unsubscribeParams, options);
+    return datalayer.unsubscribe(unsubscribeParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('datalayerUpdateDataStore', (_, batchUpdateParams: BatchUpdateParams, options: Options) => {
