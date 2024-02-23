@@ -28,27 +28,39 @@ export async function mountWalletRpcHandles() {
   });
 
   ipcMain.handle('walletGetCoinRecords', (_, options: any) => {
-    return wallet.getCoinRecords(options);
+    return wallet.getCoinRecords({
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle(
     'walletGetPrivateKey',
     (_, getPrivateKeyResponse: GetPrivateKeyRequest, options: any) => {
-      return wallet.getPrivateKey(getPrivateKeyResponse, options);
+      return wallet.getPrivateKey(getPrivateKeyResponse, {
+        ...options,
+        waitForWalletAvailability: false
+      });
     },
   );
 
   ipcMain.handle(
     'walletGetCoinRecordsByName',
     (_, coinRecordsByNameRequest: CoinRecordsByNameRequest, options: any) => {
-      return wallet.getCoinRecordsByName(coinRecordsByNameRequest, options);
+      return wallet.getCoinRecordsByName(coinRecordsByNameRequest, {
+        ...options,
+        waitForWalletAvailability: false
+      });
     },
   );
 
   ipcMain.handle(
     'walletGetSpendableCoins',
     (_, spendableCoinRequest: SpendableCoinRequest, options?: any) => {
-      return wallet.getSpendableCoins(spendableCoinRequest, options);
+      return wallet.getSpendableCoins(spendableCoinRequest, {
+        ...options,
+        waitForWalletAvailability: false
+      });
     },
   );
 
@@ -60,7 +72,10 @@ export async function mountWalletRpcHandles() {
   );
 
   ipcMain.handle('walletGetSyncStatus', (_, options: any) => {
-    return wallet.getSyncStatus(options);
+    return wallet.getSyncStatus({
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
   ipcMain.handle('walletGetWalletBalance', (_, options: any) => {
