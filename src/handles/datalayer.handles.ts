@@ -63,6 +63,7 @@ export async function mountDatalayerRpcHandles() {
         datalayer
           .createDataStore(createDataStoreParams, {
             ...options,
+            waitForWalletAvailability: false
           })
           .then(async () => {
             await new Promise((resolve) => setTimeout(resolve, 1000));
