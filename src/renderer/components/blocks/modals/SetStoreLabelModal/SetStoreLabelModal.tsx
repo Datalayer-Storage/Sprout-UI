@@ -1,27 +1,19 @@
 import {Modal} from "flowbite-react";
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {FormattedMessage} from "react-intl";
 import {SetStoreLabel} from "@/components";
 
 interface SetStoreLabelModalProps {
+  showModal: boolean;
   storeId: string;
-  setStoreId: (storeId: string) => void;
+  onClose: () => void;
 }
 
-const SetStoreLabelModal: React.FC<SetStoreLabelModalProps> = ({storeId, setStoreId }) => {
-
-  const [showModal, setOpenModal] = useState(false);
-
-  useEffect(() => {
-    if (storeId) {
-      setOpenModal(true);
-    }else{
-      setOpenModal(false);
-    }
-  }, [storeId]);
+const SetStoreLabelModal: React.FC<SetStoreLabelModalProps> =
+  ({showModal, storeId, onClose }) => {
 
   return (
-    <Modal show={showModal} onClose={() => setStoreId('')} size="3xl">
+    <Modal show={showModal} onClose={onClose} size="3xl">
       <Modal.Header>
         <FormattedMessage id="set-store-label"/>
       </Modal.Header>

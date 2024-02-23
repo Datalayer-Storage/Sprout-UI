@@ -5,10 +5,10 @@ import {useSelector} from "react-redux";
 
 interface StoreIdProps {
   storeId: string;
-  setStoreIdToEdit?: (storeId: string) => void;
+  onEditStoreLabel?: (storeId: string) => void;
 }
 
-const StoreId: React.FC<StoreIdProps> = ({storeId, setStoreIdToEdit}) => {
+const StoreId: React.FC<StoreIdProps> = ({storeId, onEditStoreLabel}) => {
 
   const userOptions = useSelector((state: any) => state.userOptions);
 
@@ -25,9 +25,9 @@ const StoreId: React.FC<StoreIdProps> = ({storeId, setStoreIdToEdit}) => {
         content={
           <div className={'flex'}>
             {
-              setStoreIdToEdit &&
+              onEditStoreLabel &&
                 <>
-                  <Button onClick={() => setStoreIdToEdit(storeId)}>
+                  <Button onClick={() => onEditStoreLabel(storeId)}>
                     <FormattedMessage id={"set-store-label"}/>
                   </Button>
                 </>
@@ -52,7 +52,7 @@ const StoreId: React.FC<StoreIdProps> = ({storeId, setStoreIdToEdit}) => {
   return (
     <>
       {
-        (setStoreIdToEdit || storeLabel)
+        (onEditStoreLabel || storeLabel)
         ? <IDWithEditTooltip/>
         : <div style={{width: '100%', display: 'flex'}}>{storeId}</div>
       }

@@ -7,7 +7,6 @@ import {
   HiOutlineGlobeAlt,
   HiOutlineInboxIn,
   HiOutlineArchive,
-  //HiOutlineCollection
 } from 'react-icons/hi';
 //import { IoSettingsOutline } from 'react-icons/io5';
 import { LuSettings } from 'react-icons/lu';

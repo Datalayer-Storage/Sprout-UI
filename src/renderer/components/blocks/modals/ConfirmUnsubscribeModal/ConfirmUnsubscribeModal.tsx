@@ -1,37 +1,24 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import { Modal, Button } from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 
 interface ConfirmUnsubscribeModalProps {
+  showModal: boolean;
   storeId: string;
-  setStoreId: (storeId: string) => void;
   onUnsubscribe: (storeId: string) => void;
+  onClose: () => void;
 }
 
 const ConfirmUnsubscribeModal: React.FC<ConfirmUnsubscribeModalProps> = (
-  {storeId, setStoreId, onUnsubscribe}: ConfirmUnsubscribeModalProps) => {
-
-  const [showModal, setOpenModal] = useState(false);
-
-  useEffect(() => {
-    if (storeId) {
-      setOpenModal(true);
-    }else{
-      setOpenModal(false);
-    }
-  }, [storeId]);
+  {showModal, storeId, onUnsubscribe, onClose}: ConfirmUnsubscribeModalProps) => {
 
   const accept = () => {
-    setStoreId('');
     onUnsubscribe(storeId);
-  }
-
-  const cancel = () => {
-    setStoreId('');
+    onClose();
   }
 
   return (
-    <Modal show={showModal} dismissible={false} onClose={cancel}>
+    <Modal show={showModal} dismissible={false} onClose={onClose}>
       <Modal.Header >
         <FormattedMessage id="important"/>
       </Modal.Header>
@@ -61,7 +48,7 @@ const ConfirmUnsubscribeModal: React.FC<ConfirmUnsubscribeModalProps> = (
         <Button onClick={accept}>
           <FormattedMessage id="yes-unsubscribe"/>
         </Button>
-        <Button color="gray" onClick={cancel}>
+        <Button color="gray" onClick={onClose}>
           <FormattedMessage id="cancel"/>
         </Button>
       </Modal.Footer>
