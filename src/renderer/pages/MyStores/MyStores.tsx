@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {CreateDlStoreButton, OwnedStoresTable, Spacer} from "@/components";
+import {CreateDlStoreButton, OwnedStoresTable, Spacer, WaitingForWalletSyncModal} from "@/components";
 
 const MyStores: React.FC = () => {
 
@@ -18,6 +18,7 @@ const MyStores: React.FC = () => {
         setTableContentsLoaded={setStoreTableContentsLoaded}
       />
       <Spacer size={10}/>
+      <WaitingForWalletSyncModal />
     </>
   );
 };

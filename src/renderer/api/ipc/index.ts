@@ -33,6 +33,7 @@ const ipcRendererBaseQuery = async ({
 
 export const ipcApi = createApi({
   baseQuery: ipcRendererBaseQuery,
+  tagTypes: ['datalayerStore'], 
   reducerPath: "ipcApi",
   endpoints: () => ({}),
 });

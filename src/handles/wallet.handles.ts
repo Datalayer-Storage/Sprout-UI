@@ -64,10 +64,16 @@ export async function mountWalletRpcHandles() {
   });
 
   ipcMain.handle('walletGetWalletBalance', (_, options: any) => {
-    return wallet.getWalletBalance({ wallet_id: 1 }, options);
+    return wallet.getWalletBalance({ wallet_id: 1 }, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 
-  ipcMain.handle('walletGetTransactions', async (_, options: any) => {
-    return await wallet.getTransactions({ wallet_id: 1 }, options);
+  ipcMain.handle('walletGetTransactions', (_, options: any) => {
+    return wallet.getTransactions({ wallet_id: 1 }, {
+      ...options,
+      waitForWalletAvailability: false
+    });
   });
 }

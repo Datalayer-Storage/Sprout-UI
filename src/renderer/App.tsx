@@ -42,7 +42,6 @@ function App() {
     >
       <AppNavigator/>
     </IntlProvider>
-    
   </div>
   );
 }
