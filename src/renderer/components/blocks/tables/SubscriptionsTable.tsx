@@ -62,6 +62,9 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       title: '',
       key: "view",
       render: (row: any) => {
+
+        console.log(row.storeId);
+
         return (
           <Link
             to={ROUTES.VIEW_STORE}
@@ -86,8 +89,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       }
     }
   ], [setStoreIdToUnsubscribe]);
-
-  console.log(subscriptionsData?.store_ids);
 
   return (
     <>

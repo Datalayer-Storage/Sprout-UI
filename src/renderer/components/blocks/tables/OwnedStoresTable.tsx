@@ -87,7 +87,7 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
     return (
       <>
         <Button onClick={refetch}>
-          <FormattedMessage id={'unable-to-load-stores-click-to-retry'} />
+          <FormattedMessage id={'unable-to-load-click-to-retry'} />
         </Button>
       </>
     );

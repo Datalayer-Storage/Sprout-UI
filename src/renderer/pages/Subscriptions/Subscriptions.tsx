@@ -1,8 +1,8 @@
-import {Spacer, SubscriptionsTable} from "@/components";
-import React, {useCallback, useEffect, useState} from "react";
-import {Button, Spinner, TextInput, Tooltip} from "flowbite-react";
+import { Spacer, SubscriptionsTable} from "@/components";
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Button, TextInput, Tooltip} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
-import {useSubscribeMutation} from "@/api/ipc/datalayer";
+import {useGetOwnedStoresQuery, useSubscribeMutation} from "@/api/ipc/datalayer";
 import {AddSubscriptionErrorModal} from "@/components";
 
 const Subscriptions: React.FC = () => {
@@ -10,19 +10,36 @@ const Subscriptions: React.FC = () => {
   const [subscriptionStoreIdToAdd, setSubscriptionStoreIdToAdd] = useState<string>('');
   const [subscriptionsLoaded, setSubscriptionsLoaded] = useState<boolean>(false);
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const [storeIsOwned, setStoreIsOwned] = useState(false);
+
+  const storeInputRef = useRef<HTMLInputElement>(null);
 
   const [triggerSubscribe, {
     data: subscribeMutationData,
     isLoading: subscribeMutationLoading
   }] = useSubscribeMutation();
+  const {
+    data: ownedStoresData,
+    isLoading: ownedStoresQueryLoading,
+    error: ownedStoresQueryError
+  } = useGetOwnedStoresQuery({});
 
   const handleTextInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSubscriptionStoreIdToAdd(event.target.value || '');
   }, []);
 
+  const handleStoreIsOwned = useCallback(() => {
+    setShowErrorModal(true);
+    if (storeInputRef?.current?.value){
+      storeInputRef.current.value = '';
+    }
+  }, [setShowErrorModal, storeInputRef])
+
   const handleAddSubscription = useCallback(() => {
-    triggerSubscribe({id: subscriptionStoreIdToAdd});
-  }, [triggerSubscribe, subscriptionStoreIdToAdd]);
+    const storeOwned: boolean = ownedStoresData?.store_ids.includes(subscriptionStoreIdToAdd);
+    setStoreIsOwned(storeOwned);
+    storeOwned ? handleStoreIsOwned() : triggerSubscribe({id: subscriptionStoreIdToAdd});
+  }, [triggerSubscribe, subscriptionStoreIdToAdd, handleStoreIsOwned, ownedStoresData]);
 
   useEffect(() => {
     if (subscribeMutationData?.error){
@@ -33,6 +50,9 @@ const Subscriptions: React.FC = () => {
   useEffect(() => {
     if (subscribeMutationData?.success) {
       setSubscriptionStoreIdToAdd('');
+      if (storeInputRef?.current?.value) {
+        storeInputRef.current.value = '';
+      }
     }
   }, [subscribeMutationData]);
 
@@ -54,14 +74,14 @@ const Subscriptions: React.FC = () => {
             </Tooltip>
           </div>
           <div style={{width: "100%", marginLeft: '10px', marginRight: '10px'}}>
-            <TextInput onChange={handleTextInputChange}/>
+            <TextInput ref={storeInputRef} onChange={handleTextInputChange}/>
           </div>
           <Button
             disabled={subscriptionStoreIdToAdd.length < 64 || subscriptionStoreIdToAdd.length > 64}
+            isProcessing={subscribeMutationLoading || ownedStoresQueryLoading}
             onClick={() => handleAddSubscription()}
             style={{inlineSize: 'min-content', whiteSpace: 'nowrap'}}
           >
-            {subscribeMutationLoading && <Spinner/>}
             <FormattedMessage id={"add-store-subscription"}/>
           </Button>
         </div>
@@ -71,7 +91,11 @@ const Subscriptions: React.FC = () => {
       <AddSubscriptionErrorModal
         showModal={showErrorModal}
         setShowModal={setShowErrorModal}
-        errorMessage={subscribeMutationData?.error}
+        errorMessage={
+          subscribeMutationData?.error ||
+          ownedStoresQueryError ||
+          (storeIsOwned && <FormattedMessage id={'you-cannot-subscribe-to-your-own-store'}/>)
+        }
       />
     </>
   );

@@ -87,7 +87,7 @@ const DataTable = (({ columns, data, isLoading = false }) => {
             justifyContent: 'center',
           }}
         >
-          <FormattedMessage id="empty-table" />
+          <FormattedMessage id="no-data-found" />
         </div>
       )}
     </>

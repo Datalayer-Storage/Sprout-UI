@@ -18,19 +18,19 @@ const AddSubscriptionErrorModal: React.FC<AddSubscriptionErrorModalProps> = (
       </Modal.Header>
       <Modal.Body>
         <div className="space-y-6">
-          <div className="space-y-2">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              <FormattedMessage id="error-occurred-while-adding-subscription"/>
-            </p>
-            <p>
-              <FormattedMessage id={'confirm-entered-store-id-is-correct-and-references-a-valid-store'}/>
-            </p>
-          </div>
-          <p>
+          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             {
-              errorMessage || <FormattedMessage id="ensure-chia-services-are-running-and-accessible"/>
+              errorMessage || <FormattedMessage id="error-occurred-while-adding-subscription"/>
             }
           </p>
+          <div className="space-y-2">
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <FormattedMessage id={'confirm-entered-store-id-is-correct-and-references-a-valid-store'}/>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <FormattedMessage id="ensure-chia-services-are-running-and-accessible"/>
+            </p>
+            </p>
+          </div>
         </div>
       </Modal.Body>
     </Modal>
