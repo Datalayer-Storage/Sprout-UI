@@ -113,8 +113,7 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
         <Card>
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <span>
-              <FormattedMessage id="store-count" />
-              {numStores}
+              <FormattedMessage id="store-count:"/> {numStores}
             </span>
           </p>
         </Card>

@@ -70,7 +70,7 @@ const HomeButton: React.FC<NavButton> = ({ onClick }) => {
 const RefreshButton: React.FC<NavButton> = ({ onClick }) => {
   return (
     <StyledNavButton onClick={onClick} color={navButtonColor}>
-      <HiRefresh font-size={navButtonIconSize} />
+      <HiRefresh fontSize={navButtonIconSize} />
     </StyledNavButton>
   );
 };
