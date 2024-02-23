@@ -73,16 +73,8 @@ export async function mountDatalayerRpcHandles() {
       // ensure that the user has at least 2 coins: 1 for the usage fee and 1 for the datastore fee
       if (spendableCoins.confirmed_records.length > 0) {
         sendConstFee(network, spendableCoins.confirmed_records.length);
-
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            try {
-              resolve(datalayer.createDataStore(createDataStoreParams, options));
-            } catch (error) {
-              reject(error)
-            }
-          }, 1000);
-        });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        return datalayer.createDataStore(createDataStoreParams, options)
       } else {
         return {
           success: false,
