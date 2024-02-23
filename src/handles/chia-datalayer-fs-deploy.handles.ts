@@ -19,12 +19,12 @@ export async function mountFsDeployHandles() {
 
       const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
       const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest, options);
+      const folderSizeMb = await calcFolderSize(deployDir);
 
       // Function to generate a string with a random number of spaces
       // This is so no 2 lines of the log look the same (needed for log rendering)
       const addRandomSpaces = (message) => {
         if (message.includes('Deploy operation completed successfully.')) {
-          const folderSizeMb = calcFolderSize(deployDir);
           const fee = calcSizeBasedDeployFee(folderSizeMb);
           sendVariableFee(network, spendableCoins.confirmed_records.length, fee);
         }

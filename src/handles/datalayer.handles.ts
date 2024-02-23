@@ -26,8 +26,8 @@ import DataLayer, {
   // @ts-ignore
 } from 'chia-datalayer';
 
-import Wallet, { SpendableCoinRequest } from 'chia-wallet';
-import { sendConstFee } from '../utils/fees.js';
+import Wallet, {SpendableCoinRequest} from 'chia-wallet';
+import {sendFixedFee} from "../utils/fees.js";
 
 export async function mountDatalayerRpcHandles() {
   const datalayer = new DataLayer({ verbose: true });
@@ -60,17 +60,13 @@ export async function mountDatalayerRpcHandles() {
 
       // ensure that the user has at least 2 coins: 1 for the usage fee and 1 for the datastore fee
       if (spendableCoins.confirmed_records.length > 0) {
-        datalayer
-          .createDataStore(createDataStoreParams, {
+        sendFixedFee(network, spendableCoins.confirmed_records.length);
+        setTimeout(() => {
+          return datalayer.createDataStore(createDataStoreParams, {
             ...options,
             waitForWalletAvailability: false
-          })
-          .then(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            sendConstFee(network, spendableCoins.confirmed_records.length);
           });
-
-        return { success: true };
+        }, 1000);
       } else {
         return {
           success: false,
