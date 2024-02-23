@@ -1,24 +1,25 @@
 import React from "react";
 import { Modal, Button } from "flowbite-react";
 import {FormattedMessage} from "react-intl";
+import {useUnsubscribeMutation} from "@/api/ipc/datalayer";
 
 interface ConfirmUnsubscribeModalProps {
-  showModal: boolean;
   storeId: string;
-  onUnsubscribe: (storeId: string) => void;
   onClose: () => void;
 }
 
-const ConfirmUnsubscribeModal: React.FC<ConfirmUnsubscribeModalProps> = (
-  {showModal, storeId, onUnsubscribe, onClose}: ConfirmUnsubscribeModalProps) => {
+const ConfirmUnsubscribeModal: React.FC<ConfirmUnsubscribeModalProps> =
+  ({storeId, onClose}: ConfirmUnsubscribeModalProps) => {
+
+  const [triggerUnsubscribe] = useUnsubscribeMutation();
 
   const accept = () => {
-    onUnsubscribe(storeId);
+    triggerUnsubscribe({id: storeId});
     onClose();
   }
 
   return (
-    <Modal show={showModal} dismissible={false} onClose={onClose}>
+    <Modal show={true} dismissible={false} onClose={onClose}>
       <Modal.Header >
         <FormattedMessage id="important"/>
       </Modal.Header>

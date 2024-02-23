@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {ConfirmUnsubscribeModal, DataTable, LoadingSpinnerCard, StoreId} from "@/components";
-import {useGetSubscriptionsQuery, useUnsubscribeMutation} from "@/api/ipc/datalayer";
+import {useGetSubscriptionsQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
@@ -18,7 +18,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
   const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
   const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
-  const [triggerUnsubscribe] = useUnsubscribeMutation();
+
   const {
     data: subscriptionsData,
     isLoading: subscriptionQueryLoading,
@@ -35,10 +35,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     setStoreIdToLabel(storeId);
     setShowStoreLabelModal(true);
   }, []);
-
-  const handleUnsubscribe = useCallback((storeId: string) => {
-    triggerUnsubscribe({id: storeId})
-  }, [triggerUnsubscribe]);
 
   const handleCloseEditStoreLabelModal = useCallback(() => {
     setStoreIdToLabel('');
@@ -118,17 +114,20 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
           : <DataTable columns={columns} data={subscriptionsData?.store_ids} isLoading={subscriptionQueryLoading}/>
         )
       }
-      <SetStoreLabelModal
-        showModal={showEditStoreLabelModal}
-        storeId={storeIdToLabel}
-        onClose={handleCloseEditStoreLabelModal}
-      />
-      <ConfirmUnsubscribeModal
-        showModal={showUnsubscribeModal}
-        storeId={storeIdToUnsubscribe}
-        onUnsubscribe={handleUnsubscribe}
-        onClose={handleCloseUnsubscribeModal}
-      />
+      {
+        showEditStoreLabelModal &&
+        <SetStoreLabelModal
+          storeId={storeIdToLabel}
+          onClose={handleCloseEditStoreLabelModal}
+        />
+      }
+      {
+        showUnsubscribeModal &&
+        <ConfirmUnsubscribeModal
+          storeId={storeIdToUnsubscribe}
+          onClose={handleCloseUnsubscribeModal}
+        />
+      }
     </>
   );
 }
