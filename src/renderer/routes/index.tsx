@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Routes,
@@ -8,9 +8,7 @@ import {
 } from 'react-router-dom';
 import ROUTES from './route-constants'
 import * as Pages from '@/pages'
-import {ChiaNotAccessibleOnStartModal, IndeterminateProgressOverlay, Template} from '@/components';
-import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
-import {useGetConfigQuery} from "@/api/ipc/wallet";
+import {ChiaNotAccessibleModal, Template} from '@/components';
 //import { Spinner } from 'flowbite-react';
 //import { useIsLicenseValidQuery } from '@/api/ipc/license';
 //import { useSelector } from 'react-redux';
@@ -48,26 +46,6 @@ const AppNavigator: React.FC = () => {
     );
   }*/
 
-  const {
-    data: datalayerResponse,
-    isLoading: datalayerQueryLoading,
-    error: datalayerQueryError,
-    refetch: refetchDatalayerQuery,
-  } = useGetOwnedStoresQuery({});
-  const {
-    isLoading: walletQueryLoading,
-    error: walletQueryError,
-    refetch: refetchWalletQuery
-  } = useGetConfigQuery({wallet_id: 1});
-
-  const loading: boolean = walletQueryLoading || datalayerQueryLoading;
-  const chiaInaccessible = !datalayerResponse?.success || datalayerQueryError || walletQueryError;
-
-  const handleRetry = useCallback(() => {
-    refetchDatalayerQuery();
-    refetchWalletQuery();
-  }, [refetchDatalayerQuery, refetchWalletQuery])
-
   return (
     <>
       <Router>
@@ -79,7 +57,7 @@ const AppNavigator: React.FC = () => {
           <Route path="" element={<Template/>}>
             <Route
               path="/"
-              element={(loading) ? <IndeterminateProgressOverlay/> : <Navigate to={ROUTES.BROWSER}/>}
+              element={<Navigate to={ROUTES.BROWSER}/>}
             />
             <Route
               path={ROUTES.BROWSER}
@@ -111,7 +89,7 @@ const AppNavigator: React.FC = () => {
             />
           </Route>  
         </Routes>
-        {chiaInaccessible && <ChiaNotAccessibleOnStartModal onRetry={handleRetry}/>}
+        <ChiaNotAccessibleModal/>
       </Router>
     </>
   );

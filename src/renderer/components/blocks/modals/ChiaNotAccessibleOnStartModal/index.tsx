@@ -1,1 +1,1 @@
-export * from './ChiaNotAccessibleOnStartModal'
+export * from './ChiaNotAccessibleModal'

@@ -1,24 +1,33 @@
-import {Button, Modal} from "flowbite-react";
+import {Modal} from "flowbite-react";
 import React, {useCallback} from "react";
 import {FormattedMessage} from "react-intl";
-import {FauxLinkButton} from "@/components";
+import {usePluginsQuery} from "@/api/ipc/datalayer";
+import {useGetConfigQuery} from "@/api/ipc/wallet";
+import {FauxLinkButton, ModalHeaderNoClose} from "@/components";
 
-interface ChiaNotAccessibleOnStartModalProps {
-  onRetry: () => void;
-}
-const ChiaNotAccessibleOnStartModal: React.FC<ChiaNotAccessibleOnStartModalProps> = ({onRetry}) => {
+const ChiaNotAccessibleModal: React.FC = () => {
 
   const handleOpenChiaDownloads = useCallback(() => {
     window.open("https://www.chia.net/downloads/", 'Chia Downloads', "nodeIntegration=no");
   }, []);
 
+  const {
+    data: datalayerResponse,
+    error: datalayerQueryError,
+  } = usePluginsQuery({}, {pollingInterval: 3500});
+  const {
+    data: walletResponse,
+    error: walletQueryError,
+  } = useGetConfigQuery({wallet_id: 1}, {pollingInterval: 5500});
+
+  const chiaInaccessible: boolean =
+    Boolean(!datalayerResponse?.success || !walletResponse || datalayerQueryError || walletQueryError);
+
   return (
-    <Modal show={true} dismissible={false}>
-      <div className={'flex items-start justify-between rounded-t dark:border-gray-600 border-b p-5'}>
-        <p className={'text-xl font-medium text-gray-900 dark:text-white'}>
-          <FormattedMessage id={"ensure-chia-services-are-running-and-accessible"}/>
-        </p>
-      </div>
+    <Modal show={chiaInaccessible} dismissible={false}>
+      <ModalHeaderNoClose>
+        <FormattedMessage id={"ensure-chia-services-are-running-and-accessible"}/>
+      </ModalHeaderNoClose>
       <Modal.Body>
         <div className={'space-y-6'}>
           <p className={"text-base leading-relaxed text-gray-500 dark:text-gray-400"}>
@@ -31,21 +40,14 @@ const ChiaNotAccessibleOnStartModal: React.FC<ChiaNotAccessibleOnStartModalProps
           </p>
           <p className={"text-base leading-relaxed text-gray-500 dark:text-gray-400"}>
             <FormattedMessage id={"if-you-need-to-install-chia-downloads-for-all-platforms-can-be-found-at"}/>
-            {' '}
             <FauxLinkButton onClick={handleOpenChiaDownloads}>
               <FormattedMessage id={"the-official-downloads-page"}/>
-            </FauxLinkButton>
-            {'.'}
+            </FauxLinkButton>.
           </p>
         </div>
       </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={onRetry}>
-          <FormattedMessage id={"chia-is-running-retry"}/>
-        </Button>
-      </Modal.Footer>
     </Modal>
   );
 }
 
-export { ChiaNotAccessibleOnStartModal };
+export { ChiaNotAccessibleModal };
