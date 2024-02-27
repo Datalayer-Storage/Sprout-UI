@@ -3,7 +3,7 @@ import React, {useCallback} from "react";
 import {FormattedMessage} from "react-intl";
 import {usePluginsQuery} from "@/api/ipc/datalayer";
 import {useGetConfigQuery} from "@/api/ipc/wallet";
-import {FauxLinkButton, ModalHeaderNoClose} from "@/components";
+import {FauxLinkButton} from "@/components";
 
 const ChiaNotAccessibleModal: React.FC = () => {
 
@@ -25,9 +25,9 @@ const ChiaNotAccessibleModal: React.FC = () => {
 
   return (
     <Modal show={chiaInaccessible} dismissible={false}>
-      <ModalHeaderNoClose>
+      <div className={'flex items-start justify-between rounded-t dark:border-gray-600 border-b p-5'}>
         <FormattedMessage id={"ensure-chia-services-are-running-and-accessible"}/>
-      </ModalHeaderNoClose>
+      </div>
       <Modal.Body>
         <div className={'space-y-6'}>
           <p className={"text-base leading-relaxed text-gray-500 dark:text-gray-400"}>
