@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import path from 'path';
 import express from 'express';
 
@@ -41,6 +41,11 @@ function createWindow() {
     : `http://localhost:${serverPort}/`; // Production URL served by Express
 
   win.loadURL(loadUrl);
+
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    shell.openExternal(url);
+    return { action: 'deny' };
+  });
 }
 
 app.whenReady().then(createWindow);
