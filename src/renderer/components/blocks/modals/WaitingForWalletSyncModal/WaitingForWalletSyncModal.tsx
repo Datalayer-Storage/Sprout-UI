@@ -13,13 +13,11 @@ const WaitingForWalletSyncModal: React.FC = () => {
   const dispatch = useDispatch();
   const appStore = useSelector((state: any) => state.app);
 
-  // Custom hook to refetch wallet sync status with polling and refetch on mount or argument change
-  const { refetch: refetchSyncStatus } = useGetWalletSyncStatusQuery(null, {
+  const { data: walletSyncStatus ,refetch: refetchSyncStatus } = useGetWalletSyncStatusQuery(null, {
     pollingInterval: 3000,
     refetchOnMountOrArgChange: true,
   });
 
-  // Custom hook to refetch wallet balance with polling and refetch on mount or argument change
   const { data: walletData, refetch: refetchWalletBalance } = useGetWalletBalanceQuery(null, {
     pollingInterval: 5000,
     refetchOnMountOrArgChange: true,
@@ -45,7 +43,7 @@ const WaitingForWalletSyncModal: React.FC = () => {
   }, [walletData?.wallet_balance?.pending_coin_removal_count, dispatch]);
 
   return (
-    <Modal show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count)} dismissible={false}>
+    <Modal show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count) || !walletSyncStatus?.synced}>
       <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-5">
         <FormattedMessage id="waiting-for-transactions-to-confirm" />
       </div>
