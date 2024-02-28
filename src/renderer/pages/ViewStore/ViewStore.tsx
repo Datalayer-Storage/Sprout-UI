@@ -4,7 +4,8 @@ import {visitPage} from "@/store/slices/browser";
 import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
-import ROUTES from "@/routes/route-constants";
+import {FormattedMessage} from "react-intl";
+import {Button} from "flowbite-react";
 
 const ViewStore: React.FC = () => {
 
@@ -12,9 +13,7 @@ const ViewStore: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data: ownedStores } = useGetOwnedStoresQuery({});
-  const fallbackStoreProvider = useSelector(
-    (state: any) => state.userOptions.fallbackStoreProvider
-  );
+  const fallbackStoreProvider = useSelector((state: any) => state.userOptions.fallbackStoreProvider);
   const location = useLocation();
   const storeId = location.state?.storeId;
 
@@ -24,8 +23,12 @@ const ViewStore: React.FC = () => {
     }
   }, [storeId]);
 
+  const handleBackButton = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
   const handleModalClose = useCallback(() => {
-    navigate(ROUTES.MY_STORES);
+    navigate(-1);
   }, [navigate]);
 
   const handleViewKeyData = useCallback((key: string) => {
@@ -44,6 +47,11 @@ const ViewStore: React.FC = () => {
 
   return (
     <>
+      <div className={'flex flex-start mb-2'}>
+        <Button size={'sm'} onClick={handleBackButton}>
+          <FormattedMessage id={'back'}/>
+        </Button>
+      </div>
       <SetStoreLabel storeId={storeId} />
       <Spacer size={10} />
       <DatalayerStoreKeysTable onViewKeyData={handleViewKeyData}/>

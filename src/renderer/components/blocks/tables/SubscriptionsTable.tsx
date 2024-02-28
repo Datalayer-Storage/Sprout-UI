@@ -84,7 +84,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
           <Link
             to={ROUTES.VIEW_STORE}
             className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-            state={{storeId: row.storeId}}
+            state={{storeId: row.storeId, previousPage: ROUTES.SUBSCRIPTIONS}}
           >
             <FormattedMessage id={'view'} />
           </Link>

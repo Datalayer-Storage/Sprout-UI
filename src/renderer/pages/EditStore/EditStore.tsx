@@ -13,9 +13,9 @@ import {
   FolderSelector
 } from '@/components';
 import React, { useCallback, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import { deployStore } from '@/utils/os';
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import {SpendableCoinsInsufficientErrorModal} from "@/components";
 import {SpendableCoinRequest} from "chia-wallet";
 import {useGetSpendableCoinsImmediateMutation} from "@/api/ipc/wallet";
@@ -23,8 +23,8 @@ import {ConfirmDeployFolderModal} from "@/components";
 
 const { ipcRenderer } = window.require('electron');
 
-
 const EditStore: React.FC = () => {
+
   const [selectedPath, setSelectedPath] = useState<string>('');
   const [selectedFolderSizeMb, setSelectedFolderSizeMb] = useState<number>(0);
   const [deployFee, setDeployFee] = useState<number>(0);
@@ -36,6 +36,7 @@ const EditStore: React.FC = () => {
   const [log, setLog] = useState<string>('Waiting To Deploy...');
   const [deployMode, setDeployMode] = useState<string>('replace');
   const [deploying, setDeploying] = useState<boolean>(false);
+  const navigate = useNavigate();
   const location = useLocation();
   const storeId = location.state?.storeId;
 
@@ -63,6 +64,10 @@ const EditStore: React.FC = () => {
       ipcRenderer.removeListener('logMessage', handleLogMessage);
     };
   }, [deploying]);
+
+  const handleBackButton = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
 
   const handleDeploy = useCallback(async () => {
 
@@ -93,12 +98,17 @@ const EditStore: React.FC = () => {
 
   return (
     <>
+      <div className={'flex flex-start mb-2'}>
+        <Button size={'sm'} onClick={handleBackButton}>
+          <FormattedMessage id={'back'}/>
+        </Button>
+      </div>
       <Card>
-        <SetStoreLabel storeId={storeId} />
+        <SetStoreLabel storeId={storeId}/>
       </Card>
-      <Spacer size={10} />
+      <Spacer size={10}/>
       <Card>
-        <FolderSelector onSelect={handleSelectFolder} />
+        <FolderSelector onSelect={handleSelectFolder}/>
         <div
           style={{
             display: 'flex',
@@ -140,11 +150,11 @@ const EditStore: React.FC = () => {
             {deploying ? (
               <div>
                 {' '}
-                <Spinner />
+                <Spinner/>
               </div>
             ) : (
-              <span style={{ textTransform: 'capitalize' }}>
-                <FormattedMessage id="deploy" />
+              <span style={{textTransform: 'capitalize'}}>
+                <FormattedMessage id="deploy"/>
               </span>
             )}
           </Button>
@@ -161,7 +171,7 @@ const EditStore: React.FC = () => {
             </Tooltip>
           </div>
         </div>
-        <XTerm log={log} />
+        <XTerm log={log}/>
       </Card>
       <ConfirmDeployFolderModal
         showModal={showConfirmDeployFolderModal}
@@ -178,4 +188,4 @@ const EditStore: React.FC = () => {
   );
 };
 
-export { EditStore };
+export {EditStore};
