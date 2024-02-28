@@ -7,7 +7,7 @@ import { useGetWalletSyncStatusQuery, useGetWalletBalanceQuery } from '@/api/ipc
 const WaitingForWalletSyncModal: React.FC = () => {
   const appStore = useSelector((state: any) => state.app);
 
-  const { refetch: refetchSyncStatus } = useGetWalletSyncStatusQuery(null, {
+  const { data: walletSyncStatus ,refetch: refetchSyncStatus } = useGetWalletSyncStatusQuery(null, {
     pollingInterval: 3000,
     refetchOnMountOrArgChange: true
   });
@@ -27,7 +27,7 @@ const WaitingForWalletSyncModal: React.FC = () => {
   }, [appStore.checkForPendingTxToken, refetchSyncStatus, refetchWalletBalance]);
 
   return (
-    <Modal show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count)}>
+    <Modal show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count) || !walletSyncStatus?.synced}>
       <Modal.Header>
         <FormattedMessage id="waiting-for-transactions-to-confirm" />
       </Modal.Header>
