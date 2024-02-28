@@ -11,7 +11,7 @@
   "view": "View",
   "view-store": "View Store",
   "edit-store": "Edit Store",
-  "back-to-my-stores": "Back to My Stores",
+  "back": "Back",
   "key": "Key",
   "and": "and",
   "deploy": "Deploy",
@@ -99,6 +99,8 @@
   "confirm-entered-store-id-is-correct-and-references-a-valid-store"
   : "Confirm entered store ID is correct and references a valid store.",
   "no-data-found": "No data found",
+  "add-store-subscription": "Add Store Subscription",
+  "subscription-store-id": "Subscription Store ID",
   "sprout-ui-cannot-detect-a-running-chia-instance": "Sprout-UI cannot detect a running chia instance.",
   "please-check-that-chia-is-running-ports-8562-and-9256-are-not-blocked-and-sprout-ui-has-permission-to-accept-incoming-connections"
   : "Please check that chia is running, ports 8562 and 9256 are not blocked, and Sprout-UI has permission to accept incoming connections.",
