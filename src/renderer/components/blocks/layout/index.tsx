@@ -3,4 +3,4 @@ export * from './Template';
 export * from './WebView';
 export * from './SetStoreLabel';
 export * from './XTerm';
-export * from './StoreId'
+export * from './StoreId';

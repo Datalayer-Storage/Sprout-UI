@@ -125,6 +125,10 @@ const datalayerApi = ipcApi.injectEndpoints({
       query: (args) => ({ channel: 'datalayerGetValue', args }),
     }),
 
+    plugins: builder.query<any, Options>({
+      query: (args) => ({ channel: 'datalayerPlugins', args }),
+    }),
+
     removeSubscriptions: builder.mutation<any, RemoveSubscriptionsParams>({
       query: (args) => ({ channel: 'datalayerRemoveSubscriptions', args }),
       //@ts-ignore
@@ -161,5 +165,6 @@ export const {
   useGetKeysQuery,
   useGetSubscriptionsQuery,
   useSubscribeMutation,
-  useUnsubscribeMutation
+  useUnsubscribeMutation,
+  usePluginsQuery
 } = datalayerApi;

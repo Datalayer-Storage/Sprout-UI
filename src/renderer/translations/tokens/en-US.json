@@ -100,5 +100,12 @@
   : "Confirm entered store ID is correct and references a valid store.",
   "no-data-found": "No data found",
   "add-store-subscription": "Add Store Subscription",
-  "subscription-store-id": "Subscription Store ID"
+  "subscription-store-id": "Subscription Store ID",
+  "sprout-ui-cannot-detect-a-running-chia-instance": "Sprout-UI cannot detect a running chia instance.",
+  "please-check-that-chia-is-running-ports-8562-and-9256-are-not-blocked-and-sprout-ui-has-permission-to-accept-incoming-connections"
+  : "Please check that chia is running, ports 8562 and 9256 are not blocked, and Sprout-UI has permission to accept incoming connections.",
+  "if-you-need-to-install-chia-downloads-for-all-platforms-can-be-found-at"
+  : "If you need to install Chia, downloads for all platforms can be found at",
+  "the-official-downloads-page": "the official downloads page",
+  "chia-is-running-retry": "Chia is running, retry"
 }

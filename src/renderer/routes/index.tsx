@@ -8,10 +8,9 @@ import {
 } from 'react-router-dom';
 import ROUTES from './route-constants'
 import * as Pages from '@/pages'
-import { Template } from '@/components';
+import {ChiaNotAccessibleModal, Template} from '@/components';
 
 const AppNavigator: React.FC = () => {
-
   return (
     <>
       <Router>
@@ -23,7 +22,7 @@ const AppNavigator: React.FC = () => {
           <Route path="" element={<Template/>}>
             <Route
               path="/"
-              element={<Navigate to={ROUTES.BROWSER} />}
+              element={<Navigate to={ROUTES.BROWSER}/>}
             />
             <Route
               path={ROUTES.BROWSER}
@@ -55,6 +54,7 @@ const AppNavigator: React.FC = () => {
             />
           </Route>  
         </Routes>
+        <ChiaNotAccessibleModal/>
       </Router>
     </>
   );
