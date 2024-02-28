@@ -21,7 +21,7 @@ const ViewStore: React.FC = () => {
     }
   }, [storeId]);
 
-  const handleModalClose = useCallback(() => {
+  const handleInvalidStoreIdModalClose = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
@@ -50,7 +50,7 @@ const ViewStore: React.FC = () => {
       <InvalidStoreIdErrorModal
         showModal={showInvalidStoreIdModal}
         setShowModal={setShowInvalidStoreIdModal}
-        onClose={handleModalClose}
+        onClose={handleInvalidStoreIdModalClose}
       />
     </>
   );
