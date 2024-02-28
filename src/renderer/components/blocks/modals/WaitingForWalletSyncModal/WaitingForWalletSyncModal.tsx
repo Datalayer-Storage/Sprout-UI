@@ -27,8 +27,6 @@ const WaitingForWalletSyncModal: React.FC = () => {
   }, [appStore.checkForPendingTxToken, refetchSyncStatus, refetchWalletBalance]);
 
   return (
-    <Modal show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count) || !walletSyncStatus?.synced}>
-      <Modal.Header>
     <Modal 
       show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count) || !walletSyncStatus?.synced} 
       dismissible={false}
