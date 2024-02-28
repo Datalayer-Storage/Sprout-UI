@@ -10,12 +10,12 @@ import {
   SetStoreLabel,
   Spacer,
   XTerm,
-  FolderSelector
+  FolderSelector, BackButton
 } from '@/components';
 import React, { useCallback, useState, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import { deployStore } from '@/utils/os';
-import {useLocation, useNavigate} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {SpendableCoinsInsufficientErrorModal} from "@/components";
 import {SpendableCoinRequest} from "chia-wallet";
 import {useGetSpendableCoinsImmediateMutation} from "@/api/ipc/wallet";
@@ -36,7 +36,6 @@ const EditStore: React.FC = () => {
   const [log, setLog] = useState<string>('Waiting To Deploy...');
   const [deployMode, setDeployMode] = useState<string>('replace');
   const [deploying, setDeploying] = useState<boolean>(false);
-  const navigate = useNavigate();
   const location = useLocation();
   const storeId = location.state?.storeId;
 
@@ -64,10 +63,6 @@ const EditStore: React.FC = () => {
       ipcRenderer.removeListener('logMessage', handleLogMessage);
     };
   }, [deploying]);
-
-  const handleBackButton = useCallback(() => {
-    navigate(-1);
-  }, [navigate]);
 
   const handleDeploy = useCallback(async () => {
 
@@ -99,9 +94,7 @@ const EditStore: React.FC = () => {
   return (
     <>
       <div className={'flex flex-start mb-2'}>
-        <Button size={'sm'} onClick={handleBackButton}>
-          <FormattedMessage id={'back'}/>
-        </Button>
+        <BackButton/>
       </div>
       <Card>
         <SetStoreLabel storeId={storeId}/>
