@@ -25,7 +25,6 @@ const ChiaNotAccessibleModal: React.FC = () => {
     datalayerFailure = !datalayerResponse?.success;
   }
 
-  // talk to michael: datalayer will not respond while wallet outputs
   const chiaInaccessible: boolean =
     Boolean(datalayerFailure || !walletResponse || datalayerQueryError || walletQueryError);
 
