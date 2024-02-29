@@ -43,17 +43,21 @@ const WaitingForWalletSyncModal: React.FC = () => {
   }, [walletData?.wallet_balance?.pending_coin_removal_count, dispatch]);
 
   return (
-    <Modal show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count) || !walletSyncStatus?.synced}>
-      <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-5">
-        <FormattedMessage id="waiting-for-transactions-to-confirm" />
-      </div>
+    <Modal
+      show={Boolean(walletData?.wallet_balance?.pending_coin_removal_count) || !walletSyncStatus?.synced}
+      size={'sm'}
+    >
       <Modal.Body>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Spinner size="lg" />
+        <div className={'flex justify-center'}>
+          {!walletSyncStatus?.synced
+            ? <FormattedMessage id={'waiting-for-wallet-to-sync'}/>
+            : <FormattedMessage id="waiting-for-transactions-to-confirm"/>
+          }
+          <Spinner className={'ml-3'}/>
         </div>
       </Modal.Body>
     </Modal>
   );
 };
 
-export { WaitingForWalletSyncModal };
+export {WaitingForWalletSyncModal};

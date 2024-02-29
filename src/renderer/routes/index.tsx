@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import ROUTES from './route-constants'
 import * as Pages from '@/pages'
-import {ChiaNotAccessibleModal, Template} from '@/components';
+import {ChiaNotAccessibleModal, Template, WaitingForWalletSyncModal} from '@/components';
 
 const AppNavigator: React.FC = () => {
   return (
@@ -54,7 +54,9 @@ const AppNavigator: React.FC = () => {
             />
           </Route>  
         </Routes>
+        {/* app-wide blocking modals */}
         <ChiaNotAccessibleModal/>
+        <WaitingForWalletSyncModal/>
       </Router>
     </>
   );
