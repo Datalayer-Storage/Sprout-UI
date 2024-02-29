@@ -3,6 +3,12 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 const electron = window.require("electron");
 const ipcRenderer = electron.ipcRenderer;
 
+const walletConfigTag: string = "walletConfig";
+const datalayerConfigTag: string = 'datalayerConfig';
+const mirrorsTag: string = 'mirrors';
+const dataStoresTag: string = 'dataStores';
+const subscriptionsTag: string = 'subscriptions';
+
 interface ipcRendererBaseQueryArgs {
   channel: string;
   args: any;
@@ -31,9 +37,11 @@ const ipcRendererBaseQuery = async ({
   }
 };
 
+export { datalayerConfigTag, mirrorsTag, subscriptionsTag, dataStoresTag, walletConfigTag }
+
 export const ipcApi = createApi({
   baseQuery: ipcRendererBaseQuery,
-  tagTypes: ['datalayerStore'], 
+  tagTypes: [datalayerConfigTag, mirrorsTag, subscriptionsTag, dataStoresTag, walletConfigTag],
   reducerPath: "ipcApi",
   endpoints: () => ({}),
 });
