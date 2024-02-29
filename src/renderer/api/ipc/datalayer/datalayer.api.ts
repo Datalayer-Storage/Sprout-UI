@@ -1,4 +1,10 @@
-import { ipcApi } from '..';
+import {
+  ipcApi,
+  datalayerConfigTag,
+  mirrorsTag,
+  subscriptionsTag,
+  dataStoresTag
+} from '@/api';
 
 /**
  * importing the chia-datalayer module and its typescript types
@@ -27,11 +33,6 @@ import {
 // @ts-ignore
 import {BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
-const configTag: string = 'datalayerConfig';
-const mirrorsTag: string = 'mirrors';
-const dataStoresTag: string = 'dataStores';
-const subscriptionsTag: string = 'subscriptions';
-
 /**
  * RTKquery state managment API for chia-wallet
  */
@@ -40,13 +41,13 @@ const datalayerApi = ipcApi.injectEndpoints({
     getConfig: builder.query<any, any>({
       query: () => ({ channel: 'datalayerGetConfig', args: {} }),
       // @ts-ignore
-      providesTags: () => [configTag],
+      providesTags: () => [datalayerConfigTag],
     }),
 
     setConfig: builder.mutation<any, DatalayerConfig>({
       query: (args) => ({ channel: 'datalayerSetConfig', args }),
       //@ts-ignore
-      invalidatesTags: () => [configTag],
+      invalidatesTags: () => [datalayerConfigTag],
     }),
 
     addMirror: builder.mutation<any, AddMirrorParams>({
@@ -62,13 +63,13 @@ const datalayerApi = ipcApi.injectEndpoints({
     createDataStore: builder.mutation<any, CreateDataStoreParams>({
       query: (args) => ({ channel: 'datalayerCreateDataStore', args }),
       //@ts-ignore
-      invalidatesTags: () => [{ type: 'datalayerStore' }],
+      invalidatesTags: () => [{ type: dataStoresTag }],
     }),
 
     deleteMirror: builder.mutation<any, DeleteMirrorParams>({
       query: (args) => ({ channel: 'datalayerDeleteMirror', args }),
       //@ts-ignore
-      invalidatesTags: () => [dataStoresTag],
+      invalidatesTags: () => [mirrorsTag],
     }),
 
     getKeys: builder.query<any, GetKeysParams>({
@@ -92,7 +93,7 @@ const datalayerApi = ipcApi.injectEndpoints({
     getOwnedStores: builder.query<any, any>({
       query: () => ({ channel: 'datalayerGetOwnedStores', args: {} }),
       // @ts-ignore
-      providesTags: () => [{ type: 'datalayerStore', id: 'LIST' }],
+      providesTags: () => [{ type: dataStoresTag, id: 'LIST' }],
     }),
 
     getRoot: builder.query<any, GetRootParams>({

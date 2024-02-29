@@ -20,8 +20,13 @@ const ChiaNotAccessibleModal: React.FC = () => {
     error: walletQueryError,
   } = useGetConfigQuery({wallet_id: 1}, {pollingInterval: 7500});
 
+  let datalayerFailure = false;
+  if (datalayerResponse){
+    datalayerFailure = !datalayerResponse?.success;
+  }
+
   const chiaInaccessible: boolean =
-    Boolean(!datalayerResponse?.success || !walletResponse || datalayerQueryError || walletQueryError);
+    Boolean(datalayerFailure || !walletResponse || datalayerQueryError || walletQueryError);
 
   return (
     <Modal show={chiaInaccessible} dismissible={false}>
