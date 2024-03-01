@@ -5,9 +5,9 @@ const ipcRenderer = electron.ipcRenderer;
 
 const walletConfigTag: string = "walletConfig";
 const datalayerConfigTag: string = 'datalayerConfig';
-const mirrorsTag: string = 'mirrors';
-const dataStoresTag: string = 'dataStores';
-const subscriptionsTag: string = 'subscriptions';
+const dataLayerMirrorsTag: string = 'mirrors';
+const datalayerStoresTag: string = 'dataStores';
+const datalayerSubscriptionsTag: string = 'subscriptions';
 
 interface ipcRendererBaseQueryArgs {
   channel: string;
@@ -37,11 +37,11 @@ const ipcRendererBaseQuery = async ({
   }
 };
 
-export { datalayerConfigTag, mirrorsTag, subscriptionsTag, dataStoresTag, walletConfigTag }
+export { datalayerConfigTag, dataLayerMirrorsTag, datalayerSubscriptionsTag, datalayerStoresTag, walletConfigTag }
 
 export const ipcApi = createApi({
   baseQuery: ipcRendererBaseQuery,
-  tagTypes: [datalayerConfigTag, mirrorsTag, subscriptionsTag, dataStoresTag, walletConfigTag],
+  tagTypes: [datalayerConfigTag, dataLayerMirrorsTag, datalayerSubscriptionsTag, datalayerStoresTag, walletConfigTag],
   reducerPath: "ipcApi",
   endpoints: () => ({}),
 });

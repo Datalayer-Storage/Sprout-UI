@@ -14,9 +14,9 @@ import {
   useGetSyncStatusImmediateMutation,
   useGetWalletBalanceImmediateMutation,
 } from '@/api/ipc/wallet';
-import { ipcApi } from '@/api/ipc';
+import {datalayerStoresTag, ipcApi} from '@/api/ipc';
 import { ConfirmCreateStoreModal } from '@/components';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { SpendableCoinRequest } from 'chia-wallet';
 import { invalidateCheckForTXToken } from '@/store/slices/app';
 
@@ -30,6 +30,8 @@ const CreateDlStoreButton: React.FC = () => {
   const [showConfirmStoreCreationModal, setShowConfirmStoreCreationModal] = useState(false);
 
   const [createStoreErrorMsg, setCreateStoreErrorMsg] = useState('');
+  const defaultFeeAsString: string = useSelector((state: any) => state.userOptions.deployOptions.defaultFee);
+  const defaultFee: number = parseInt(defaultFeeAsString);
 
   const [triggerCreateDataStore, { isLoading: isStoreCreating }] = useCreateDataStoreMutation();
   const [triggerGetSyncStatus, { isLoading: isSyncStatusLoading }] = useGetSyncStatusImmediateMutation();
@@ -55,14 +57,15 @@ const CreateDlStoreButton: React.FC = () => {
     }
 
     const walletBalanceResponse = await triggerGetWalletBalance({});
-    // @ts-ignore
-    if (walletBalanceResponse?.data?.confirmed_wallet_balance > 0) {
+    //@ts-ignore
+    if (walletBalanceResponse?.data?.wallet_balance?.spendable_balance <= defaultFee) {
       setShowInsufficientBalanceModal(true);
       return;
     }
 
     dispatch(invalidateCheckForTXToken());
-    const createDataStoreResponse: any = await triggerCreateDataStore({fee: "900000"});
+    console.log(defaultFee);
+    const createDataStoreResponse: any = await triggerCreateDataStore({fee: defaultFeeAsString});
     setTimeout(() => {
       dispatch(invalidateCheckForTXToken());
     }, 1000)
@@ -72,7 +75,7 @@ const CreateDlStoreButton: React.FC = () => {
       setCreateStoreErrorMsg('');
       setShowSuccessModal(true);
       // @ts-ignore
-      dispatch(ipcApi.util.invalidateTags(['datalayerStore']));
+      dispatch(ipcApi.util.invalidateTags([datalayerStoresTag]));
       dispatch(invalidateCheckForTXToken());
     } else {
       setShowSuccessModal(false);

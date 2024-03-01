@@ -45,7 +45,7 @@ const DeployOptionInput: React.FC<SettingTextInputProps> = (
         <TextInput
           id={settingKey}
           type={inputType}
-          value={deployOptions[settingKey]}
+          value={deployOptions?.[settingKey] || ''}
           onChange={handleOnChange}
           style={textInputStyle}
           required

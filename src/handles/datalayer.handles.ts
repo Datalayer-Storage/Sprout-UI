@@ -62,8 +62,8 @@ export async function mountDatalayerRpcHandles() {
     }
 
     const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
-    const spendableBalance = await wallet.getWalletBalance(spendableBalanceRequest);
-    if (addMirrorParams.fee >= spendableBalance){
+    const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+    if (parseInt(addMirrorParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
       return {
         success: false,
         message: 'Insufficient spendable balance. spendable balance must be greater than ' + addMirrorParams.fee,
@@ -101,8 +101,8 @@ export async function mountDatalayerRpcHandles() {
       }
 
       const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
-      const spendableBalance = await wallet.getWalletBalance(spendableBalanceRequest);
-      if (createDataStoreParams.fee >= spendableBalance){
+      const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+      if (parseInt(createDataStoreParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
         return {
           success: false,
           message: 'Insufficient spendable balance. spendable balance must be greater than ' + createDataStoreParams.fee,
@@ -140,8 +140,8 @@ export async function mountDatalayerRpcHandles() {
     }
 
     const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
-    const spendableBalance = await wallet.getWalletBalance(spendableBalanceRequest);
-    if (deleteMirrorParams.fee >= spendableBalance){
+    const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+    if (parseInt(deleteMirrorParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
       return {
         success: false,
         message: 'Insufficient spendable balance. spendable balance must be greater than ' + deleteMirrorParams.fee,
@@ -261,8 +261,8 @@ export async function mountDatalayerRpcHandles() {
     }
 
     const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
-    const spendableBalance = await wallet.getWalletBalance(spendableBalanceRequest);
-    if (batchUpdateParams.fee >= spendableBalance){
+    const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+    if (parseInt(batchUpdateParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
       return {
         success: false,
         message: 'Insufficient spendable balance. spendable balance must be greater than ' + batchUpdateParams.fee,

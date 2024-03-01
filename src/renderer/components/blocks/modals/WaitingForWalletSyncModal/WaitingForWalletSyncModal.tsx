@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Modal, Spinner } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 import { useGetWalletSyncStatusQuery, useGetWalletBalanceQuery } from '@/api/ipc/wallet';
-import { ipcApi } from '@/api/ipc';
+import {datalayerStoresTag, ipcApi} from '@/api/ipc';
 
 /**
  * Component to display a modal waiting for wallet sync.
@@ -38,7 +38,7 @@ const WaitingForWalletSyncModal: React.FC = () => {
   // Effect to invalidate data layer tags when wallet data changes
   useEffect(() => {
     if (walletData?.wallet_balance?.pending_coin_removal_count !== undefined) {
-      dispatch(ipcApi.util.invalidateTags(['datalayerStore']));
+      dispatch(ipcApi.util.invalidateTags([datalayerStoresTag]));
     }
   }, [walletData?.wallet_balance?.pending_coin_removal_count, dispatch]);
 

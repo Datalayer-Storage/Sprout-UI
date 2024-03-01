@@ -1,6 +1,9 @@
-import React from "react";
+import React, {useCallback} from "react";
 import { Modal } from "flowbite-react";
 import {FormattedMessage} from "react-intl";
+import {FauxLinkButton} from "@/components";
+import {useNavigate} from "react-router-dom";
+import ROUTES from '@/routes/route-constants';
 
 interface WalletBalanceInsufficientModalProps {
   showModal: boolean;
@@ -10,6 +13,12 @@ interface WalletBalanceInsufficientModalProps {
 const WalletBalanceInsufficientErrorModal: React.FC<WalletBalanceInsufficientModalProps> = (
   { showModal, setShowModal }: WalletBalanceInsufficientModalProps) => {
 
+  const navigate = useNavigate();
+  const handleGoToSettings = useCallback(() => {
+    setShowModal(false);
+    navigate(ROUTES.SETTINGS);
+  }, [setShowModal, navigate])
+
   return (
     <Modal show={showModal} onClose={() => setShowModal(false)}>
       <Modal.Header>
@@ -18,10 +27,11 @@ const WalletBalanceInsufficientErrorModal: React.FC<WalletBalanceInsufficientMod
       <Modal.Body>
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            <span>
-              <FormattedMessage id="your-balance-must-be-at-least-one-Mojo-to-create-a-store"/>
-            </span>
+            <FormattedMessage id="your-balance-must-be-greater-than-the-default-fee-to-create-a-store"/>
           </p>
+          <FauxLinkButton onClick={handleGoToSettings}>
+            <FormattedMessage id={"the-default-fee-can-be-set-in-settings"}/>.
+          </FauxLinkButton>
         </div>
       </Modal.Body>
     </Modal>
