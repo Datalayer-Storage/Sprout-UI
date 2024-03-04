@@ -5,5 +5,7 @@ export default {
   LICENSE: '/License',
   EDIT_STORE: '/EditStore',
   VIEW_STORE: '/ViewStore',
-  SUBSCRIPTIONS: 'Subscriptions'
+  SUBSCRIPTIONS: '/Subscriptions',
+  MIRRORS: '/Mirrors',
+  ADD_MIRROR: '/AddMirror',
 };
