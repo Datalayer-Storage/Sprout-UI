@@ -6,6 +6,4 @@ export default {
   EDIT_STORE: '/EditStore',
   VIEW_STORE: '/ViewStore',
   SUBSCRIPTIONS: '/Subscriptions',
-  MIRRORS: '/Mirrors',
-  ADD_MIRROR: '/AddMirror',
 };

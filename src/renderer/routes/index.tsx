@@ -49,14 +49,6 @@ const AppNavigator: React.FC = () => {
               element={<Pages.Subscriptions/>}
             />
             <Route
-              path={ROUTES.MIRRORS}
-              element={<Pages.Mirrors/>}
-            />
-            <Route
-              path={ROUTES.ADD_MIRROR}
-              element={<Pages.AddMirror/>}
-            />
-            <Route
               path="*"
               element={<Navigate replace to={ROUTES.BROWSER} />}
             />

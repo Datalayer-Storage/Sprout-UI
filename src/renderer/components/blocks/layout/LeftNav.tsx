@@ -7,7 +7,6 @@ import {
   HiOutlineGlobeAlt,
   HiOutlineInboxIn,
   HiOutlineArchive,
-  HiOutlineCollection
 } from 'react-icons/hi';
 import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
@@ -100,18 +99,6 @@ const LeftNav = () => {
               (leftNavExpanded) ?
                 <FormattedMessage id="subscriptions" /> :
                 <HiOutlineInboxIn/>
-            }
-          </Sidebar.Item>
-          <Sidebar.Item
-            style={{ cursor: 'pointer',  }}
-            active={isActive(ROUTES.MIRRORS)}
-            onClick={() => navigate(ROUTES.MIRRORS)}
-            icon={leftNavExpanded && HiOutlineCollection}
-          >
-            {
-              (leftNavExpanded) ?
-                <FormattedMessage id="mirrors" /> :
-                <HiOutlineCollection/>
             }
           </Sidebar.Item>
           <Sidebar.Item

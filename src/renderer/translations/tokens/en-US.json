@@ -1,4 +1,5 @@
 {
+  "and": "and",
   "my-stores": "My Stores",
   "browser": "Browser",
   "settings": "Settings",
@@ -84,7 +85,7 @@
   "deploy-mode---replace": "Deploy Mode - Replace",
   "deploy-mode---additive": "Deploy Mode - Additive",
   "this-action-will-incur-a-non-refundable-fee-of": "This action will incur a non-refundable fee of",
-  "xch-in-addition-to-standard-chia-blockchain-fees": "XCH in addition to standard Chia blockchain fees.",
+  "xch-in-addition-to-standard-chia-blockchain-fees": "XCH in addition to standard Chia blockchain fees",
   "do-you-want-to-proceed-with-folder-deploy?": "Do you want to proceed with folder deploy?",
   "yes-deploy-folder": "Yes, Deploy Folder",
   "no-cancel-folder-deploy": "No, Cancel Folder Deploy",
@@ -109,5 +110,10 @@
   "the-official-downloads-page": "the official downloads page",
   "chia-is-running-retry": "Chia is running, retry",
   "waiting-for-wallet-to-sync": "Waiting for wallet to sync",
-  "mirrors": "Mirrors"
+  "mirror": "Mirror",
+  "add-store-mirror": "Add Store Mirror",
+  "mirror-url": "Mirror URL",
+  "mirror-coin-value": "Mirror Coin Value",
+  "a-higher-value-gives-the-mirror-more-validity": "A higher value gives the mirror more validity",
+  "create-a-mirror-coin-with-the-specified-value": "create a mirror coin with the specified value"
 }

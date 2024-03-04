@@ -34,6 +34,7 @@ const ConfirmDeployFolderModal: React.FC<ConfirmDeployFolderProps> = (
               <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>
               {" " + fee + " "}
               <FormattedMessage id="xch-in-addition-to-standard-chia-blockchain-fees"/>
+              {'.'}
             </p>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               {folderSizeMb.toFixed(2) + " MB "} <FormattedMessage id="of-data-will-be-deployed"/>

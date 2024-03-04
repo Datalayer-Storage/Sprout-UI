@@ -35,6 +35,7 @@ const ConfirmCreateStoreModal: React.FC<ConfirmCreateStoreModalProps> = (
               <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>
               {" " + 0.01 + " "}
               <FormattedMessage id="xch-in-addition-to-standard-chia-blockchain-fees"/>
+              {'.'}
             </p>
           </div>
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">

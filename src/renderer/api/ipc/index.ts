@@ -38,8 +38,6 @@ const ipcRendererBaseQuery = async ({
 };
 
 export { datalayerConfigTag, mirrorsTag, subscriptionsTag, dataStoresTag, walletConfigTag }
-export * from './wallet';
-export * from './datalayer';
 
 export const ipcApi = createApi({
   baseQuery: ipcRendererBaseQuery,

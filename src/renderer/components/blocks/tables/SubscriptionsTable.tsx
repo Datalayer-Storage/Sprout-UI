@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import {Button} from 'flowbite-react';
 import {SetStoreLabelModal} from "@/components/blocks/modals/SetStoreLabelModal";
 import {FauxLinkButton} from "@/components/blocks/buttons/FauxLinkButton/FauxLinkButton";
+import {AddMirrorModal} from "@/components/blocks/modals/AddMirrorModal";
 
 interface SubscriptionsTableProps {
   setTableContentsLoaded?: (loaded: boolean) => void;
@@ -16,8 +17,10 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
 
   const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
   const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
+  const [storeIdToMirror, setStoreIdToMirror] = useState<string>('');
   const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
+  const [showAddMirrorModal, setShowAddMirrorModal] = useState<boolean>(false);
 
   const {
     data: subscriptionsData,
@@ -40,6 +43,16 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     setStoreIdToLabel('');
     setShowStoreLabelModal(false);
   }, []);
+
+  const handleClickAddMirror = useCallback((storeId: string) => {
+    setStoreIdToMirror(storeId);
+    setShowAddMirrorModal(true);
+  }, []);
+
+  const handleCloseAddMirrorModal = useCallback(() => {
+    setStoreIdToMirror('');
+    setShowAddMirrorModal(false);
+  }, [])
 
   const handleCloseUnsubscribeModal = useCallback(() => {
     setStoreIdToUnsubscribe('');
@@ -93,6 +106,17 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     },
     {
       title: '',
+      key: "mirror",
+      render: (row: any) => {
+        return (
+          <FauxLinkButton onClick={() => handleClickAddMirror(row.storeId)}>
+            <FormattedMessage id={'mirror'}/>
+          </FauxLinkButton>
+        );
+      }
+    },
+    {
+      title: '',
       key: "unsubscribe",
       render: (row: any) => {
         return (
@@ -119,6 +143,13 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         <SetStoreLabelModal
           storeId={storeIdToLabel}
           onClose={handleCloseEditStoreLabelModal}
+        />
+      }
+      {
+        showAddMirrorModal &&
+        <AddMirrorModal
+          storeId={storeIdToMirror}
+          onClose={handleCloseAddMirrorModal}
         />
       }
       {

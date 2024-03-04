@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {Button, TextInput, Tooltip} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useGetOwnedStoresQuery, useSubscribeMutation} from "@/api/ipc/datalayer";
-import {AddMirrorErrorModal} from "@/components";
+import {AddSubscriptionErrorModal} from "@/components";
 
 const Subscriptions: React.FC = () => {
 
