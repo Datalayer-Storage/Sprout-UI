@@ -4,16 +4,20 @@ import {useGetSubscriptionsQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
-import {Button} from 'flowbite-react';
+import {Button, Tooltip} from 'flowbite-react';
 import {SetStoreLabelModal} from "@/components/blocks/modals/SetStoreLabelModal";
 import {FauxLinkButton} from "@/components/blocks/buttons/FauxLinkButton/FauxLinkButton";
 import {AddMirrorModal} from "@/components/blocks/modals/AddMirrorModal";
+import {useSelector} from "react-redux";
+import _ from 'lodash';
 
 interface SubscriptionsTableProps {
   setTableContentsLoaded?: (loaded: boolean) => void;
 }
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContentsLoaded}) => {
+
+  const mirrors = useSelector((state: any) => state.app.storeMirrors);
 
   const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
   const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
@@ -76,7 +80,8 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       >
         <FormattedMessage id={"unable-to-load-click-to-retry"} />
       </Button>
-    );
+    )
+      ;
   }
 
   const columns = useMemo(() => [
@@ -108,11 +113,24 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       title: '',
       key: "mirror",
       render: (row: any) => {
-        return (
-          <FauxLinkButton onClick={() => handleClickAddMirror(row.storeId)}>
-            <FormattedMessage id={'mirror'}/>
-          </FauxLinkButton>
-        );
+
+        if (_.isNil(mirrors[row.storeId])){
+          return (
+            <div className={'mr-2 ml-2'}>
+              <FauxLinkButton onClick={() => handleClickAddMirror(row.storeId)}>
+                <FormattedMessage id={'mirror'}/>
+              </FauxLinkButton>
+            </div>
+          );
+        } else {
+          return (
+            <Tooltip content={mirrors[row.storeId]}>
+              <p className={'font-medium text-gray-500'}>
+                <FormattedMessage id={"mirrored"}/> &#10003;
+              </p>
+            </Tooltip>
+          );
+        }
       }
     },
     {
@@ -126,7 +144,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         );
       }
     }
-  ], [setStoreIdToUnsubscribe]);
+  ], [handleEditStoreLabel, mirrors, handleClickAddMirror, handleClickUnsubscribe]);
 
   return (
     <>

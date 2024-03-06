@@ -25,9 +25,17 @@ const persistUserOptionsConfig = {
   stateReconciler: autoMergeLevel2,
 };
 
+const persistAppsConfig = {
+  key: 'app',
+  version: 1,
+  storage,
+  stateReconciler: autoMergeLevel2,
+};
+
 const store = configureStore({
   reducer: {
-    app: appReducer,
+    // @ts-ignore
+    app: persistReducer(persistAppsConfig, appReducer),
     // @ts-ignore
     userOptions: persistReducer(persistUserOptionsConfig, userOptionsReducer),
     [ipcApi.reducerPath]: ipcApi.reducer,
