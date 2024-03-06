@@ -118,5 +118,6 @@
   "create-a-mirror-coin-with-the-specified-value": "create a mirror coin with the specified value",
   "mirrored": "Mirrored",
   "mirror-url-cannot-be-empty": "Mirror URL cannot be empty",
-  "mirror-coin-value-cannot-be-empty": "Mirror coin value cannot be empty"
+  "mirror-coin-value-cannot-be-empty": "Mirror coin value cannot be empty",
+  "delete-mirror": "Delete Mirror"
 }

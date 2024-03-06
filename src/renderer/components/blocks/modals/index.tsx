@@ -11,3 +11,5 @@ export * from './AddSubscriptionErrorModal';
 export * from './ConfirmUnsubscribeModal';
 export * from './ChiaNotAccessibleOnStartModal';
 export * from './AddMirrorErrorModal';
+export * from './AddMirrorModal';
+export * from './SetStoreLabelModal';

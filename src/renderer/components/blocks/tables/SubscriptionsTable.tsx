@@ -4,12 +4,10 @@ import {useGetSubscriptionsQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
-import {Button, Tooltip} from 'flowbite-react';
-import {SetStoreLabelModal} from "@/components/blocks/modals/SetStoreLabelModal";
-import {FauxLinkButton} from "@/components/blocks/buttons/FauxLinkButton/FauxLinkButton";
-import {AddMirrorModal} from "@/components/blocks/modals/AddMirrorModal";
-import {useSelector} from "react-redux";
-import _ from 'lodash';
+import {Button} from 'flowbite-react';
+import {SetStoreLabelModal} from "@/components";
+import {FauxLinkButton} from "@/components";
+import {StoreMirrorButton} from "@/components";
 
 interface SubscriptionsTableProps {
   setTableContentsLoaded?: (loaded: boolean) => void;
@@ -17,14 +15,10 @@ interface SubscriptionsTableProps {
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContentsLoaded}) => {
 
-  const mirrors = useSelector((state: any) => state.app.storeMirrors);
-
   const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
   const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
-  const [storeIdToMirror, setStoreIdToMirror] = useState<string>('');
   const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
-  const [showAddMirrorModal, setShowAddMirrorModal] = useState<boolean>(false);
 
   const {
     data: subscriptionsData,
@@ -47,16 +41,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     setStoreIdToLabel('');
     setShowStoreLabelModal(false);
   }, []);
-
-  const handleClickAddMirror = useCallback((storeId: string) => {
-    setStoreIdToMirror(storeId);
-    setShowAddMirrorModal(true);
-  }, []);
-
-  const handleCloseAddMirrorModal = useCallback(() => {
-    setStoreIdToMirror('');
-    setShowAddMirrorModal(false);
-  }, [])
 
   const handleCloseUnsubscribeModal = useCallback(() => {
     setStoreIdToUnsubscribe('');
@@ -113,24 +97,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       title: '',
       key: "mirror",
       render: (row: any) => {
-
-        if (_.isNil(mirrors[row.storeId])){
-          return (
-            <div className={'mr-2 ml-2'}>
-              <FauxLinkButton onClick={() => handleClickAddMirror(row.storeId)}>
-                <FormattedMessage id={'mirror'}/>
-              </FauxLinkButton>
-            </div>
-          );
-        } else {
-          return (
-            <Tooltip content={mirrors[row.storeId]}>
-              <p className={'font-medium text-gray-500'}>
-                <FormattedMessage id={"mirrored"}/> &#10003;
-              </p>
-            </Tooltip>
-          );
-        }
+        return(<StoreMirrorButton storeId={row.storeId}/>);
       }
     },
     {
@@ -144,7 +111,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         );
       }
     }
-  ], [handleEditStoreLabel, mirrors, handleClickAddMirror, handleClickUnsubscribe]);
+  ], [handleEditStoreLabel, handleClickUnsubscribe]);
 
   return (
     <>
@@ -161,13 +128,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         <SetStoreLabelModal
           storeId={storeIdToLabel}
           onClose={handleCloseEditStoreLabelModal}
-        />
-      }
-      {
-        showAddMirrorModal &&
-        <AddMirrorModal
-          storeId={storeIdToMirror}
-          onClose={handleCloseAddMirrorModal}
         />
       }
       {
