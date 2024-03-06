@@ -23,6 +23,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> =
   const [enableMirrorValueError, setEnableMirrorValueError] = useState<boolean>(false);
 
   if (addMirrorData?.success){
+    dispatch(updateStoreMirror({storeId, url: mirrorURL}));
     onClose();
   }
 
@@ -46,7 +47,6 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> =
         amount: parseInt(mirrorCoinValue),
         fee: deployOptions.defaultFee
       });
-      dispatch(updateStoreMirror({storeId, url: mirrorURL}));
     }
   }
 

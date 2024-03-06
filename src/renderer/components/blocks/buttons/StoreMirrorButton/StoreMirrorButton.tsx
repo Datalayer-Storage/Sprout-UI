@@ -5,6 +5,7 @@ import React, {useCallback, useState} from "react";
 import _ from 'lodash';
 import {AddMirrorModal} from "@/components";
 import {useSelector} from "react-redux";
+import {ConfirmDeleteMirrorModal} from "@/components/blocks/modals/ConfirmDeleteMirrorModal";
 
 interface StoreMirrorProps {
   storeId: string
@@ -14,6 +15,7 @@ const StoreMirrorButton: React.FC<StoreMirrorProps> = ({storeId}) => {
 
   const mirrors = useSelector((state: any) => state.app.storeMirrors);
   const [showAddMirrorModal, setShowAddMirrorModal] = useState<boolean>(false);
+  const [showDeleteMirrorModal, setShowDeleteMirrorModal] = useState<boolean>(false);
 
   const handleClickAddMirror = useCallback(() => {
     setShowAddMirrorModal(true);
@@ -23,8 +25,12 @@ const StoreMirrorButton: React.FC<StoreMirrorProps> = ({storeId}) => {
     setShowAddMirrorModal(false);
   }, []);
 
-  const handleDeleteMirror = useCallback(() => {
+  const handleCloseDeleteMirrorModal = useCallback(() => {
+    setShowDeleteMirrorModal(false);
+  }, []);
 
+  const handleDeleteMirror = useCallback(() => {
+    setShowDeleteMirrorModal(true);
   }, []);
 
   return(
@@ -65,6 +71,13 @@ const StoreMirrorButton: React.FC<StoreMirrorProps> = ({storeId}) => {
         <AddMirrorModal
           storeId={storeId}
           onClose={handleCloseAddMirrorModal}
+        />
+      }
+      {
+        showDeleteMirrorModal &&
+        <ConfirmDeleteMirrorModal
+          storeId={storeId}
+          onClose={handleCloseDeleteMirrorModal}
         />
       }
     </>

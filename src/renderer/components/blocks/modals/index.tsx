@@ -13,3 +13,4 @@ export * from './ChiaNotAccessibleOnStartModal';
 export * from './AddMirrorErrorModal';
 export * from './AddMirrorModal';
 export * from './SetStoreLabelModal';
+export * from './DeleteMirrorErrorModal';
