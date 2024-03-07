@@ -17,11 +17,17 @@ export const appSlice = createSlice({
       }, 1000);
     },
 
-    updateStoreMirror : (state, { payload }) => {
+    addStoreMirror: (state, { payload }) => {
       if (!_.isNil(payload.storeId) && !_.isNil(payload.url)) {
         state.storeMirrors[payload.storeId] =  payload.url;
       }
       //state.storeMirrors = {};
+    },
+
+    deleteStoreMirror: (state, { payload }) => {
+      if (!_.isNil(payload.storeId)) {
+        delete state.storeMirrors[payload.storeId];
+      }
     }
   },
 });
@@ -29,7 +35,8 @@ export const appSlice = createSlice({
 export const {
   setLocale,
   invalidateCheckForTXToken,
-  updateStoreMirror
+  addStoreMirror,
+  deleteStoreMirror
 } = appSlice.actions;
 
 export default appSlice.reducer;

@@ -3,8 +3,9 @@ import {FormattedMessage} from "react-intl";
 import React, {useEffect, useState} from "react";
 import {useDeleteMirrorMutation, useGetMirrorsQuery} from "@/api/ipc/datalayer";
 import {GetMirrorsParams} from "chia-datalayer";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {DeleteMirrorErrorModal} from "@/components";
+import {deleteStoreMirror} from "@/store/slices/app";
 
 interface ConfirmDeleteMirrorModalProps {
   storeId: string,
@@ -13,6 +14,7 @@ interface ConfirmDeleteMirrorModalProps {
 
 const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({storeId, onClose}) => {
 
+  const dispatch = useDispatch();
   const storeMirrors = useSelector((state: any) => state.app.storeMirrors);
   const params: GetMirrorsParams = {id: storeId};
   const {
@@ -39,27 +41,34 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
   useEffect(() => {
     if (getMirrorsData?.success && !getMirrorsLoading && userConfirmedDeleteMirror) {
       try {
-        getMirrorsData.mirrors.some((mirrorCoin) => {
+        if (!getMirrorsData.mirrors.some((mirrorCoin) => {
           if (mirrorCoin.ours && mirrorCoin.urls.includes(storeMirrors[storeId])){
-            triggerDeleteMirror({id: mirrorCoin.coin_id})
+            triggerDeleteMirror({coin_id: mirrorCoin.coin_id});
+          } else {
+            throw new Error('url does not exist on mirror coin');
           }
-        });
+        })) {
+          dispatch(deleteStoreMirror({storeId}));
+          setDisplayActionLoading(false);
+          onClose();
+        }
       }catch (error){
         setShowErrorModal(true);
         setDisplayActionLoading(false);
       }
     }
-  }, [getMirrorsData, getMirrorsLoading, storeId, storeMirrors, triggerDeleteMirror, userConfirmedDeleteMirror]);
+  }, [dispatch, getMirrorsData, getMirrorsLoading, onClose, storeId, storeMirrors, triggerDeleteMirror, userConfirmedDeleteMirror]);
 
   useEffect(() => {
     if (deleteMirrorData?.success) {
+      dispatch(deleteStoreMirror(storeId));
       setDisplayActionLoading(false);
       onClose();
     } else if (deleteMirrorError) {
       setShowErrorModal(true);
       setDisplayActionLoading(false);
     }
-  }, [deleteMirrorData, deleteMirrorError, onClose]);
+  }, [deleteMirrorData, deleteMirrorError, dispatch, onClose, storeId]);
 
   const accept = () => {
     setUserConfirmedDeleteMirror(true);
@@ -84,7 +93,7 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
             </p>
             <div className="space-y-2">
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                <FormattedMessage id="are-you-sure-you-want-to-delete-this-mirror"/>
+                <FormattedMessage id="are-you-sure-you-want-to-delete-this-mirror"/>?
               </p>
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Modal, Button, Tooltip, TextInput, Spinner} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useDispatch, useSelector} from "react-redux";
-import {updateStoreMirror} from "@/store/slices/app";
+import {addStoreMirror} from "@/store/slices/app";
 import {useAddMirrorMutation} from "@/api/ipc/datalayer";
 
 interface ConfirmCreateStoreModalProps {
@@ -23,7 +23,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> =
   const [enableMirrorValueError, setEnableMirrorValueError] = useState<boolean>(false);
 
   if (addMirrorData?.success){
-    dispatch(updateStoreMirror({storeId, url: mirrorURL}));
+    dispatch(addStoreMirror({storeId, url: mirrorURL}));
     onClose();
   }
 
