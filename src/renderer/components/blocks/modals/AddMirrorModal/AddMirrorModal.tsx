@@ -4,6 +4,7 @@ import {FormattedMessage} from "react-intl";
 import {useDispatch, useSelector} from "react-redux";
 import {addStoreMirror} from "@/store/slices/app";
 import {useAddMirrorMutation} from "@/api/ipc/datalayer";
+import {useGetUserIpQuery} from "@/api";
 
 interface ConfirmCreateStoreModalProps {
   storeId: string;
@@ -12,7 +13,6 @@ interface ConfirmCreateStoreModalProps {
 
 const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClose}: ConfirmCreateStoreModalProps) => {
 
-  const defaultMirrorURL: string = 'https://google.com';
   const [triggerAddMirror, {data: addMirrorData, isLoading: addMirrorMutationLoading}] = useAddMirrorMutation();
   const dispatch = useDispatch();
   const userOptions = useSelector((state: any) => state.userOptions);
@@ -21,13 +21,21 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
   const [mirrorCoinValue, setMirrorCoinValue] = useState<string>('');
   const [showInvalidUrlError, setShowInvalidUrlError] = useState<boolean>(false);
   const [urlChanged, setUrlChanged] = useState<boolean>(true);
+  const {data: getIpData, isLoading: getUserIpLoading} = useGetUserIpQuery({});
+  const [placeholderUrl, setPlaceHolderUrl] = useState<string>('https://duckduckgo.com')
+
+  useEffect(() => {
+    if (getIpData?.success && !getUserIpLoading){
+      setPlaceHolderUrl('https://' + getIpData.ip_address + ':12345');
+    }
+  }, [getUserIpLoading, getIpData]);
 
   useEffect(() => {
     if (addMirrorData?.success) {
       if (mirrorURL){
         dispatch(addStoreMirror({storeId, url: mirrorURL}));
       } else {
-        dispatch(addStoreMirror({storeId, url: defaultMirrorURL}));
+        dispatch(addStoreMirror({storeId, url: placeholderUrl}));
       }
 
       onClose();
@@ -60,7 +68,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
       });
     } else if (!showInvalidUrlError) {
       triggerAddMirror({
-        id: storeId, urls: [defaultMirrorURL], amount: parseInt(userOptions.defaultFee), fee: deployOptions.defaultFee
+        id: storeId, urls: [placeholderUrl], amount: parseInt(userOptions.defaultFee), fee: deployOptions.defaultFee
       });
     }
   }
@@ -103,7 +111,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
                 <TextInput
                   onChange={handleURLChange}
                   value={mirrorURL}
-                  placeholder={defaultMirrorURL}
+                  placeholder={placeholderUrl}
                 />
               </div>
             </div>
