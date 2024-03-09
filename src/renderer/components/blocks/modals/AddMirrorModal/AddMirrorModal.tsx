@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {Modal, Button, Tooltip, TextInput, Spinner} from "flowbite-react";
+import React, {useEffect, useState} from "react";
+import {Button, Modal, Spinner, TextInput, Tooltip} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useDispatch, useSelector} from "react-redux";
 import {addStoreMirror} from "@/store/slices/app";
@@ -10,56 +10,67 @@ interface ConfirmCreateStoreModalProps {
   onClose: () => void;
 }
 
-const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> =
-  ({storeId, onClose}: ConfirmCreateStoreModalProps) => {
+const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClose}: ConfirmCreateStoreModalProps) => {
 
+  const defaultMirrorURL: string = 'https://google.com';
   const [triggerAddMirror, {data: addMirrorData, isLoading: addMirrorMutationLoading}] = useAddMirrorMutation();
   const dispatch = useDispatch();
   const userOptions = useSelector((state: any) => state.userOptions);
   const deployOptions = userOptions.deployOptions;
   const [mirrorURL, setMirrorURL] = useState<string>('');
-  const [mirrorCoinValue, setMirrorCoinValue] = useState<string>(deployOptions?.defaultFee || '');
-  const [enableMirrorURLError, setEnableMirrorURLError] = useState<boolean>(false);
-  const [enableMirrorValueError, setEnableMirrorValueError] = useState<boolean>(false);
+  const [mirrorCoinValue, setMirrorCoinValue] = useState<string>('');
+  const [showInvalidUrlError, setShowInvalidUrlError] = useState<boolean>(false);
+  const [urlChanged, setUrlChanged] = useState<boolean>(true);
 
-  if (addMirrorData?.success){
-    dispatch(addStoreMirror({storeId, url: mirrorURL}));
-    onClose();
-  }
+  useEffect(() => {
+    if (addMirrorData?.success) {
+      dispatch(addStoreMirror({storeId, url: mirrorURL}));
+      onClose();
+    }
+  }, [dispatch, addMirrorData?.success, storeId, mirrorURL, onClose]);
+
+  // Regex to check if the string is a valid URL
+  const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+    '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|' + // domain name and extension
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-zA-Z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-zA-Z\\d_]*)?$', 'i'); // fragment locator
 
   const handleURLChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEnableMirrorURLError(false);
+    setUrlChanged(true);
+    setShowInvalidUrlError(!urlPattern.test(event.target.value));
     setMirrorURL(event.target.value);
   };
 
   const handleCoinValueChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEnableMirrorValueError(false);
     setMirrorCoinValue(event.target.value);
   };
 
   const accept = () => {
-    setEnableMirrorURLError(true);
-    setEnableMirrorValueError(true);
-    if (mirrorURL && mirrorCoinValue){
+    setUrlChanged(false);
+    if (mirrorCoinValue && !showInvalidUrlError) {
       triggerAddMirror({
-        id: storeId,
-        urls: [mirrorURL],
-        amount: parseInt(mirrorCoinValue),
-        fee: deployOptions.defaultFee
+        id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: deployOptions.defaultFee
+      });
+    } else if (!showInvalidUrlError) {
+      triggerAddMirror({
+        id: storeId, urls: [defaultMirrorURL], amount: parseInt(userOptions.defaultFee), fee: deployOptions.defaultFee
       });
     }
   }
 
-  const cancel = () => {onClose()}
+  const cancel = () => {
+    onClose()
+  }
 
-  return (
-    <Modal
+  return (<Modal
       show={true}
       dismissible={!addMirrorMutationLoading}
       onClose={cancel}
       size={"3xl"}
     >
-      <Modal.Header >
+      <Modal.Header>
         <FormattedMessage id="add-store-mirror"/>
       </Modal.Header>
       <Modal.Body>
@@ -68,12 +79,9 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> =
             <FormattedMessage id={"store-id"}/>{": " + storeId}
           </p>
           <div>
-            {
-              enableMirrorURLError && !mirrorURL &&
-              <p className="text-base leading-relaxed text-red-600">
-                <FormattedMessage id={"mirror-url-cannot-be-empty"}/>.
-              </p>
-            }
+            {showInvalidUrlError && !urlChanged && <p className="text-base leading-relaxed text-red-600">
+              <FormattedMessage id={"please-enter-a-valid-url"}/>
+            </p>}
             <div style={{display: "flex"}}>
               <div style={{
                 display: "flex",
@@ -87,17 +95,15 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> =
                 </p>
               </div>
               <div style={{width: "100%", marginLeft: '10px', marginRight: '10px'}}>
-                <TextInput onChange={handleURLChange} value={mirrorURL}/>
+                <TextInput
+                  onChange={handleURLChange}
+                  value={mirrorURL}
+                  placeholder={defaultMirrorURL}
+                />
               </div>
             </div>
           </div>
           <div>
-            {
-              enableMirrorValueError && !mirrorCoinValue &&
-              <p className="text-base leading-relaxed text-red-600">
-                <FormattedMessage id={"mirror-coin-value-cannot-be-empty"}/>.
-              </p>
-            }
             <div style={{display: "flex"}}>
               <div style={{
                 display: "flex",
@@ -113,10 +119,20 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> =
                 </Tooltip>
               </div>
               <div style={{width: "100%", marginLeft: '10px', marginRight: '10px'}}>
-                <TextInput onChange={handleCoinValueChange} value={mirrorCoinValue} type={'number'}/>
+                <TextInput
+                  onChange={handleCoinValueChange}
+                  value={mirrorCoinValue}
+                  type={'number'}
+                  placeholder={userOptions?.defaultFee || 0}
+                />
               </div>
             </div>
           </div>
+          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            <FormattedMessage id={"important"}/>
+            {': '}
+            <FormattedMessage id={"unchanged-fields-will-default-to-currently-displayed-values"}/>.
+          </p>
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>
             {" " + 0.01 + " "}

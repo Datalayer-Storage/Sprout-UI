@@ -45,7 +45,10 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
           if (mirrorCoin.ours && mirrorCoin.urls.includes(storeMirrors[storeId])){
             triggerDeleteMirror({coin_id: mirrorCoin.coin_id});
           } else {
-            throw new Error('url does not exist on mirror coin');
+            // url does not exist as mirror
+            setShowErrorModal(true);
+            setDisplayActionLoading(false);
+            onClose();
           }
         })) {
           dispatch(deleteStoreMirror({storeId}));
@@ -94,12 +97,6 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
             <div className="space-y-2">
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
                 <FormattedMessage id="are-you-sure-you-want-to-delete-this-mirror"/>?
-              </p>
-              <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>
-                {" " + 0.01 + " "}
-                <FormattedMessage id="xch-in-addition-to-standard-chia-blockchain-fees"/>
-                {'.'}
               </p>
             </div>
           </div>
