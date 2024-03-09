@@ -24,7 +24,12 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
 
   useEffect(() => {
     if (addMirrorData?.success) {
-      dispatch(addStoreMirror({storeId, url: mirrorURL}));
+      if (mirrorURL){
+        dispatch(addStoreMirror({storeId, url: mirrorURL}));
+      } else {
+        dispatch(addStoreMirror({storeId, url: defaultMirrorURL}));
+      }
+
       onClose();
     }
   }, [dispatch, addMirrorData?.success, storeId, mirrorURL, onClose]);
@@ -49,7 +54,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
 
   const accept = () => {
     setUrlChanged(false);
-    if (mirrorCoinValue && !showInvalidUrlError) {
+    if (mirrorCoinValue && !showInvalidUrlError && mirrorURL) {
       triggerAddMirror({
         id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: deployOptions.defaultFee
       });
