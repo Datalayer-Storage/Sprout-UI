@@ -141,15 +141,16 @@ jobs:
         with:
           repository: 'Datalayer-Storage/sprout-ui-public'
           token: ${{ secrets.GH_ACCESS_TOKEN }}
-          path: public-repo
+          path: sprout-ui-public
 
       - name: Copy files to public repository
         run: |
-          cp ${{ env.DEB_FILE }} ${{ github.workspace }}/public-repo/
-          cp ${{ env.EXE_FILE }} ${{ github.workspace }}/public-repo/
+          cp "${{ env.DEB_FILE }}" "${{ github.workspace }}/sprout-ui-public/"
+          cp "${{ env.EXE_FILE }}" "${{ github.workspace }}/sprout-ui-public/"
+        
 
-      - name: Change directory to public-repo
-        run: echo "PWD=$(pwd)" && cd ${{ github.workspace }}/public-repo && echo "New PWD=$(pwd)"
+      - name: Change directory to sprout-ui-public
+        run: echo "PWD=$(pwd)" && cd ${{ github.workspace }}/sprout-ui-public && echo "New PWD=$(pwd)"
         shell: bash
 
       - name: Release in Public Repo
