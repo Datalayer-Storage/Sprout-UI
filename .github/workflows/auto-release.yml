@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clean workspace
-        uses: Chia-Network/actions/clean-workspace@main
+        uses: Datalayer-Storage/actions/clean-workspace@main
 
       - name: Checkout current branch
         uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup commit signing for ChiaAutomation
-        uses: Chia-Network/actions/commit-sign/gpg@main
+        uses: Datalayer-Storage/actions/commit-sign/gpg@main
         with:
           gpg_private_key: ${{ secrets.AUTOMATION_PRIVATE_GPG_KEY }}
           passphrase: ${{ secrets.AUTOMATION_PRIVATE_GPG_PASSPHRASE }}
