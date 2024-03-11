@@ -54,17 +54,25 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
   useEffect(() => {
     if (getWalletBalanceData?.success && !getWalletBalanceLoading){
 
-      const walletBalance = getWalletBalanceData?.wallet_balance?.confirmed_wallet_balance;
-      const requiredWalletBalance = userOptions.defaultFee + 1;
+      const walletBalance = getWalletBalanceData?.wallet_balance?.spendable_balance;
+      const requiredWalletBalance = userOptions.defaultFee;
 
       if (walletBalance < requiredWalletBalance){
         setShowInsufficentBalanceModal(true);
         return;
       }
 
-      if (!showInvalidUrlError && mirrorURL) {
+      if (!showInvalidUrlError && mirrorURL && mirrorCoinValue) {
+        triggerAddMirror({
+          id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: String(mirrorCoinValue)
+        });
+      } else if (!showInvalidUrlError && mirrorURL && !mirrorCoinValue) {
         triggerAddMirror({
           id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: deployOptions.defaultFee
+        });
+      } else if (!showInvalidUrlError && !mirrorURL && mirrorCoinValue) {
+        triggerAddMirror({
+          id: storeId, urls: [mirrorURL], amount: parseInt(userOptions.defaultFee), fee: String(mirrorCoinValue)
         });
       } else if (!showInvalidUrlError) {
         triggerAddMirror({

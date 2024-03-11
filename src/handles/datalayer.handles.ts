@@ -27,7 +27,7 @@ import DataLayer, {
 } from 'chia-datalayer';
 
 import Wallet, {GetWalletBalanceRequest, SpendableCoinRequest} from 'chia-wallet';
-import {sendFixedFee} from "../utils/fees.js";
+import {fixedFeeXch, sendFixedFee, xchToMojos} from "../utils/fees.js";
 
 export async function mountDatalayerRpcHandles() {
   const datalayer = new DataLayer({ verbose: true });
@@ -73,34 +73,21 @@ export async function mountDatalayerRpcHandles() {
       };
     }
 
-    return datalayer.addMirror(addMirrorParams, {...options, includeFee: false });
-  });
-  ipcMain.handle('datalayerAddMirror',
-    async (_, addMirrorParams: AddMirrorParams, options: Options) => {
+    const addMirrorPromise = datalayer.addMirror(addMirrorParams, {
+      ...options,
+      waitForWalletAvailability: false
+    });
 
-      const networkInfo = await wallet.getNetworkInfo({});
-      const network = networkInfo.network_name;
+    const totalTransactionWithUsageFee = parseInt(addMirrorParams.fee) + xchToMojos(fixedFeeXch);
 
-      const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
-      const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest);
-
-      // ensure that the user has at least 2 coins: 1 for the usage fee and 1 for the datastore fee
-      if (spendableCoins.confirmed_records.length > 0) {
-        sendFixedFee(network, spendableCoins.confirmed_records.length);
-        setTimeout(() => {
-          return datalayer.addMirror(addMirrorParams, {
-            ...options,
-            waitForWalletAvailability: false
-          });
-        }, 1000);
-      } else {
-        return {
-          success: false,
-          message: 'Insufficient coins. Please ensure that you have at least 1 spendable coin in your wallet.',
-        };
-      }
+    const addMirrorResult = await addMirrorPromise;
+    if (addMirrorResult?.success &&
+      (getWalletBalanceResponse?.wallet_balance?.spendable_balance > totalTransactionWithUsageFee)){
+      sendFixedFee(network, spendableCoins.confirmed_records.length);
     }
-  );
+
+    return addMirrorPromise;
+  });
 
   ipcMain.handle('datalayerAddMissingFiles', (_, addMissingFilesParams: AddMissingFilesParams, options: Options) => {
     return datalayer.addMissingFiles(addMissingFilesParams, options);
@@ -138,13 +125,17 @@ export async function mountDatalayerRpcHandles() {
         };
       }
 
-      sendFixedFee(network, spendableCoins.confirmed_records.length);
-      setTimeout(() => {
-        return datalayer.createDataStore(createDataStoreParams, {
-          ...options,
-          waitForWalletAvailability: false
-        });
-      }, 1000);
+      const createStorePromise = datalayer.createDataStore(createDataStoreParams, {
+        ...options,
+        waitForWalletAvailability: false
+      });
+
+      const createStoreResult = await createStorePromise;
+      if (createStoreResult?.success){
+        sendFixedFee(network, spendableCoins.confirmed_records.length);
+      }
+
+      return createStorePromise;
     },
   );
 
