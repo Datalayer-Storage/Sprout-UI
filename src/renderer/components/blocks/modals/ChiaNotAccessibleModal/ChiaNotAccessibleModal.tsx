@@ -14,11 +14,11 @@ const ChiaNotAccessibleModal: React.FC = () => {
   const {
     data: datalayerResponse,
     error: datalayerQueryError,
-  } = usePluginsQuery({}, {pollingInterval: 3500});
+  } = usePluginsQuery({}, {pollingInterval: 6000});
   const {
     data: walletResponse,
     error: walletQueryError,
-  } = useGetConfigQuery({wallet_id: 1}, {pollingInterval: 5500});
+  } = useGetConfigQuery({wallet_id: 1}, {pollingInterval: 7500});
 
   let datalayerFailure = false;
   if (datalayerResponse){

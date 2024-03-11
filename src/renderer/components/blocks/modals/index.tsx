@@ -9,4 +9,4 @@ export * from './InvalidStoreIdErrorModal';
 export * from './ConfirmCreateStoreModal';
 export * from './AddSubscriptionErrorModal';
 export * from './ConfirmUnsubscribeModal';
-export * from './ChiaNotAccessibleOnStartModal';
+export * from './ChiaNotAccessibleModal';

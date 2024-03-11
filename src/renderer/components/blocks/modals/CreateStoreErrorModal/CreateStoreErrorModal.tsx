@@ -23,7 +23,7 @@ const CreateStoreErrorModal: React.FC<CreateStoreErrorModalProps> = (
               <FormattedMessage id="error-occurred-while-creating-store"/>
               {' '}
               {
-                errorMessage || <FormattedMessage id="ensure-chia-services-are-running-and-accessible."/>
+                errorMessage || <FormattedMessage id="ensure-chia-services-are-running-and-accessible"/>
               }
             </span>
           </p>

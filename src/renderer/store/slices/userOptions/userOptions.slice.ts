@@ -69,11 +69,15 @@ export const userOptionsSlice = createSlice({
           }
 
         } else if (typeof value === 'number') {
+          // input type for the default fee is a number, but the type accepted by the RPC's is a string
           if (Number.isNaN(value)) {
-            state.deployOptions[settingKey] = null;
+            settingKey === 'defaultFee'
+              ? state.deployOptions[settingKey] = '': state.deployOptions[settingKey] = null;
           } else {
-            state.deployOptions[settingKey] = value;
+            settingKey === 'defaultFee'
+              ? state.deployOptions[settingKey] = String(value) : state.deployOptions[settingKey] = value;
           }
+
         } else if (value === null &&
             typeof initialState.deployOptions[settingKey] === 'number' ||
             settingKey === 'mirrorUrlOverride') {

@@ -1,9 +1,9 @@
 import {
   ipcApi,
   datalayerConfigTag,
-  mirrorsTag,
-  subscriptionsTag,
-  dataStoresTag
+  dataLayerMirrorsTag,
+  datalayerSubscriptionsTag,
+  datalayerStoresTag
 } from '@/api';
 
 /**
@@ -53,7 +53,7 @@ const datalayerApi = ipcApi.injectEndpoints({
     addMirror: builder.mutation<any, AddMirrorParams>({
       query: (args) => ({ channel: 'datalayerAddMirror', args }),
       //@ts-ignore
-      invalidatesTags: () => [mirrorsTag],
+      invalidatesTags: () => [dataLayerMirrorsTag],
     }),
 
     addMissingFiles: builder.mutation<any, AddMissingFilesParams>({
@@ -63,13 +63,13 @@ const datalayerApi = ipcApi.injectEndpoints({
     createDataStore: builder.mutation<any, CreateDataStoreParams>({
       query: (args) => ({ channel: 'datalayerCreateDataStore', args }),
       //@ts-ignore
-      invalidatesTags: () => [{ type: dataStoresTag }],
+      invalidatesTags: () => [{ type: datalayerStoresTag }],
     }),
 
     deleteMirror: builder.mutation<any, DeleteMirrorParams>({
       query: (args) => ({ channel: 'datalayerDeleteMirror', args }),
       //@ts-ignore
-      invalidatesTags: () => [mirrorsTag],
+      invalidatesTags: () => [dataLayerMirrorsTag],
     }),
 
     getKeys: builder.query<any, GetKeysParams>({
@@ -87,13 +87,13 @@ const datalayerApi = ipcApi.injectEndpoints({
     getMirrors: builder.query<any, GetMirrorsParams>({
       query: (args) => ({ channel: 'datalayerGetMirrors', args }),
       //@ts-ignore
-      providesTags: () => [mirrorsTag],
+      providesTags: () => [dataLayerMirrorsTag],
     }),
 
     getOwnedStores: builder.query<any, any>({
       query: () => ({ channel: 'datalayerGetOwnedStores', args: {} }),
       // @ts-ignore
-      providesTags: () => [{ type: dataStoresTag, id: 'LIST' }],
+      providesTags: () => [{ type: datalayerStoresTag, id: 'LIST' }],
     }),
 
     getRoot: builder.query<any, GetRootParams>({
@@ -107,7 +107,7 @@ const datalayerApi = ipcApi.injectEndpoints({
     getSubscriptions: builder.query<any, Options>({
       query: (args) => ({ channel: 'datalayerGetSubscriptions', args }),
       //@ts-ignore
-      providesTags: () => [subscriptionsTag],
+      providesTags: () => [datalayerSubscriptionsTag],
       transformResponse(baseQueryReturnValue: BaseQueryResult<{id: string, storeId: string}[]>):
         Promise<{id: string, storeId: string}[]> | [] {
         return {
@@ -133,25 +133,25 @@ const datalayerApi = ipcApi.injectEndpoints({
     removeSubscriptions: builder.mutation<any, RemoveSubscriptionsParams>({
       query: (args) => ({ channel: 'datalayerRemoveSubscriptions', args }),
       //@ts-ignore
-      invalidatesTags: () => [subscriptionsTag],
+      invalidatesTags: () => [datalayerSubscriptionsTag],
     }),
 
     subscribe: builder.mutation<any, SubscribeParams>({
       query: (args) => ({ channel: 'datalayerSubscribe', args }),
       //@ts-ignore
-      invalidatesTags: () => [subscriptionsTag],
+      invalidatesTags: () => [datalayerSubscriptionsTag],
     }),
 
     unsubscribe: builder.mutation<any, UnsubscribeParams>({
       query: (args) => ({ channel: 'datalayerUnsubscribe', args }),
       //@ts-ignore
-      invalidatesTags: () => [subscriptionsTag],
+      invalidatesTags: () => [datalayerSubscriptionsTag],
     }),
 
     updateDataStore: builder.mutation<any, BatchUpdateParams>({
       query: (args) => ({ channel: 'datalayerUpdateDataStore', args }),
       //@ts-ignore
-      invalidatesTags: () => [dataStoresTag],
+      invalidatesTags: () => [datalayerStoresTag],
     }),
 
     walletLogin: builder.mutation<any, WalletLogInParams>({

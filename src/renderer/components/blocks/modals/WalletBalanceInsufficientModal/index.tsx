@@ -1,1 +1,1 @@
-export * from './SpendableCoinsInsufficientModal';
+export * from './WalletBalanceInsufficientModal';
