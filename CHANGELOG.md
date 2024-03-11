@@ -1,4 +1,13 @@
-## 0.0.2 (2024-03-11)
+## [0.0.3](https://github.com/Datalayer-Storage/Sprout-UI/compare/0.0.2...0.0.3) (2024-03-11)
+
+
+### Features
+
+* release to public repo ([84284a3](https://github.com/Datalayer-Storage/Sprout-UI/commit/84284a3ee0df229ad8e4c48cbad007e8254ef84d))
+
+
+
+## [0.0.2](https://github.com/Datalayer-Storage/Sprout-UI/compare/c92d1d9edd9844fbc24e56b4464527b9b4e92a15...0.0.2) (2024-03-11)
 
 
 ### Bug Fixes
