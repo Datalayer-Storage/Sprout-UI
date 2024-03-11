@@ -114,38 +114,49 @@ jobs:
         with:
           name: sprout-ui-windows-installer
           path: sprout-ui-windows-installer
-
+  
       - name: Download Linux artifacts
         uses: actions/download-artifact@v3
         with:
           name: sprout-ui-linux-installer
           path: sprout-ui-linux-installer
-
+  
       - name: Get Filenames
         run: |
           DEB_FILE=$(find ${{ github.workspace }}/sprout-ui-linux-installer/ -type f -name '*.deb')
           EXE_FILE=$(find ${{ github.workspace }}/sprout-ui-windows-installer/ -type f -name '*.exe')
-
-          echo "DEB_FILE=$DEB_FILE" >>$GITHUB_ENV
-          echo "EXE_FILE=$EXE_FILE" >>$GITHUB_ENV
-
-      - name: Release
+  
+          echo "DEB_FILE=$DEB_FILE" >> $GITHUB_ENV
+          echo "EXE_FILE=$EXE_FILE" >> $GITHUB_ENV
+  
+      - name: Release in Private Repo
         uses: softprops/action-gh-release@v0.1.15
         with:
           files: |
             ${{ env.DEB_FILE }}
             ${{ env.EXE_FILE }}
-
+  
       - name: Checkout public repository for distribution
         uses: actions/checkout@v2
         with:
             repository: 'Datalayer-Storage/sprout-ui-public'
             token: ${{ secrets.GH_ACCESS_TOKEN }}
             path: public-repo
+  
+      - name: Copy files to public repository
+        run: |
+          cp ${{ env.DEB_FILE }} ${{ github.workspace }}/public-repo/
+          cp ${{ env.EXE_FILE }} ${{ github.workspace }}/public-repo/
 
-      - name: Release
+      - name: Change directory to public-repo
+        run: echo "PWD=$(pwd)" && cd ${{ github.workspace }}/public-repo && echo "New PWD=$(pwd)"
+        shell: bash
+
+      - name: Release in Public Repo
         uses: softprops/action-gh-release@v0.1.15
         with:
           files: |
-            ${{ env.DEB_FILE }}
-            ${{ env.EXE_FILE }}
+            *.deb
+            *.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
