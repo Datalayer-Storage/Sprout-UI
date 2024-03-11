@@ -135,3 +135,17 @@ jobs:
           files: |
             ${{ env.DEB_FILE }}
             ${{ env.EXE_FILE }}
+
+      - name: Checkout public repository for distribution
+        uses: actions/checkout@v2
+        with:
+            repository: 'Datalayer-Storage/sprout-ui-public'
+            token: ${{ secrets.GH_ACCESS_TOKEN }}
+            path: public-repo
+
+      - name: Release
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          files: |
+            ${{ env.DEB_FILE }}
+            ${{ env.EXE_FILE }}
