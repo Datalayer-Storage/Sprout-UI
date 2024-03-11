@@ -15,7 +15,7 @@ import {
 import { transformToChiaProtocol } from '@/utils/chia-router';
 import { useGetOwnedStoresQuery } from '@/api/ipc/datalayer';
 import { LoadingSpinnerCard } from '@/components';
-import SplashScreen from '@/assets/home.jpg';
+import SplashScreen from '@/assets/home2.png';
 
 const Browser: React.FC = () => {
   const dispatch = useDispatch();
@@ -136,10 +136,16 @@ const Browser: React.FC = () => {
         onHome={handleGoToHome}
       />
       {currentPage.url === 'browser://home' ? (
-        <img
-          src={SplashScreen}
-          alt="Chia Network"
-          style={{ width: '100%', height: 'auto' }}
+        <div
+          style={{ 
+            width: '100%', // Adjust the width as needed
+            height: '100vh', // Adjust the height as needed
+            backgroundImage: `url(${SplashScreen})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'top',
+            backgroundRepeat: 'no-repeat',
+            opacity: 0.3
+        }}
         />
       ) : (
         <WebView

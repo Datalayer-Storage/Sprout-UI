@@ -11,7 +11,7 @@
   "view": "View",
   "view-store": "View Store",
   "edit-store": "Edit Store",
-  "back-to-my-stores": "Back to My Stores",
+  "back": "Back",
   "key": "Key",
   "and": "and",
   "deploy": "Deploy",
@@ -41,7 +41,8 @@
   "invalid-component-state": "INVALID COMPONENT STATE",
   "browse-...": "Browse ...",
   "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
-  "your-balance-must-be-at-least-one-Mojo-to-create-a-store": "Your balance must be at least 1 Mojo to create a store.",
+  "your-balance-must-be-greater-than-the-default-fee-to-create-a-store"
+  : "Your balance must be greater than the default fee to create a store.",
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
   "ensure-chia-services-are-running-and-accessible": "Ensure Chia services are running and accessible.",
   "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
@@ -99,11 +100,15 @@
   "confirm-entered-store-id-is-correct-and-references-a-valid-store"
   : "Confirm entered store ID is correct and references a valid store.",
   "no-data-found": "No data found",
+  "add-store-subscription": "Add Store Subscription",
+  "subscription-store-id": "Subscription Store ID",
   "sprout-ui-cannot-detect-a-running-chia-instance": "Sprout-UI cannot detect a running chia instance.",
   "please-check-that-chia-is-running-ports-8562-and-9256-are-not-blocked-and-sprout-ui-has-permission-to-accept-incoming-connections"
   : "Please check that chia is running, ports 8562 and 9256 are not blocked, and Sprout-UI has permission to accept incoming connections.",
   "if-you-need-to-install-chia-downloads-for-all-platforms-can-be-found-at"
   : "If you need to install Chia, downloads for all platforms can be found at",
   "the-official-downloads-page": "the official downloads page",
-  "chia-is-running-retry": "Chia is running, retry"
+  "chia-is-running-retry": "Chia is running, retry",
+  "waiting-for-wallet-to-sync": "Waiting for wallet to sync",
+  "the-default-fee-can-be-set-in-settings": "The default fee can be set in settings"
 }

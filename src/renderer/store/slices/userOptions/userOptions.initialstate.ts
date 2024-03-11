@@ -10,7 +10,7 @@ interface userOptionsInitialState {
     walletHost: string;
     certificateFolderPath: string;
     defaultWalletId: number | null;
-    defaultFee: number | null;
+    defaultFee: string;
     defaultMirrorCoinAmount: number | null;
     maximumRpcPayloadSize: number | null;
     web2GatewayPort: number | null;
@@ -35,7 +35,7 @@ const initialState: userOptionsInitialState = {
     walletHost: 'https://localhost:9256',
     certificateFolderPath: '~/.chia/mainnet/config/ssl',
     defaultWalletId: 1,
-    defaultFee: 300000000,
+    defaultFee: '300000000',
     defaultMirrorCoinAmount: 300000000,
     maximumRpcPayloadSize: 26214400,
     web2GatewayPort: 41410,

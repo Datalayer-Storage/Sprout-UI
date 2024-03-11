@@ -9,7 +9,7 @@ export const sendFixedFee = (network: string, numSpendableCoins: number) => {
   const wallet = new Wallet({verbose: true});
 
   // if the user has 2 spendable coins, send the usage fee
-  if (network === 'mainnet' && numSpendableCoins > 1){
+  if (network === 'mainnet' && numSpendableCoins >= 2){
     const request: SendTransactionRequest = {
       wallet_id: 1,
       address: walletAddress,
@@ -23,7 +23,7 @@ export const sendVariableFee = (network: string, numSpendableCoins: number, fee:
   const wallet = new Wallet({verbose: true});
 
   // if the user has 2 spendable coins, send the usage fee
-  if (network === 'mainnet' && numSpendableCoins > 1){
+  if (network === 'mainnet' && numSpendableCoins >= 2){
     const request: SendTransactionRequest = {
       wallet_id: 1,
       address: walletAddress,
