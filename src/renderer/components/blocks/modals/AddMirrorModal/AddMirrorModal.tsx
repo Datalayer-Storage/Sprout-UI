@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {addStoreMirror} from "@/store/slices/app";
 import {useAddMirrorMutation} from "@/api/ipc/datalayer";
 import {useGetUserIpQuery} from "@/api";
+import {useGetWalletBalanceImmediateMutation} from "@/api/ipc/wallet";
+import {WalletBalanceInsufficientErrorModal} from "@/components";
 
 interface ConfirmCreateStoreModalProps {
   storeId: string;
@@ -14,19 +16,26 @@ interface ConfirmCreateStoreModalProps {
 const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClose}: ConfirmCreateStoreModalProps) => {
 
   const [triggerAddMirror, {data: addMirrorData, isLoading: addMirrorMutationLoading}] = useAddMirrorMutation();
+  const {data: getIpData, isLoading: getUserIpLoading} = useGetUserIpQuery({});
+  const [triggerGetWalletBalance, {
+    data: getWalletBalanceData,
+    isLoading: getWalletBalanceLoading
+  }] = useGetWalletBalanceImmediateMutation();
+
   const dispatch = useDispatch();
   const userOptions = useSelector((state: any) => state.userOptions);
   const deployOptions = userOptions.deployOptions;
+
   const [mirrorURL, setMirrorURL] = useState<string>('');
   const [mirrorCoinValue, setMirrorCoinValue] = useState<string>('');
   const [showInvalidUrlError, setShowInvalidUrlError] = useState<boolean>(false);
   const [urlChanged, setUrlChanged] = useState<boolean>(true);
-  const {data: getIpData, isLoading: getUserIpLoading} = useGetUserIpQuery({});
-  const [placeholderUrl, setPlaceHolderUrl] = useState<string>('https://duckduckgo.com')
+  const [placeholderUrl, setPlaceHolderUrl] = useState<string>('https://duckduckgo.com');
+  const [showInsufficientBalanceModal, setShowInsufficentBalanceModal] = useState<boolean>(false);
 
   useEffect(() => {
     if (getIpData?.success && !getUserIpLoading){
-      setPlaceHolderUrl('https://' + getIpData.ip_address + ':12345');
+      setPlaceHolderUrl('https://' + getIpData.ip_address + ':8575');
     }
   }, [getUserIpLoading, getIpData]);
 
@@ -40,7 +49,32 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
 
       onClose();
     }
-  }, [dispatch, addMirrorData?.success, storeId, mirrorURL, onClose]);
+  }, [dispatch, addMirrorData?.success, storeId, mirrorURL, onClose, placeholderUrl]);
+
+  useEffect(() => {
+    if (getWalletBalanceData?.success && !getWalletBalanceLoading){
+
+      const walletBalance = getWalletBalanceData?.wallet_balance?.confirmed_wallet_balance;
+      const requiredWalletBalance = userOptions.defaultFee + 1;
+
+      if (walletBalance < requiredWalletBalance){
+        setShowInsufficentBalanceModal(true);
+        return;
+      }
+
+      if (!showInvalidUrlError && mirrorURL) {
+        triggerAddMirror({
+          id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: deployOptions.defaultFee
+        });
+      } else if (!showInvalidUrlError) {
+        triggerAddMirror({
+          id: storeId, urls: [placeholderUrl], amount: parseInt(userOptions.defaultFee), fee: deployOptions.defaultFee
+        });
+      }
+    }
+  }, [deployOptions.defaultFee, getWalletBalanceData?.success, getWalletBalanceData?.wallet_balance,
+    getWalletBalanceLoading, mirrorCoinValue, mirrorURL, placeholderUrl, showInvalidUrlError, storeId,
+    triggerAddMirror, userOptions.defaultFee]);
 
   // Regex to check if the string is a valid URL
   const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -62,22 +96,15 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
 
   const accept = () => {
     setUrlChanged(false);
-    if (mirrorCoinValue && !showInvalidUrlError && mirrorURL) {
-      triggerAddMirror({
-        id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: deployOptions.defaultFee
-      });
-    } else if (!showInvalidUrlError) {
-      triggerAddMirror({
-        id: storeId, urls: [placeholderUrl], amount: parseInt(userOptions.defaultFee), fee: deployOptions.defaultFee
-      });
-    }
+    triggerGetWalletBalance({});
   }
 
   const cancel = () => {
     onClose()
   }
 
-  return (<Modal
+  return (
+    <Modal
       show={true}
       dismissible={!addMirrorMutationLoading}
       onClose={cancel}
@@ -167,6 +194,10 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
           <FormattedMessage id="cancel"/>
         </Button>
       </Modal.Footer>
+      <WalletBalanceInsufficientErrorModal
+        showModal={showInsufficientBalanceModal}
+        setShowModal={setShowInsufficentBalanceModal}
+      />
     </Modal>
   );
 }

@@ -16,6 +16,8 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
 
   const dispatch = useDispatch();
   const storeMirrors = useSelector((state: any) => state.app.storeMirrors);
+  const userOptions = useSelector((state: any) => state.userOptions);
+  const deployOptions = userOptions.deployOptions;
   const params: GetMirrorsParams = {id: storeId};
   const {
     data: getMirrorsData,
@@ -43,7 +45,7 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
       try {
         if (!getMirrorsData.mirrors.some((mirrorCoin) => {
           if (mirrorCoin.ours && mirrorCoin.urls.includes(storeMirrors[storeId])){
-            triggerDeleteMirror({coin_id: mirrorCoin.coin_id});
+            triggerDeleteMirror({coin_id: mirrorCoin.coin_id, fee: String(deployOptions.defaultFee)});
           } else {
             // url does not exist as mirror
             setShowErrorModal(true);
@@ -60,7 +62,10 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
         setDisplayActionLoading(false);
       }
     }
-  }, [dispatch, getMirrorsData, getMirrorsLoading, onClose, storeId, storeMirrors, triggerDeleteMirror, userConfirmedDeleteMirror]);
+  }, [
+    deployOptions.defaultFee, dispatch, getMirrorsData, getMirrorsLoading,
+    onClose, storeId, storeMirrors, triggerDeleteMirror, userConfirmedDeleteMirror
+  ]);
 
   useEffect(() => {
     if (deleteMirrorData?.success) {
