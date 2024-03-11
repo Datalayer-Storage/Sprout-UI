@@ -135,29 +135,3 @@ jobs:
           files: |
             ${{ env.DEB_FILE }}
             ${{ env.EXE_FILE }}
-
-      - name: Checkout public repository for distribution
-        uses: actions/checkout@v2
-        with:
-          repository: 'Datalayer-Storage/sprout-ui-public'
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
-          path: sprout-ui-public
-
-      - name: Copy files to public repository
-        run: |
-          cp "${{ env.DEB_FILE }}" "${{ github.workspace }}/sprout-ui-public/"
-          cp "${{ env.EXE_FILE }}" "${{ github.workspace }}/sprout-ui-public/"
-        
-
-      - name: Change directory to sprout-ui-public
-        run: echo "PWD=$(pwd)" && cd ${{ github.workspace }}/sprout-ui-public && echo "New PWD=$(pwd)"
-        shell: bash
-
-      - name: Release in Public Repo
-        uses: softprops/action-gh-release@v0.1.15
-        with:
-          files: |
-            *.deb
-            *.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
