@@ -26,7 +26,7 @@ import DataLayer, {
   // @ts-ignore
 } from 'chia-datalayer';
 
-import Wallet, {SpendableCoinRequest} from 'chia-wallet';
+import Wallet, {GetWalletBalanceRequest, SpendableCoinRequest} from 'chia-wallet';
 import {sendFixedFee} from "../utils/fees.js";
 
 export async function mountDatalayerRpcHandles() {
@@ -41,6 +41,40 @@ export async function mountDatalayerRpcHandles() {
     return datalayer.setConfig(config);
   });
 
+  ipcMain.handle('datalayerAddMirror',
+    async (_, addMirrorParams: AddMirrorParams, options: Options) => {
+
+    if (!(addMirrorParams?.fee)){
+      console.error('block chain fee is undefined. a block chain fee must be specified to call this api.');
+      return {
+        success: false,
+        message: 'block chain fee is undefined. a block chain fee must be specified to call this api.',
+      };
+    }
+
+    const networkInfo = await wallet.getNetworkInfo({});
+    const network = networkInfo.network_name;
+
+    const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
+    const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest);
+    if (spendableCoins?.confirmed_records.length < 1) {
+      return {
+        success: false,
+        message: 'Insufficient coins. Please ensure that you have at least 1 spendable coin in your wallet.',
+      };
+    }
+
+    const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
+    const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+    if (parseInt(addMirrorParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
+      return {
+        success: false,
+        message: 'Insufficient spendable balance. spendable balance must be greater than ' + addMirrorParams.fee,
+      };
+    }
+
+    return datalayer.addMirror(addMirrorParams, {...options, includeFee: false });
+  });
   ipcMain.handle('datalayerAddMirror',
     async (_, addMirrorParams: AddMirrorParams, options: Options) => {
 
@@ -78,28 +112,71 @@ export async function mountDatalayerRpcHandles() {
       const networkInfo = await wallet.getNetworkInfo({});
       const network = networkInfo.network_name;
 
+      if (!(createDataStoreParams?.fee)){
+        console.error('block chain fee is undefined. a block chain fee must be specified to call this api.');
+        return {
+          success: false,
+          message: 'block chain fee is undefined. a block chain fee must be specified to call this api.',
+        };
+      }
+
       const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
       const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest);
-
-      // ensure that the user has at least 2 coins: 1 for the usage fee and 1 for the datastore fee
-      if (spendableCoins.confirmed_records.length > 0) {
-        sendFixedFee(network, spendableCoins.confirmed_records.length);
-        setTimeout(() => {
-          return datalayer.createDataStore(createDataStoreParams, {
-            ...options,
-            waitForWalletAvailability: false
-          });
-        }, 1000);
-      } else {
+      if (spendableCoins?.confirmed_records.length < 1) {
         return {
           success: false,
           message: 'Insufficient coins. Please ensure that you have at least 1 spendable coin in your wallet.',
         };
       }
+
+      const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
+      const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+      if (parseInt(createDataStoreParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
+        return {
+          success: false,
+          message: 'Insufficient spendable balance. spendable balance must be greater than ' + createDataStoreParams.fee,
+        };
+      }
+
+      sendFixedFee(network, spendableCoins.confirmed_records.length);
+      setTimeout(() => {
+        return datalayer.createDataStore(createDataStoreParams, {
+          ...options,
+          waitForWalletAvailability: false
+        });
+      }, 1000);
     },
   );
 
-  ipcMain.handle('datalayerDeleteMirror', (_, deleteMirrorParams: DeleteMirrorParams, options: Options) => {
+  ipcMain.handle('datalayerDeleteMirror',
+    async (_, deleteMirrorParams: DeleteMirrorParams, options: Options) => {
+
+    if (!(deleteMirrorParams?.fee)){
+      console.error('block chain fee is undefined. a block chain fee must be specified to call this api.');
+      return {
+        success: false,
+        message: 'block chain fee is undefined. a block chain fee must be specified to call this api.',
+      };
+    }
+
+    const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
+    const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest);
+    if (spendableCoins?.confirmed_records.length < 1) {
+      return {
+        success: false,
+        message: 'Insufficient coins. Please ensure that you have at least 1 spendable coin in your wallet.',
+      };
+    }
+
+    const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
+    const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+    if (parseInt(deleteMirrorParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
+      return {
+        success: false,
+        message: 'Insufficient spendable balance. spendable balance must be greater than ' + deleteMirrorParams.fee,
+      };
+    }
+
     return datalayer.deleteMirror(deleteMirrorParams, options);
   });
 
@@ -192,7 +269,35 @@ export async function mountDatalayerRpcHandles() {
     });
   });
 
-  ipcMain.handle('datalayerUpdateDataStore', (_, batchUpdateParams: BatchUpdateParams, options: Options) => {
+  ipcMain.handle('datalayerUpdateDataStore',
+    async (_, batchUpdateParams: BatchUpdateParams, options: Options) => {
+
+    if (!(batchUpdateParams?.fee)){
+      console.error('block chain fee is undefined. a block chain fee must be specified to call this api.');
+      return {
+        success: false,
+        message: 'block chain fee is undefined. a block chain fee must be specified to call this api.',
+      };
+    }
+
+    const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
+    const spendableCoins = await wallet.getSpendableCoins(spendableCoinRequest);
+    if (spendableCoins?.confirmed_records.length < 1) {
+      return {
+        success: false,
+        message: 'Insufficient coins. Please ensure that you have at least 1 spendable coin in your wallet.',
+      };
+    }
+
+    const spendableBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
+    const getWalletBalanceResponse = await wallet.getWalletBalance(spendableBalanceRequest);
+    if (parseInt(batchUpdateParams.fee) >= getWalletBalanceResponse?.wallet_balance?.spendable_balance){
+      return {
+        success: false,
+        message: 'Insufficient spendable balance. spendable balance must be greater than ' + batchUpdateParams.fee,
+      };
+    }
+
     return datalayer.updateDataStore(batchUpdateParams, options);
   });
 

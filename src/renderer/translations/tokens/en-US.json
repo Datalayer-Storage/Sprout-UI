@@ -42,7 +42,8 @@
   "invalid-component-state": "INVALID COMPONENT STATE",
   "browse-...": "Browse ...",
   "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
-  "your-balance-must-be-at-least-one-Mojo-to-create-a-store": "Your balance must be at least 1 Mojo to create a store.",
+  "your-balance-must-be-greater-than-the-default-fee-to-create-a-store"
+  : "Your balance must be greater than the default fee to create a store.",
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
   "ensure-chia-services-are-running-and-accessible": "Ensure Chia services are running and accessible.",
   "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
@@ -110,6 +111,7 @@
   "the-official-downloads-page": "the official downloads page",
   "chia-is-running-retry": "Chia is running, retry",
   "waiting-for-wallet-to-sync": "Waiting for wallet to sync",
+  "the-default-fee-can-be-set-in-settings": "The default fee can be set in settings"
   "mirror": "Mirror",
   "add-store-mirror": "Add Store Mirror",
   "mirror-url": "Mirror URL",
