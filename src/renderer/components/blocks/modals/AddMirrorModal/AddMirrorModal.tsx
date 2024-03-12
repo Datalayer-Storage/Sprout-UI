@@ -23,8 +23,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
   }] = useGetWalletBalanceImmediateMutation();
 
   const dispatch = useDispatch();
-  const userOptions = useSelector((state: any) => state.userOptions);
-  const deployOptions = userOptions.deployOptions;
+  const deployOptions = useSelector((state: any) => state.userOptions.deployOptions);
 
   const [mirrorURL, setMirrorURL] = useState<string>('');
   const [mirrorCoinValue, setMirrorCoinValue] = useState<string>('');
@@ -32,6 +31,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
   const [urlChanged, setUrlChanged] = useState<boolean>(true);
   const [placeholderUrl, setPlaceHolderUrl] = useState<string>('https://duckduckgo.com');
   const [showInsufficientBalanceModal, setShowInsufficentBalanceModal] = useState<boolean>(false);
+  const [addMirrorClicked, setAddMirrorClicked] = useState<boolean>(false);
 
   useEffect(() => {
     if (getIpData?.success && !getUserIpLoading){
@@ -52,37 +52,55 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
   }, [dispatch, addMirrorData?.success, storeId, mirrorURL, onClose, placeholderUrl]);
 
   useEffect(() => {
-    if (getWalletBalanceData?.success && !getWalletBalanceLoading){
+    if (getWalletBalanceData?.success && !getWalletBalanceLoading && addMirrorClicked){
 
       const walletBalance = getWalletBalanceData?.wallet_balance?.spendable_balance;
-      const requiredWalletBalance = userOptions.defaultFee;
+      const requiredWalletBalance: number = mirrorCoinValue ?
+        parseInt(deployOptions.defaultFee) + parseInt(mirrorCoinValue) :
+        parseInt(deployOptions.defaultFee) + parseInt(deployOptions.defaultMirrorCoinAmount);
+
+      console.log('@@@@@@ required', requiredWalletBalance, '%%%%%%%%% available', walletBalance);
 
       if (walletBalance < requiredWalletBalance){
         setShowInsufficentBalanceModal(true);
+        setAddMirrorClicked(false);
         return;
       }
 
       if (!showInvalidUrlError && mirrorURL && mirrorCoinValue) {
         triggerAddMirror({
-          id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: String(mirrorCoinValue)
+          id: storeId,
+          urls: [mirrorURL],
+          amount: parseInt(mirrorCoinValue),
+          fee: deployOptions.defaultFee
         });
       } else if (!showInvalidUrlError && mirrorURL && !mirrorCoinValue) {
         triggerAddMirror({
-          id: storeId, urls: [mirrorURL], amount: parseInt(mirrorCoinValue), fee: deployOptions.defaultFee
+          id: storeId,
+          urls: [mirrorURL],
+          amount: deployOptions.defaultMirrorCoinAmount,
+          fee: deployOptions.defaultFee
         });
       } else if (!showInvalidUrlError && !mirrorURL && mirrorCoinValue) {
         triggerAddMirror({
-          id: storeId, urls: [mirrorURL], amount: parseInt(userOptions.defaultFee), fee: String(mirrorCoinValue)
+          id: storeId,
+          urls: [placeholderUrl],
+          amount: parseInt(mirrorCoinValue),
+          fee: deployOptions.defaultFee
         });
       } else if (!showInvalidUrlError) {
         triggerAddMirror({
-          id: storeId, urls: [placeholderUrl], amount: parseInt(userOptions.defaultFee), fee: deployOptions.defaultFee
+          id: storeId,
+          urls: [placeholderUrl],
+          amount: deployOptions.defaultMirrorCoinAmount,
+          fee: deployOptions.defaultFee
         });
       }
     }
-  }, [deployOptions.defaultFee, getWalletBalanceData?.success, getWalletBalanceData?.wallet_balance,
-    getWalletBalanceLoading, mirrorCoinValue, mirrorURL, placeholderUrl, showInvalidUrlError, storeId,
-    triggerAddMirror, userOptions.defaultFee]);
+  }, [addMirrorClicked, deployOptions.defaultFee, getWalletBalanceData?.success,
+    getWalletBalanceData?.wallet_balance, getWalletBalanceLoading, mirrorCoinValue, mirrorURL,
+    placeholderUrl, showInvalidUrlError, storeId, triggerAddMirror, deployOptions.defaultMirrorCoinAmount,
+  ]);
 
   // Regex to check if the string is a valid URL
   const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
@@ -104,6 +122,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
 
   const accept = () => {
     setUrlChanged(false);
+    setAddMirrorClicked(true);
     triggerGetWalletBalance({});
   }
 
@@ -171,7 +190,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
                   onChange={handleCoinValueChange}
                   value={mirrorCoinValue}
                   type={'number'}
-                  placeholder={userOptions?.defaultFee || 0}
+                  placeholder={deployOptions?.defaultMirrorCoinAmount || 0}
                 />
               </div>
             </div>

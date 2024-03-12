@@ -51,7 +51,7 @@ const OwnedStoresDropDown: React.FC<OwnedStoresDropDownProps> = ({
         <Dropdown
           label="LOCAL"
           disabled={
-            Boolean(ownedStores?.store_ids.length) === false || isLoading
+            Boolean(ownedStores?.store_ids?.length) === false || isLoading
           }
         >
           {ownedStores.store_ids?.length || 0 > 0 ? (
