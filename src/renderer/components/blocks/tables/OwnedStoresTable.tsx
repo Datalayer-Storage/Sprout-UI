@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { Button, Card, Table, TableBody } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 import {useGetOwnedStoresQuery} from '@/api/ipc/datalayer';
-import { LoadingSpinnerCard, Spacer } from '@/components';
+import {LoadingSpinnerCard, Spacer, StoreMirrorButton} from '@/components';
 import { useSelector } from 'react-redux';
 import {Link} from "react-router-dom";
 import ROUTES from '@/routes/route-constants'
@@ -49,24 +49,27 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
         <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white truncate ...">
           {userOptions.storeLabels?.[storeId] || storeId}
         </Table.Cell>
-          <Table.Cell>
-            <Link
-              to={ROUTES.EDIT_STORE}
-              className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-              state={{storeId: data.store_ids[index]}}
-            >
-              <FormattedMessage id={'edit'} />
-            </Link>
-          </Table.Cell>
-          <Table.Cell>
-            <Link
-              to={ROUTES.VIEW_STORE}
-              className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-              state={{storeId: data.store_ids[index]}}
-            >
-              <FormattedMessage id={'view'} />
-            </Link>
-          </Table.Cell>
+        <Table.Cell>
+          <Link
+            to={ROUTES.EDIT_STORE}
+            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+            state={{storeId: data.store_ids[index]}}
+          >
+            <FormattedMessage id={'edit'} />
+          </Link>
+        </Table.Cell>
+        <Table.Cell>
+          <StoreMirrorButton storeId={storeId}/>
+        </Table.Cell>
+        <Table.Cell>
+          <Link
+            to={ROUTES.VIEW_STORE}
+            className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+            state={{storeId: data.store_ids[index]}}
+          >
+            <FormattedMessage id={'view'} />
+          </Link>
+        </Table.Cell>
       </Table.Row>
     ),
   );
@@ -98,6 +101,9 @@ const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
           <Table.Head>
             <Table.HeadCell>
               <FormattedMessage id="store-id" />
+            </Table.HeadCell>
+            <Table.HeadCell>
+              <span className="sr-only" />
             </Table.HeadCell>
             <Table.HeadCell>
               <span className="sr-only" />
