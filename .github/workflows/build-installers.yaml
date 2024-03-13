@@ -53,16 +53,24 @@ jobs:
           CSC_FOR_PULL_REQUEST: "true"
         run: npm run electron:package:mac
 
+      - name: List contents of the dist directory
+        run: |
+          echo "Listing contents of the dist directory:"
+          ls -al ${{ github.workspace }}/dist/
+
       - name: Notarize
         run: |
           DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
+          if [[ ! -f "$DMG_FILE" ]]; then
+            echo "DMG file not found, aborting notarization."
+            exit 1
+          fi
           npm install -g notarize-cli
           notarize-cli \
             --file="$DMG_FILE" \
             --bundle-id storage.datalayer.sprout-ui \
             --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
-            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}" \
-            --verbose
+            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
 
       - name: Upload Mac Installer
         uses: actions/upload-artifact@v3
