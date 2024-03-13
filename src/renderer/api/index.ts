@@ -1,2 +1,2 @@
 export * from './ipc';
-export * from './getUserIp';
+export * from './datalayerStorage';

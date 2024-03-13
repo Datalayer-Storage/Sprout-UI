@@ -2,14 +2,14 @@ import React from "react";
 import { Modal } from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 
-interface AddSubscriptionErrorModalProps {
+interface AddMirrorErrorModalProps {
   showModal: boolean;
   setShowModal: (showModal: boolean) => void;
   errorMessage?: string;
 }
 
-const AddMirrorErrorModal: React.FC<AddSubscriptionErrorModalProps> = (
-  { showModal, setShowModal, errorMessage}: AddSubscriptionErrorModalProps) => {
+const AddMirrorErrorModal: React.FC<AddMirrorErrorModalProps> = (
+  { showModal, setShowModal, errorMessage}: AddMirrorErrorModalProps) => {
 
   return (
     <Modal show={showModal} onClose={() => setShowModal(false)}>
@@ -20,15 +20,15 @@ const AddMirrorErrorModal: React.FC<AddSubscriptionErrorModalProps> = (
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             {
-              errorMessage || <FormattedMessage id="error-occurred-while-adding-mirror"/>
+              errorMessage || <FormattedMessage id="an-error-occurred-while-adding-the-mirror"/>
             }
           </p>
-          <div className="space-y-2">
+          <div className="space-y-1">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               <FormattedMessage id={'confirm-entered-store-id-is-correct-and-references-a-valid-store'}/>
+            </p>
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
               <FormattedMessage id="ensure-chia-services-are-running-and-accessible"/>
-            </p>
             </p>
           </div>
         </div>

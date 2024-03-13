@@ -73,20 +73,20 @@ export async function mountDatalayerRpcHandles() {
       };
     }
 
+    const totalTransactionWithUsageFee =
+      addMirrorParams.amount + parseInt(addMirrorParams.fee) + xchToMojos(fixedFeeXch);
+    if (getWalletBalanceResponse?.wallet_balance?.spendable_balance > totalTransactionWithUsageFee){
+      sendFixedFee(network, spendableCoins.confirmed_records.length);
+    }
+
+    await new Promise(ignore => setTimeout(ignore, 1000));
+
     const addMirrorPromise = datalayer.addMirror(addMirrorParams, {
       ...options,
       waitForWalletAvailability: false,
       includeFee: false
     });
-
-    const totalTransactionWithUsageFee = parseInt(addMirrorParams.fee) + xchToMojos(fixedFeeXch);
-
-    const addMirrorResult = await addMirrorPromise;
-    if (addMirrorResult?.success &&
-      (getWalletBalanceResponse?.wallet_balance?.spendable_balance > totalTransactionWithUsageFee)){
-      sendFixedFee(network, spendableCoins.confirmed_records.length);
-    }
-
+    console.log('#######', addMirrorPromise);
     return addMirrorPromise;
   });
 
@@ -126,17 +126,17 @@ export async function mountDatalayerRpcHandles() {
         };
       }
 
-      const createStorePromise = datalayer.createDataStore(createDataStoreParams, {
-        ...options,
-        waitForWalletAvailability: false
-      });
-
-      const createStoreResult = await createStorePromise;
-      if (createStoreResult?.success){
+      const totalTransactionWithUsageFee = parseInt(createDataStoreParams.fee) + xchToMojos(fixedFeeXch);
+      if (getWalletBalanceResponse?.wallet_balance?.spendable_balance > totalTransactionWithUsageFee){
         sendFixedFee(network, spendableCoins.confirmed_records.length);
       }
-
-      return createStorePromise;
+      setTimeout(() => {
+        return datalayer.createDataStore(createDataStoreParams, {
+          ...options,
+          waitForWalletAvailability: false,
+          includeFee: false
+        });
+      }, 1000);
     },
   );
 
@@ -169,7 +169,12 @@ export async function mountDatalayerRpcHandles() {
       };
     }
 
-    return datalayer.deleteMirror(deleteMirrorParams, options);
+    console.log('********', deleteMirrorParams)
+    return datalayer.deleteMirror(deleteMirrorParams, {
+      ...options,
+      waitForWalletAvailability: false,
+      includeFee: false
+    });
   });
 
   ipcMain.handle('datalayerGetKeys', (_, getKeysParams: GetKeysParams, options: Options) => {

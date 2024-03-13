@@ -126,5 +126,7 @@
   "are-you-sure-you-want-to-delete-this-mirror": "Are you sure you want to delete this mirror",
   "yes-delete-mirror": "Yes, Delete Mirror",
   "an-error-occurred-while-deleting-the-mirror": "An error occurred while deleting the mirror",
-  "unchanged-fields-will-default-to-currently-displayed-values": "Unchanged fields will default to currently displayed values"
+  "unchanged-fields-will-default-to-currently-displayed-values": "Unchanged fields will default to currently displayed values",
+  "unable-to-add-mirror": "Unable to add mirror",
+  "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror"
 }
