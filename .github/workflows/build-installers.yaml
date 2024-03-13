@@ -61,7 +61,8 @@ jobs:
             --file="$DMG_FILE" \
             --bundle-id storage.datalayer.sprout-ui \
             --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
-            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
+            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}" \
+            --verbose
 
       - name: Upload Mac Installer
         uses: actions/upload-artifact@v3
