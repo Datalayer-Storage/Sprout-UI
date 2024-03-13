@@ -58,20 +58,22 @@ jobs:
           echo "Listing contents of the dist directory:"
           ls -al ${{ github.workspace }}/dist/
 
-      - name: Notarize
+      - name: Find DMG file
+        id: find-dmg
         run: |
-          DMG_FILE=$(find ${{ github.workspace }}/dist/ -type f -name '*.dmg')
-          if [[ ! -f "$DMG_FILE" ]]; then
-            echo "DMG file not found, aborting notarization."
-            exit 1
-          fi
-          echo "DMG file to be notarized: $DMG_FILE"
-          npm install -g notarize-cli@latest
-          notarize-cli \
-            --file="$DMG_FILE" \
-            --bundle-id storage.datalayer.sprout-ui \
-            --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
-            --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
+          DMG_FILE=$(find ${{ github.workspace }}/dist -type f -name '*.dmg')
+          echo "DMG_FILE=$DMG_FILE" >> $GITHUB_ENV
+          echo "Found DMG file: $DMG_FILE"
+
+      - name: Notarize with notary-tools action
+        uses: GuillaumeFalourd/notary-tools@v1
+        with:
+          product_path: ${{ env.DMG_FILE }}
+          apple_id: ${{ secrets.APPLE_NOTARIZE_USERNAME }}
+          password: ${{ secrets.APPLE_NOTARIZE_PASSWORD }}
+          team_id: ${{ secrets.APPLE_TEAM_ID }}
+          staple: 'true'
+          keychain_profile: ${{ secrets.APPLE_NOTARIZE_PASSWORD }}
 
       - name: Upload Mac Installer
         uses: actions/upload-artifact@v3

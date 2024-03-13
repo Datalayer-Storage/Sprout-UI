@@ -88,7 +88,7 @@
     "*.+(js|ts|tsx)": "npm run lint:prettier-eslint"
   },
   "build": {
-    "appId": "org.dlaas.sprout-ui",
+    "appId": "storage.datalayer.sprout-ui",
     "productName": "sprout-ui",
     "files": [
       "build/renderer/**/*",
