@@ -52,7 +52,7 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
             setDisplayActionLoading(false);
             onClose();
           }
-        })) {
+        })) /* body of above if */ {
           dispatch(deleteStoreMirror({storeId}));
           setDisplayActionLoading(false);
           onClose();

@@ -86,7 +86,9 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
         fee: deployOptions.defaultFee
       }
     }
-  }, []);
+  }, [deployOptions.defaultFee, deployOptions.defaultMirrorCoinAmount,
+    mirrorCoinValue, mirrorURL, placeholderUrl, storeId
+  ]);
 
   const accept = async () => {
     setUrlChanged(false);
@@ -101,14 +103,12 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
         parseInt(deployOptions.defaultFee) + parseInt(mirrorCoinValue) :
         parseInt(deployOptions.defaultFee) + parseInt(deployOptions.defaultMirrorCoinAmount);
 
-      console.log('required funds', requiredWalletBalance, 'available', walletBalance)
-
       if (walletBalance >= requiredWalletBalance) {
         onClose();
 
         if(!showInvalidUrlError){
           const addMirrorResult = await triggerAddMirror(getAddMirrorParams());
-          console.log('add mirror data', addMirrorResult, 'add mirror loading', addMirrorMutationLoading);
+
           // @ts-ignore
           if (addMirrorResult?.data?.success) {
             if (mirrorURL) {
@@ -116,7 +116,6 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
             } else {
               dispatch(addStoreMirror({storeId, url: placeholderUrl}));
             }
-
           } else {
             setShowGenericAddMirrorErrorModal(true);
           }

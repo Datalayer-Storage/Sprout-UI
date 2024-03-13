@@ -86,7 +86,6 @@ export async function mountDatalayerRpcHandles() {
       waitForWalletAvailability: false,
       includeFee: false
     });
-    console.log('#######', addMirrorPromise);
     return addMirrorPromise;
   });
 
@@ -169,7 +168,6 @@ export async function mountDatalayerRpcHandles() {
       };
     }
 
-    console.log('********', deleteMirrorParams)
     return datalayer.deleteMirror(deleteMirrorParams, {
       ...options,
       waitForWalletAvailability: false,
