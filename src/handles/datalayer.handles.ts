@@ -73,10 +73,10 @@ export async function mountDatalayerRpcHandles() {
       };
     }
 
-    console.log('!!!!!!!!!!!! addmirrorparams', addMirrorParams, '^^^^^^^^^^^^^^ options', options)
     const addMirrorPromise = datalayer.addMirror(addMirrorParams, {
       ...options,
-      waitForWalletAvailability: false
+      waitForWalletAvailability: false,
+      includeFee: false
     });
 
     const totalTransactionWithUsageFee = parseInt(addMirrorParams.fee) + xchToMojos(fixedFeeXch);

@@ -59,8 +59,6 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
         parseInt(deployOptions.defaultFee) + parseInt(mirrorCoinValue) :
         parseInt(deployOptions.defaultFee) + parseInt(deployOptions.defaultMirrorCoinAmount);
 
-      console.log('@@@@@@ required', requiredWalletBalance, '%%%%%%%%% available', walletBalance);
-
       if (walletBalance < requiredWalletBalance){
         setShowInsufficentBalanceModal(true);
         setAddMirrorClicked(false);

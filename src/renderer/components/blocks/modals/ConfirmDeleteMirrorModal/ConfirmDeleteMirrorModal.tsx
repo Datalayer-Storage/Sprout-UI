@@ -45,7 +45,7 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
       try {
         if (!getMirrorsData.mirrors.some((mirrorCoin) => {
           if (mirrorCoin.ours && mirrorCoin.urls.includes(storeMirrors[storeId])){
-            triggerDeleteMirror({coin_id: mirrorCoin.coin_id, fee: String(deployOptions.defaultFee)});
+            triggerDeleteMirror({coin_id: mirrorCoin.coin_id, fee: deployOptions.defaultFee});
           } else {
             // url does not exist as mirror
             setShowErrorModal(true);

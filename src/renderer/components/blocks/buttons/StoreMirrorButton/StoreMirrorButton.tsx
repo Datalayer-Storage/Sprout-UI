@@ -61,9 +61,11 @@ const StoreMirrorButton: React.FC<StoreMirrorProps> = ({storeId}) => {
               </Button>
             </div>
           }>
-          <p className={'font-medium text-gray-500'}>
-            <FormattedMessage id={"mirrored"}/> &#10003;
-          </p>
+          <div className={'whitespace-nowrap'}>
+            <p className={'font-medium text-gray-500'}>
+              <FormattedMessage id={"mirrored"}/> &#10003;
+            </p>
+          </div>
         </Tooltip>
       }
       {
