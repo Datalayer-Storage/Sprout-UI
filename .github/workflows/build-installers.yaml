@@ -65,7 +65,8 @@ jobs:
             echo "DMG file not found, aborting notarization."
             exit 1
           fi
-          npm install -g notarize-cli
+          echo "DMG file to be notarized: $DMG_FILE"
+          npm install -g notarize-cli@latest
           notarize-cli \
             --file="$DMG_FILE" \
             --bundle-id storage.datalayer.sprout-ui \
