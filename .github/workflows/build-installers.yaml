@@ -18,6 +18,69 @@ permissions:
   contents: write
 
 jobs:
+  build_mac:
+    name: Build Mac Installer
+    runs-on: macos-latest
+    steps:
+      - uses: Chia-Network/actions/clean-workspace@main
+
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node 18.16
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.16'
+
+      - name: Install Husky
+        run: npm install --save-dev husky
+
+      - name: install dmg-license
+        run: npm i dmg-license
+
+      - name: npm install
+        run: |
+          npm install
+
+      - name: Import Apple installer signing certificate
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_DEV_ID_APP }}
+          p12-password: ${{ secrets.APPLE_DEV_ID_APP_PASS }}
+
+      - name: Build electron app
+        env:
+          CSC_FOR_PULL_REQUEST: "true"
+        run: npm run electron:package:mac
+
+      - name: List contents of the dist directory
+        run: |
+          echo "Listing contents of the dist directory:"
+          ls -al ${{ github.workspace }}/dist/
+
+      - name: Find DMG file
+        id: find-dmg
+        run: |
+          DMG_FILE=$(find ${{ github.workspace }}/dist -type f -name '*.dmg')
+          echo "DMG_FILE=$DMG_FILE" >> $GITHUB_ENV
+          echo "Found DMG file: $DMG_FILE"
+
+      - name: Notarize with notary-tools action
+        uses: GuillaumeFalourd/notary-tools@v1
+        with:
+          product_path: ${{ env.DMG_FILE }}
+          apple_id: ${{ secrets.APPLE_NOTARIZE_USERNAME }}
+          password: ${{ secrets.APPLE_NOTARIZE_PASSWORD }}
+          team_id: ${{ secrets.APPLE_TEAM_ID }}
+          staple: 'true'
+          keychain_profile: ${{ secrets.APPLE_NOTARIZE_PASSWORD }}
+
+      - name: Upload Mac Installer
+        uses: actions/upload-artifact@v3
+        with:
+          name: sprout-ui-mac-installer
+          path: ${{ github.workspace }}/dist/*.dmg
+
   build_windows:
     name: Build Windows Installer
     runs-on: windows-2019
@@ -106,6 +169,7 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     needs:
+      - build_mac
       - build_windows
       - build_linux
     steps:
@@ -115,6 +179,12 @@ jobs:
           name: sprout-ui-windows-installer
           path: sprout-ui-windows-installer
 
+      - name: Download MacOS artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: sprout-ui-mac-installer
+          path: sprout-ui-mac-installer
+
       - name: Download Linux artifacts
         uses: actions/download-artifact@v3
         with:
@@ -123,9 +193,11 @@ jobs:
 
       - name: Get Filenames
         run: |
+          DMG_FILE=$(find ${{ github.workspace }}/sprout-ui-mac-installer/ -type f -name '*.dmg')
           DEB_FILE=$(find ${{ github.workspace }}/sprout-ui-linux-installer/ -type f -name '*.deb')
           EXE_FILE=$(find ${{ github.workspace }}/sprout-ui-windows-installer/ -type f -name '*.exe')
 
+          echo "DMG_FILE=$DMG_FILE" >>$GITHUB_ENV
           echo "DEB_FILE=$DEB_FILE" >> $GITHUB_ENV
           echo "EXE_FILE=$EXE_FILE" >> $GITHUB_ENV
 
@@ -133,31 +205,6 @@ jobs:
         uses: softprops/action-gh-release@v0.1.15
         with:
           files: |
+            ${{ env.DMG_FILE }}
             ${{ env.DEB_FILE }}
             ${{ env.EXE_FILE }}
-
-      - name: Checkout public repository for distribution
-        uses: actions/checkout@v2
-        with:
-          repository: 'Datalayer-Storage/sprout-ui-public'
-          token: ${{ secrets.GH_ACCESS_TOKEN }}
-          path: sprout-ui-public
-
-      - name: Copy files to public repository
-        run: |
-          cp "${{ env.DEB_FILE }}" "${{ github.workspace }}/sprout-ui-public/"
-          cp "${{ env.EXE_FILE }}" "${{ github.workspace }}/sprout-ui-public/"
-        
-
-      - name: Change directory to sprout-ui-public
-        run: echo "PWD=$(pwd)" && cd ${{ github.workspace }}/sprout-ui-public && echo "New PWD=$(pwd)"
-        shell: bash
-
-      - name: Release in Public Repo
-        uses: softprops/action-gh-release@v0.1.15
-        with:
-          files: |
-            *.deb
-            *.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
