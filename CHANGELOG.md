@@ -1,3 +1,7 @@
+## [0.0.6](https://github.com/Datalayer-Storage/Sprout-UI/compare/0.0.5...0.0.6) (2024-03-13)
+
+
+
 ## [0.0.5](https://github.com/Datalayer-Storage/Sprout-UI/compare/0.0.4...0.0.5) (2024-03-11)
 
 
