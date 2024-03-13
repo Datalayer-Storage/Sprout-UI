@@ -59,7 +59,7 @@ jobs:
           npm install -g notarize-cli
           notarize-cli \
             --file="$DMG_FILE" \
-            --bundle-id net.chia.sprout-ui \
+            --bundle-id storage.datalayer.sprout-ui \
             --username "${{ secrets.APPLE_NOTARIZE_USERNAME }}" \
             --password "${{ secrets.APPLE_NOTARIZE_PASSWORD }}"
 
