@@ -22,11 +22,11 @@ const AppNavigator: React.FC = () => {
           <Route path="" element={<Template/>}>
             <Route
               path="/"
-              element={<Navigate to={ROUTES.BROWSER}/>}
+              element={<Navigate to={ROUTES.MY_STORES}/>}
             />
             <Route
-              path={ROUTES.BROWSER}
-              element={<Pages.Browser/>}
+              path={ROUTES.SIMPLE_WEB_VIEW}
+              element={<Pages.SimpleWebView/>}
             />
             <Route
               path={ROUTES.SETTINGS}
@@ -50,7 +50,7 @@ const AppNavigator: React.FC = () => {
             />
             <Route
               path="*"
-              element={<Navigate replace to={ROUTES.BROWSER} />}
+              element={<Navigate replace to={ROUTES.MY_STORES} />}
             />
           </Route>  
         </Routes>

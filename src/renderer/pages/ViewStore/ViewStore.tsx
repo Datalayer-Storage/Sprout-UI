@@ -1,9 +1,9 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {BackButton, DatalayerStoreKeysTable, InvalidStoreIdErrorModal, SetStoreLabel, Spacer} from "@/components";
-import {visitPage} from "@/store/slices/browser";
 import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
 import {useDispatch, useSelector} from "react-redux";
 import {useLocation, useNavigate} from "react-router-dom";
+import Routes from "@/routes/route-constants";
 
 const ViewStore: React.FC = () => {
 
@@ -28,14 +28,9 @@ const ViewStore: React.FC = () => {
   const handleViewKeyData = useCallback((key: string) => {
     if (storeId) {
       const dataPage: string = 'chia://' + storeId + '/' + key;
-      dispatch(
-        visitPage({
-          page: { url: dataPage },
-          fallbackStoreProvider,
-          ownedStores,
-        }),
-      );
-      navigate('/browser');
+      navigate(Routes.SIMPLE_WEB_VIEW, {
+        state: {chiaUrl: dataPage, fallbackStoreProvider, ownedStores}
+      });
     }
   }, [storeId, dispatch, fallbackStoreProvider, ownedStores, navigate]);
 
