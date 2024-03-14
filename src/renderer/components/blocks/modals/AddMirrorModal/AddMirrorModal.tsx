@@ -39,7 +39,7 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
   }, [getUserIpLoading, getIpData]);
 
   // Regex to check if the string is a valid URL
-  const urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+  const urlPattern = new RegExp('^(https?:\\/\\/)' + // protocol
     '((([a-zA-Z\\d]([a-zA-Z\\d-]*[a-zA-Z\\d])*)\\.)+[a-zA-Z]{2,}|' + // domain name and extension
     '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
     '(\\:\\d+)?(\\/[-a-zA-Z\\d%_.~+]*)*' + // port and path
@@ -92,6 +92,11 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
 
   const accept = async () => {
     setUrlChanged(false);
+
+    if (showInvalidUrlError){
+      return;
+    }
+
     const getWalletBalanceResponse = await triggerGetWalletBalance({});
 
     // @ts-ignore
@@ -104,13 +109,13 @@ const AddMirrorModal: React.FC<ConfirmCreateStoreModalProps> = ({storeId, onClos
         parseInt(deployOptions.defaultFee) + parseInt(deployOptions.defaultMirrorCoinAmount);
 
       if (walletBalance >= requiredWalletBalance) {
-        onClose();
 
         if(!showInvalidUrlError){
           const addMirrorResult = await triggerAddMirror(getAddMirrorParams());
 
           // @ts-ignore
           if (addMirrorResult?.data?.success) {
+            onClose();
             if (mirrorURL) {
               dispatch(addStoreMirror({storeId, url: mirrorURL}));
             } else {
