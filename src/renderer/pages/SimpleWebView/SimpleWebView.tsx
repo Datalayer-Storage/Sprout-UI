@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { WebView } from '@/components/blocks/layout/WebView';
 import { WebviewTag } from 'electron';
-import {BackButton} from '@/components';
+import {BackButton, Spacer} from '@/components';
 import SplashScreen from '@/assets/home2.png';
 import {useLocation} from "react-router-dom";
 import {transformToHttpProtocal} from "@/utils/chia-router";
@@ -13,12 +13,14 @@ const SimpleWebView: React.FC = () => {
   const chiaUrl: string = location?.state?.chiaUrl;
   const ownedStores: string[] = location?.state?.ownedStores;
   const fallbackStoreProvider: string = location?.state?.fallbackStoreProvider;
+  console.log(chiaUrl, ownedStores, fallbackStoreProvider)
   const pageChiaProtocolUrl: string =
     (chiaUrl && ownedStores && fallbackStoreProvider) ? chiaUrl : 'browser://home';
 
   return (
-    <div>
+    <div style={{height: '100vh'}}>
       <BackButton/>
+      <Spacer size={10} />
       {(pageChiaProtocolUrl === 'browser://home') ? (
         <div
           style={{
@@ -32,12 +34,14 @@ const SimpleWebView: React.FC = () => {
           }}
         />
       ) : (
-        <WebView
-          ref={webviewRef}
-          onDidNavigate={() => {}}
-          onDidNavigateInPage={() => {}}
-          location={transformToHttpProtocal(pageChiaProtocolUrl, fallbackStoreProvider, ownedStores)}
-        />
+        <div style={{height: '100%'}}>
+          <WebView
+            ref={webviewRef}
+            onDidNavigate={() => {}}
+            onDidNavigateInPage={() => {}}
+            location={transformToHttpProtocal(pageChiaProtocolUrl, fallbackStoreProvider, ownedStores)}
+          />
+        </div>
       )}
     </div>
   );
