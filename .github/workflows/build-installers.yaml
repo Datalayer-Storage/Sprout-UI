@@ -214,8 +214,7 @@ jobs:
           aws s3 cp "${{ env.DMG_FILE }}" s3://dlaas/releases/ --metadata md5="$(md5sum "${{ env.DMG_FILE }}" | cut -d ' ' -f 1)"
           aws s3 cp "${{ env.DEB_FILE }}" s3://dlaas/releases/ --metadata md5="$(md5sum "${{ env.DEB_FILE }}" | cut -d ' ' -f 1)"
           aws s3 cp "${{ env.EXE_FILE }}" s3://dlaas/releases/ --metadata md5="$(md5sum "${{ env.EXE_FILE }}" | cut -d ' ' -f 1)"
-          
-          # Optionally, upload the latest version. Adjust filenames as needed.
+
           aws s3 cp "${{ env.DMG_FILE }}" s3://dlaas/releases/sprout-ui-mac-latest.dmg --metadata md5="$(md5sum "${{ env.DMG_FILE }}" | cut -d ' ' -f 1)"
           aws s3 cp "${{ env.DEB_FILE }}" s3://dlaas/releases/sprout-ui-linux-latest.deb --metadata md5="$(md5sum "${{ env.DEB_FILE }}" | cut -d ' ' -f 1)"
           aws s3 cp "${{ env.EXE_FILE }}" s3://dlaas/releases/sprout-ui-windows-latest.exe --metadata md5="$(md5sum "${{ env.EXE_FILE }}" | cut -d ' ' -f 1)"
