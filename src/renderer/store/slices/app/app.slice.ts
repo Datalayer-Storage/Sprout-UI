@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './app.initialstate';
+import _ from 'lodash';
 
 export const appSlice = createSlice({
   name: 'app',
@@ -14,13 +15,27 @@ export const appSlice = createSlice({
       setTimeout(() => {
         state.checkForPendingTxToken = Math.random();
       }, 1000);
+    },
+
+    addStoreMirror: (state, { payload }) => {
+      if (!_.isNil(payload.storeId) && !_.isNil(payload.url)) {
+        state.storeMirrors[payload.storeId] =  payload.url;
+      }
+    },
+
+    deleteStoreMirror: (state, { payload }) => {
+      if (!_.isNil(payload.storeId)) {
+        delete state.storeMirrors[payload.storeId];
+      }
     }
   },
 });
 
 export const {
   setLocale,
-  invalidateCheckForTXToken
+  invalidateCheckForTXToken,
+  addStoreMirror,
+  deleteStoreMirror
 } = appSlice.actions;
 
 export default appSlice.reducer;

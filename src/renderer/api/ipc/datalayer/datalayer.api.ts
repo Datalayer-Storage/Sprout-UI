@@ -167,5 +167,8 @@ export const {
   useGetSubscriptionsQuery,
   useSubscribeMutation,
   useUnsubscribeMutation,
+  useAddMirrorMutation,
+  useDeleteMirrorMutation,
+  useGetMirrorsQuery,
   usePluginsQuery
 } = datalayerApi;

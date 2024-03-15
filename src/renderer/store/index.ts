@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { ipcApi } from '@/api';
+import { ipcApi, getUserIp } from '@/api';
 import appReducer from './slices/app/app.slice';
 import userOptionsReducer from './slices/userOptions/userOptions.slice';
 import storage from 'redux-persist/lib/storage';
@@ -25,12 +25,21 @@ const persistUserOptionsConfig = {
   stateReconciler: autoMergeLevel2,
 };
 
+const persistAppsConfig = {
+  key: 'app',
+  version: 1,
+  storage,
+  stateReconciler: autoMergeLevel2,
+};
+
 const store = configureStore({
   reducer: {
-    app: appReducer,
+    // @ts-ignore
+    app: persistReducer(persistAppsConfig, appReducer),
     // @ts-ignore
     userOptions: persistReducer(persistUserOptionsConfig, userOptionsReducer),
     [ipcApi.reducerPath]: ipcApi.reducer,
+    [getUserIp.reducerPath]: getUserIp.reducer,
     browser: browserReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -40,6 +49,7 @@ const store = configureStore({
       },
     })
       .concat(ipcApi.middleware)
+      .concat(getUserIp.middleware)
       .concat(rtkQueryErrorLogger),
 });
 

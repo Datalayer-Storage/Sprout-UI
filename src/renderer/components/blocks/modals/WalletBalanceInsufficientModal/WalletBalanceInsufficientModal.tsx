@@ -27,7 +27,9 @@ const WalletBalanceInsufficientErrorModal: React.FC<WalletBalanceInsufficientMod
       <Modal.Body>
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            <FormattedMessage id="your-balance-must-be-greater-than-the-default-fee-to-create-a-store"/>
+            <FormattedMessage
+              id="your-balance-must-be-greater-than-the-default-fee-for-this-action-and-could-require-that-additional-xch-be-used-as-an-asset"
+            />.
           </p>
           <FauxLinkButton onClick={handleGoToSettings}>
             <FormattedMessage id={"the-default-fee-can-be-set-in-settings"}/>.

@@ -1,4 +1,5 @@
 {
+  "and": "and",
   "my-stores": "My Stores",
   "browser": "Browser",
   "settings": "Settings",
@@ -13,7 +14,6 @@
   "edit-store": "Edit Store",
   "back": "Back",
   "key": "Key",
-  "and": "and",
   "deploy": "Deploy",
   "success": "Success",
   "important": "Important",
@@ -41,8 +41,8 @@
   "invalid-component-state": "INVALID COMPONENT STATE",
   "browse-...": "Browse ...",
   "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
-  "your-balance-must-be-greater-than-the-default-fee-to-create-a-store"
-  : "Your balance must be greater than the default fee to create a store.",
+  "your-balance-must-be-greater-than-the-default-fee-for-this-action-and-could-require-that-additional-xch-be-used-as-an-asset"
+  : "Your balance must be greater than the default fee for this action, and could require that additional XCH be used as an asset",
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
   "ensure-chia-services-are-running-and-accessible": "Ensure Chia services are running and accessible.",
   "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
@@ -85,7 +85,7 @@
   "deploy-mode---replace": "Deploy Mode - Replace",
   "deploy-mode---additive": "Deploy Mode - Additive",
   "this-action-will-incur-a-non-refundable-fee-of": "This action will incur a non-refundable fee of",
-  "xch-in-addition-to-standard-chia-blockchain-fees": "XCH in addition to standard Chia blockchain fees.",
+  "xch-in-addition-to-standard-chia-blockchain-fees": "XCH in addition to standard Chia blockchain fees",
   "do-you-want-to-proceed-with-folder-deploy?": "Do you want to proceed with folder deploy?",
   "yes-deploy-folder": "Yes, Deploy Folder",
   "no-cancel-folder-deploy": "No, Cancel Folder Deploy",
@@ -110,5 +110,24 @@
   "the-official-downloads-page": "the official downloads page",
   "chia-is-running-retry": "Chia is running, retry",
   "waiting-for-wallet-to-sync": "Waiting for wallet to sync",
-  "the-default-fee-can-be-set-in-settings": "The default fee can be set in settings"
+  "the-default-fee-can-be-set-in-settings": "The default fee can be set in settings",
+  "mirror": "Mirror",
+  "add-store-mirror": "Add Store Mirror",
+  "mirror-url": "Mirror URL",
+  "mirror-coin-value": "Mirror Coin Value",
+  "a-higher-value-gives-the-mirror-more-validity": "A higher value gives the mirror more validity",
+  "create-a-mirror-coin-with-the-specified-value": "create a mirror coin with the specified value",
+  "mirrored": "Mirrored",
+  "please-enter-a-valid-url": "Please enter a valid URL",
+  "mirror-coin-value-cannot-be-empty": "Mirror coin value cannot be empty",
+  "delete-mirror": "Delete Mirror",
+  "delete-store-mirror": "Delete Store Mirror",
+  "are-you-sure-you-want-to-delete-this-mirror": "Are you sure you want to delete this mirror",
+  "yes-delete-mirror": "Yes, Delete Mirror",
+  "an-error-occurred-while-deleting-the-mirror": "An error occurred while deleting the mirror",
+  "unchanged-fields-will-default-to-currently-displayed-values": "Unchanged fields will default to currently displayed values",
+  "unable-to-add-mirror": "Unable to add mirror",
+  "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror",
+  "application-error": "Application Error",
+  "please-reload-or-restart-the-application": "Please reload or restart the application"
 }

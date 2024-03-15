@@ -10,3 +10,7 @@ export * from './ConfirmCreateStoreModal';
 export * from './AddSubscriptionErrorModal';
 export * from './ConfirmUnsubscribeModal';
 export * from './ChiaNotAccessibleModal';
+export * from './AddMirrorErrorModal';
+export * from './AddMirrorModal';
+export * from './SetStoreLabelModal';
+export * from './DeleteMirrorErrorModal';

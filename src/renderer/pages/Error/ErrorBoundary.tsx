@@ -1,4 +1,6 @@
 import React from 'react';
+import {Modal} from "flowbite-react";
+import {FormattedMessage} from "react-intl";
 
 class ErrorBoundary extends React.Component {
   constructor(props: any) {
@@ -29,9 +31,16 @@ class ErrorBoundary extends React.Component {
           flexDirection: 'column',
         }}
       >
-        <h1>
-          ERROR BOUNDARY
-        </h1>
+        <Modal show={true}>
+          <Modal.Header>
+            <FormattedMessage id={"application-error"}/>
+          </Modal.Header>
+          <Modal.Body>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              <FormattedMessage id={"please-reload-or-restart-the-application"}/>.
+            </p>
+          </Modal.Body>
+        </Modal>
       </div>
     );
   }

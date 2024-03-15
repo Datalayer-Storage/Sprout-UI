@@ -4,11 +4,9 @@ import { Button } from 'flowbite-react';
 import { 
   HiOutlineArrowLeft, 
   HiOutlineArrowRight,
-  HiOutlineGlobeAlt,
   HiOutlineInboxIn,
   HiOutlineArchive,
 } from 'react-icons/hi';
-//import { IoSettingsOutline } from 'react-icons/io5';
 import { LuSettings } from 'react-icons/lu';
 import styled from 'styled-components';
 import { useLocation } from 'react-router-dom';
@@ -66,18 +64,6 @@ const LeftNav = () => {
     return (
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Sidebar.Item
-            style={{ cursor: 'pointer', justifyContent: 'center' }}
-            active={isActive(ROUTES.BROWSER)}
-            onClick={() => navigate(ROUTES.BROWSER)}
-            icon={leftNavExpanded && HiOutlineGlobeAlt}
-          >
-            {
-              (leftNavExpanded) ?
-                <FormattedMessage id="browser" /> :
-                <HiOutlineGlobeAlt/>
-            }
-          </Sidebar.Item>
           <Sidebar.Item
             style={{ cursor: 'pointer',  }}
             active={isActive(ROUTES.MY_STORES)}

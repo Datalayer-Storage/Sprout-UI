@@ -1,7 +1,7 @@
 import Wallet, {SendTransactionRequest} from "chia-wallet";
 
 const mojosPerXch = 1e12;
-const stdFeeXch = 0.01;
+export const fixedFeeXch = 0.01;
 const feePer100MbXch = 0.01;
 const walletAddress: string = 'xch1djjwc54ax3gz4n5fthkt5q4nhgerlx8e5n92435gr3scdsxrcf6sh55z5w';
 
@@ -13,7 +13,7 @@ export const sendFixedFee = (network: string, numSpendableCoins: number) => {
     const request: SendTransactionRequest = {
       wallet_id: 1,
       address: walletAddress,
-      amount: xchToMojos(stdFeeXch)
+      amount: xchToMojos(fixedFeeXch)
     };
     return wallet.sendTransaction(request);
   }
@@ -36,8 +36,8 @@ export const sendVariableFee = (network: string, numSpendableCoins: number, fee:
 export const calcSizeBasedDeployFee = (sizeMb: number): number => {
   const fee: number = parseFloat( ( (sizeMb / 100) * feePer100MbXch ).toFixed(5) );
 
-  if (fee < stdFeeXch){ // check: fee is less than a mojo
-    return stdFeeXch;
+  if (fee < fixedFeeXch){ // check: fee is less than a mojo
+    return fixedFeeXch;
   } else {
     return fee;
   }

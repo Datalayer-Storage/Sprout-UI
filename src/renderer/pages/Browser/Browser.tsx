@@ -52,7 +52,7 @@ const Browser: React.FC = () => {
 
   const handleOnDidNavigate = useCallback((location) => {
     setAddressBar(transformToChiaProtocol(location, fallbackStoreProvider));
-  }, []);
+  }, [fallbackStoreProvider]);
 
   const handleOnDidNavigateInPage = useCallback(
     (location) => {

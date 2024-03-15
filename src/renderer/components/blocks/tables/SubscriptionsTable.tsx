@@ -5,8 +5,9 @@ import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
 import {Button} from 'flowbite-react';
-import {SetStoreLabelModal} from "@/components/blocks/modals/SetStoreLabelModal";
-import {FauxLinkButton} from "@/components/blocks/buttons/FauxLinkButton/FauxLinkButton";
+import {SetStoreLabelModal} from "@/components";
+import {FauxLinkButton} from "@/components";
+import {StoreMirrorButton} from "@/components";
 
 interface SubscriptionsTableProps {
   setTableContentsLoaded?: (loaded: boolean) => void;
@@ -63,7 +64,8 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       >
         <FormattedMessage id={"unable-to-load-click-to-retry"} />
       </Button>
-    );
+    )
+      ;
   }
 
   const columns = useMemo(() => [
@@ -93,6 +95,13 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     },
     {
       title: '',
+      key: "mirror",
+      render: (row: any) => {
+        return(<StoreMirrorButton storeId={row.storeId}/>);
+      }
+    },
+    {
+      title: '',
       key: "unsubscribe",
       render: (row: any) => {
         return (
@@ -102,7 +111,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         );
       }
     }
-  ], [setStoreIdToUnsubscribe]);
+  ], [handleEditStoreLabel, handleClickUnsubscribe]);
 
   return (
     <>
