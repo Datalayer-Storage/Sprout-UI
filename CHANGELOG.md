@@ -1,3 +1,37 @@
+## [0.0.8](https://github.com/Datalayer-Storage/Sprout-UI/compare/0.0.6...0.0.8) (2024-03-15)
+
+
+### Bug Fixes
+
+* add mirror store logic ([02c23be](https://github.com/Datalayer-Storage/Sprout-UI/commit/02c23be6a7e0aa2a2c7ab3926765c596f39e145e))
+* removed commented code ([5b7fd4e](https://github.com/Datalayer-Storage/Sprout-UI/commit/5b7fd4eb33da28506670aeeef55fb3416615a1ee))
+* removed console.log's ([77a0055](https://github.com/Datalayer-Storage/Sprout-UI/commit/77a0055c39e3eaa20c62fea96b91d0fc901719c4))
+
+
+### Features
+
+* add mirror fee management refinement ([039b1e8](https://github.com/Datalayer-Storage/Sprout-UI/commit/039b1e88304fd80399eba77af633b3438a97578e))
+* add mirror working with corrected logic ([6204175](https://github.com/Datalayer-Storage/Sprout-UI/commit/6204175e532163f15439baf9adbe58986d587ba9))
+* added add mirror modal url input validation and field placeholder values ([f6f54a1](https://github.com/Datalayer-Storage/Sprout-UI/commit/f6f54a1e8d7296aeded8b17101dd714be9f2acb8))
+* added get ip rtkquery ([9d916eb](https://github.com/Datalayer-Storage/Sprout-UI/commit/9d916eb568a53d332b026de023d92b48b8e65f19))
+* added mirror button to owned stores page ([9a8e676](https://github.com/Datalayer-Storage/Sprout-UI/commit/9a8e6763ca4503b15e665d88435859baf5ee7ffa))
+* added prototype of mirrors page ([1c10cc7](https://github.com/Datalayer-Storage/Sprout-UI/commit/1c10cc77ab743df73fd4e1d0aeb1457b5f1d6643))
+* added simple webview protocol ([d98c753](https://github.com/Datalayer-Storage/Sprout-UI/commit/d98c75349a83e5eb5f981bc2125dc542ee4f22d5))
+* ConfirmDeleteMirrorModal ([b6ec87e](https://github.com/Datalayer-Storage/Sprout-UI/commit/b6ec87e1e40debca2a5bf09970e1b02b3a5f420f))
+* encapsulated mirror management logic in reusable StoreMirrorButton component ([8fc49a9](https://github.com/Datalayer-Storage/Sprout-UI/commit/8fc49a9b44d364f79207c3fbdf9649b9538419dd))
+* feat added add mirror wallet balance check ([16eca1d](https://github.com/Datalayer-Storage/Sprout-UI/commit/16eca1dc5e332503f3ab69f0947879aaba1b8330))
+* ground work for mirrors integration into the owned stores and subscriptions tables ([2dc0268](https://github.com/Datalayer-Storage/Sprout-UI/commit/2dc0268a05b34ba4cfac7828336325f184b78930))
+* minor tweaks ([367f77c](https://github.com/Datalayer-Storage/Sprout-UI/commit/367f77c6d9d62b1fa1f805ef9745b0c3c72dbb45))
+* mirror related code clean up and correction to add mirror default fee handling ([65890dd](https://github.com/Datalayer-Storage/Sprout-UI/commit/65890ddf34e60eb0ff4322cb9261acec8a757721))
+* prototyped adding subscription mirrors ([debba36](https://github.com/Datalayer-Storage/Sprout-UI/commit/debba36bc6f8366d2f08bb564c100fd8f2d11d20))
+* refined url regex and modal close behavior ([e20d8ea](https://github.com/Datalayer-Storage/Sprout-UI/commit/e20d8eabe9255622bf348083bae8b36e1cc31de7))
+* renamed SimpleWebView to KeyPreview and updated routes ([aeeffde](https://github.com/Datalayer-Storage/Sprout-UI/commit/aeeffde883d8631d23f85834452b7ccf262554dc))
+* simple webview and back button fuctional ([af94b1b](https://github.com/Datalayer-Storage/Sprout-UI/commit/af94b1bd98615633c2b265d4afad6cb009694bdd))
+* subscription store addition and deletion working for subscriptions table ([87df3a2](https://github.com/Datalayer-Storage/Sprout-UI/commit/87df3a2bbe58724c73f35076b7bc5f22fd410e15))
+* usage fees are processed after successful datalayer action and fee processing does not conflict with processing datalayer action ([536ad92](https://github.com/Datalayer-Storage/Sprout-UI/commit/536ad9271aef7e2a7609ff090403e8fc33084315))
+
+
+
 ## [0.0.6](https://github.com/Datalayer-Storage/Sprout-UI/compare/0.0.5...0.0.6) (2024-03-13)
 
 
