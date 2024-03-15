@@ -1,3 +1,12 @@
+## [0.0.9](https://github.com/Datalayer-Storage/Sprout-UI/compare/0.0.8...0.0.9) (2024-03-15)
+
+
+### Features
+
+* upload to s3 ([515a3a9](https://github.com/Datalayer-Storage/Sprout-UI/commit/515a3a99b3eabee22cdb63fec80bdd0ae8fed5c7))
+
+
+
 ## [0.0.8](https://github.com/Datalayer-Storage/Sprout-UI/compare/0.0.6...0.0.8) (2024-03-15)
 
 
