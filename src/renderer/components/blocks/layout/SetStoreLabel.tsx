@@ -19,7 +19,7 @@ const SetStoreLabel: React.FC<SelectedStoreIdCardProps> = ({
     return userOptionsStore.storeLabels?.[storeId];
   }, [storeId, userOptionsStore.storeLabels]);
 
-  const handleStoreLabelChange = (event) => {
+  const handleStoreLabelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setStoreLabel({ storeId, label: event.target.value }));
   };
 

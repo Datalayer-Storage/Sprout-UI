@@ -5,7 +5,7 @@ import { loadLocaleData } from '@/translations';
 import "@/App.css";
 import { AppNavigator } from "@/routes";
 import { setLocale } from '@/store/slices/app';
-import { IndeterminateProgressOverlay } from '@/components/layout/IndeterminateProgressOverlay';
+import { IndeterminateProgressOverlay } from '@/components';
 
 /**
  * @returns app react component to be rendered by electron as the UI

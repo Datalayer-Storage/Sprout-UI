@@ -1,4 +1,5 @@
 export default {
   locale: null,
-  checkForPendingTxToken: 1
+  checkForPendingTxToken: 1,
+  storeMirrors: {}
 };
