@@ -172,7 +172,13 @@ jobs:
       - build_mac
       - build_windows
       - build_linux
+    
     steps:
+      - name: Setup AWS CLI
+        uses: chrislennon/action-aws-cli@v1.1
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
       - name: Download Windows artifacts
         uses: actions/download-artifact@v3
         with:
@@ -208,3 +214,17 @@ jobs:
             ${{ env.DMG_FILE }}
             ${{ env.DEB_FILE }}
             ${{ env.EXE_FILE }}
+  
+      - name: Upload to S3
+        run: |
+          aws s3 cp "${{ env.DMG_FILE }}" s3://dlaas/releases/ --metadata md5="$(md5sum "${{ env.DMG_FILE }}" | cut -d ' ' -f 1)"
+          aws s3 cp "${{ env.DEB_FILE }}" s3://dlaas/releases/ --metadata md5="$(md5sum "${{ env.DEB_FILE }}" | cut -d ' ' -f 1)"
+          aws s3 cp "${{ env.EXE_FILE }}" s3://dlaas/releases/ --metadata md5="$(md5sum "${{ env.EXE_FILE }}" | cut -d ' ' -f 1)"
+
+          aws s3 cp "${{ env.DMG_FILE }}" s3://dlaas/releases/sprout-ui-mac-latest.dmg --metadata md5="$(md5sum "${{ env.DMG_FILE }}" | cut -d ' ' -f 1)"
+          aws s3 cp "${{ env.DEB_FILE }}" s3://dlaas/releases/sprout-ui-linux-latest.deb --metadata md5="$(md5sum "${{ env.DEB_FILE }}" | cut -d ' ' -f 1)"
+          aws s3 cp "${{ env.EXE_FILE }}" s3://dlaas/releases/sprout-ui-windows-latest.exe --metadata md5="$(md5sum "${{ env.EXE_FILE }}" | cut -d ' ' -f 1)"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'us-east-1'
