@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Table, TableBody } from 'flowbite-react';
 import { FormattedMessage } from 'react-intl';
 import { useGetKeysQuery } from '@/api/ipc/datalayer';
-import { LoadingSpinnerCard} from '@/components';
+import {FauxLinkButton, LoadingSpinnerCard} from '@/components';
 
 import { GetKeysParams } from 'chia-datalayer';
 import { decodeHex } from '@/utils/hex-utils';
@@ -37,13 +37,11 @@ const DatalayerStoreKeysTable: React.FC<DatalayerStoreKeysTableProps> = (
       key={index}
     >
       <Table.Cell key={index}>
-        <a
-          href="#"
-          className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
+        <FauxLinkButton
           onClick={() => onViewKeyData(decodeHex(data.keys[index]))}
         >
           {decodeHex(storeKey)}
-        </a>
+        </FauxLinkButton>
       </Table.Cell>
     </Table.Row>
   ));
