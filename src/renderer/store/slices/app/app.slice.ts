@@ -21,7 +21,6 @@ export const appSlice = createSlice({
       if (!_.isNil(payload.storeId) && !_.isNil(payload.url)) {
         state.storeMirrors[payload.storeId] =  payload.url;
       }
-      //state.storeMirrors = {};
     },
 
     deleteStoreMirror: (state, { payload }) => {
