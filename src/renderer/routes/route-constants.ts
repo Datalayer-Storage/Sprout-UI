@@ -1,7 +1,7 @@
 export default {
   MY_STORES: '/MyStores',
   BROWSER: '/Browser',
-  SIMPLE_WEB_VIEW: '/SimpleWebview',
+  KEY_PREVIEW: '/KeyPreview',
   SETTINGS: '/Settings',
   LICENSE: '/License',
   EDIT_STORE: '/EditStore',

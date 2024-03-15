@@ -27,7 +27,7 @@ const ViewStore: React.FC = () => {
   const handleViewKeyData = useCallback((key: string) => {
     if (storeId) {
       const dataPage: string = 'chia://' + storeId + '/' + key;
-      navigate(Routes.SIMPLE_WEB_VIEW, {
+      navigate(Routes.KEY_PREVIEW, {
         state: {chiaUrl: dataPage, fallbackStoreProvider, ownedStores}
       });
     }

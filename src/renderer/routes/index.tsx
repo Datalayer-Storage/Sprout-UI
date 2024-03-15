@@ -25,8 +25,8 @@ const AppNavigator: React.FC = () => {
               element={<Navigate to={ROUTES.MY_STORES}/>}
             />
             <Route
-              path={ROUTES.SIMPLE_WEB_VIEW}
-              element={<Pages.SimpleWebView/>}
+              path={ROUTES.KEY_PREVIEW}
+              element={<Pages.KeyPreview/>}
             />
             <Route
               path={ROUTES.SETTINGS}

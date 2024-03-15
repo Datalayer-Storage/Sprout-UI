@@ -6,7 +6,7 @@ import SplashScreen from '@/assets/home2.png';
 import {useLocation} from "react-router-dom";
 import {transformToHttpProtocal} from "@/utils/chia-router";
 
-const SimpleWebView: React.FC = () => {
+const KeyPreview: React.FC = () => {
 
   const webviewRef = useRef<WebviewTag>(null);
   const location = useLocation()
@@ -46,4 +46,4 @@ const SimpleWebView: React.FC = () => {
   );
 };
 
-export { SimpleWebView };
+export { KeyPreview };
