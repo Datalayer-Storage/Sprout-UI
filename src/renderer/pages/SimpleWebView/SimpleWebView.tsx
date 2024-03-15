@@ -13,7 +13,6 @@ const SimpleWebView: React.FC = () => {
   const chiaUrl: string = location?.state?.chiaUrl;
   const ownedStores: string[] = location?.state?.ownedStores;
   const fallbackStoreProvider: string = location?.state?.fallbackStoreProvider;
-  console.log(chiaUrl, ownedStores, fallbackStoreProvider)
   const pageChiaProtocolUrl: string =
     (chiaUrl && ownedStores && fallbackStoreProvider) ? chiaUrl : 'browser://home';
 

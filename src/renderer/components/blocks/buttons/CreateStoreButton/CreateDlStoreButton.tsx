@@ -64,7 +64,6 @@ const CreateDlStoreButton: React.FC = () => {
     }
 
     dispatch(invalidateCheckForTXToken());
-    console.log(defaultFee);
     const createDataStoreResponse: any = await triggerCreateDataStore({fee: defaultFeeAsString});
     setTimeout(() => {
       dispatch(invalidateCheckForTXToken());
