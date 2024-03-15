@@ -129,4 +129,6 @@
   "unchanged-fields-will-default-to-currently-displayed-values": "Unchanged fields will default to currently displayed values",
   "unable-to-add-mirror": "Unable to add mirror",
   "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror"
+  "application-error": "Application Error",
+  "please-reload-or-restart-the-application": "Please reload or restart the application"
 }
