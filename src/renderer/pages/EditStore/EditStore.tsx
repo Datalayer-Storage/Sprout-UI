@@ -14,7 +14,7 @@ import {
 } from '@/components';
 import React, { useCallback, useState, useEffect } from 'react';
 import {useSelector} from 'react-redux';
-import { deployStore } from '@/utils/os';
+import {deployStore, DeployStoreParams} from '@/utils/os';
 import {useLocation} from "react-router-dom";
 import {SpendableCoinsInsufficientErrorModal} from "@/components";
 import {SpendableCoinRequest} from "chia-wallet";
@@ -75,14 +75,17 @@ const EditStore: React.FC = () => {
       return;
     }
 
+    const deployParams: DeployStoreParams = {
+      storeId,
+      deployDir: selectedPath,
+      deployMode,
+      blockChainFee: userOptions?.deployOptions?.defaultFee,
+      options: userOptions.deployOptions,
+    };
+
     setLog('Deploying...');
     setDeploying(true);
-    deployStore(
-      storeId,
-      selectedPath,
-      deployMode,
-      userOptions.deployOptions,
-    );
+    deployStore(deployParams);
   }, [storeId, selectedPath, userOptions.deployOptions, deployMode, triggerGetSpendableCoins]);
   
   const handleSelectFolder = useCallback((selectedFolderPath: string, folderSizeMb: number, fee: number) => {
