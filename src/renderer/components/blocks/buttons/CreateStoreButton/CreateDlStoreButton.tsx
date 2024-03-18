@@ -57,6 +57,7 @@ const CreateDlStoreButton: React.FC = () => {
     }
 
     const walletBalanceResponse = await triggerGetWalletBalance({});
+    console.log('~~~~~~~~~~~~~~~~~~~',walletBalanceResponse)
     //@ts-ignore
     if (walletBalanceResponse?.data?.wallet_balance?.spendable_balance <= defaultFee) {
       setShowInsufficientBalanceModal(true);
@@ -81,13 +82,8 @@ const CreateDlStoreButton: React.FC = () => {
       setShowErrorModal(true);
       setCreateStoreErrorMsg(createDataStoreResponse?.error);
     }
-  }, [
-    triggerGetSyncStatus,
-    triggerGetSpendableCoinsImmediate,
-    triggerGetWalletBalance,
-    triggerCreateDataStore,
-    dispatch,
-  ]);
+  }, [triggerGetSyncStatus, triggerGetSpendableCoinsImmediate, triggerGetWalletBalance,
+    defaultFee, dispatch, triggerCreateDataStore, defaultFeeAsString]);
 
   return (
     <>

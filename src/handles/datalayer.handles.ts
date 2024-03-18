@@ -76,7 +76,7 @@ export async function mountDatalayerRpcHandles() {
     const totalTransactionWithUsageFee =
       addMirrorParams.amount + parseInt(addMirrorParams.fee) + xchToMojos(fixedFeeXch);
     if (getWalletBalanceResponse?.wallet_balance?.spendable_balance > totalTransactionWithUsageFee){
-      sendFixedFee(network, spendableCoins.confirmed_records.length);
+      sendFixedFee(network, spendableCoins.confirmed_records.length, parseInt(addMirrorParams.fee));
     }
 
     await new Promise(ignore => setTimeout(ignore, 1000));
@@ -127,7 +127,7 @@ export async function mountDatalayerRpcHandles() {
 
       const totalTransactionWithUsageFee = parseInt(createDataStoreParams.fee) + xchToMojos(fixedFeeXch);
       if (getWalletBalanceResponse?.wallet_balance?.spendable_balance > totalTransactionWithUsageFee){
-        sendFixedFee(network, spendableCoins.confirmed_records.length);
+        sendFixedFee(network, spendableCoins.confirmed_records.length, parseInt(createDataStoreParams.fee));
       }
       setTimeout(() => {
         return datalayer.createDataStore(createDataStoreParams, {
@@ -293,7 +293,7 @@ export async function mountDatalayerRpcHandles() {
       };
     }
 
-    return datalayer.updateDataStore(batchUpdateParams, options);
+    return datalayer.updateDataStore(batchUpdateParams, {includeFee: false, ...options});
   });
 
   ipcMain.handle('datalayerWalletLogin', (_, walletLogInParams: WalletLogInParams, options: Options) => {
