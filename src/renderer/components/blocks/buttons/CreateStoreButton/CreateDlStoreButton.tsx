@@ -81,13 +81,8 @@ const CreateDlStoreButton: React.FC = () => {
       setShowErrorModal(true);
       setCreateStoreErrorMsg(createDataStoreResponse?.error);
     }
-  }, [
-    triggerGetSyncStatus,
-    triggerGetSpendableCoinsImmediate,
-    triggerGetWalletBalance,
-    triggerCreateDataStore,
-    dispatch,
-  ]);
+  }, [triggerGetSyncStatus, triggerGetSpendableCoinsImmediate, triggerGetWalletBalance,
+    defaultFee, dispatch, triggerCreateDataStore, defaultFeeAsString]);
 
   return (
     <>
