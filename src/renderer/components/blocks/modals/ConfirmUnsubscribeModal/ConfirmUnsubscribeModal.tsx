@@ -1,7 +1,10 @@
-import React from "react";
+import React, {Dispatch} from "react";
 import { Modal, Button } from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useUnsubscribeMutation} from "@/api/ipc/datalayer";
+import {addUnsubscribingStoreMark} from "@/store/slices/app";
+import {useDispatch} from "react-redux";
+import {UnknownAction} from "@reduxjs/toolkit";
 
 interface ConfirmUnsubscribeModalProps {
   storeId: string;
@@ -12,10 +15,12 @@ const ConfirmUnsubscribeModal: React.FC<ConfirmUnsubscribeModalProps> =
   ({storeId, onClose}: ConfirmUnsubscribeModalProps) => {
 
   const [triggerUnsubscribe] = useUnsubscribeMutation();
+  const dispatch: Dispatch<UnknownAction> = useDispatch();
 
-  const accept = () => {
-    triggerUnsubscribe({id: storeId});
+  const accept = async () => {
     onClose();
+    dispatch(addUnsubscribingStoreMark({storeId}));
+    triggerUnsubscribe({id: storeId});
   }
 
   return (

@@ -129,5 +129,6 @@
   "unable-to-add-mirror": "Unable to add mirror",
   "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror",
   "application-error": "Application Error",
-  "please-reload-or-restart-the-application": "Please reload or restart the application"
+  "please-reload-or-restart-the-application": "Please reload or restart the application",
+  "unsubscribing": "Unsubscribing"
 }

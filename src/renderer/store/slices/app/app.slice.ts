@@ -27,6 +27,21 @@ export const appSlice = createSlice({
       if (!_.isNil(payload.storeId)) {
         delete state.storeMirrors[payload.storeId];
       }
+    },
+
+    addUnsubscribingStoreMark: (state, { payload }) => {
+      if (!_.isNil(payload.storeId)) {
+        console.log('added unsubscribing mark for store', payload.storeId)
+        state.unsubscribingStores[payload.storeId] = "in process of unsubscribing";
+      }
+    },
+
+    deleteUnsubscribingStoreMark: (state, { payload }) => {
+      console.log('********', payload?.storeId)
+      if (!_.isNil(payload.storeId)) {
+        console.log('deleted unsubscribing mark for store', payload.storeId)
+        delete state.unsubscribingStores[payload.storeId];
+      }
     }
   },
 });
@@ -35,7 +50,9 @@ export const {
   setLocale,
   invalidateCheckForTXToken,
   addStoreMirror,
-  deleteStoreMirror
+  deleteStoreMirror,
+  addUnsubscribingStoreMark,
+  deleteUnsubscribingStoreMark
 } = appSlice.actions;
 
 export default appSlice.reducer;
