@@ -22,13 +22,18 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
   const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
   const storesMarkedForUnsubscription = useSelector((state: any) => state.app.unsubscribingStores);
   const dispatch: Dispatch<UnknownAction> = useDispatch();
+  const unsubscribingStores = useSelector((state: any) => state.app.unsubscribingStores);
+
+  // of a store is unsubscribing, poll until it is removed from subscriptions list
+  const getSubscriptionsRtkQueryOptions = Object.keys(unsubscribingStores).length === 0 ?
+    {refetchOnMountOrArgChange: true} : {pollingInterval: 10000, refetchOnMountOrArgChange: true};
 
   const {
     data: subscriptionsData,
     isLoading: subscriptionQueryLoading,
     error: getSubscriptionsError,
     refetch: refetchSubscriptions
-  } = useGetSubscriptionsQuery({});
+  } = useGetSubscriptionsQuery({}, getSubscriptionsRtkQueryOptions);
 
   const handleEditStoreLabel = useCallback((storeId: string) => {
     setStoreIdToLabel(storeId);
