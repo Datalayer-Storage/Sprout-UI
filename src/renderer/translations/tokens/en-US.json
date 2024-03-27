@@ -130,5 +130,9 @@
   "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror",
   "application-error": "Application Error",
   "please-reload-or-restart-the-application": "Please reload or restart the application",
-  "label-of-the-store-once-its-created": "Label of the store once it's created"
+  "label-of-the-store-once-its-created": "Label of the store once it's created",
+  "store-subscription-successful": "Store subscription successful",
+  "optionally-set-a-label-for-the-store-or-dismiss-this-modal": "Optionally set a label for the store, or dismiss this modal",
+  "additional-time-will-be-required-for-the-store-data-to-populate"
+  : "Additional time will be required for the store data to populate"
 }
