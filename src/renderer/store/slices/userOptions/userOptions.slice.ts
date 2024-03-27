@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import initialState from './userOptions.initialstate';
-import {DeploymentSettingPayload} from "@/vite-env";
+import {DeploymentSettingPayload, StoreLabelPairPayload} from "@/vite-env";
 
 export const userOptionsSlice = createSlice({
   name: 'userOptions',
@@ -14,12 +14,12 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    setFallbackStoreProvider: (state, { payload }) => {
+    setFallbackStoreProvider: (state, { payload }: { payload: string }) => {
       state.fallbackStoreProvider = payload;
     },
 
-    setAccessKey: (state, { payload }) => {
-      if (typeof payload === 'string' && payload) {
+    setAccessKey: (state, { payload }: { payload: string }) => {
+      if (payload) {
         state.accessKey = payload;
       } else {
         console.error(
@@ -28,16 +28,16 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    setStoreLabel: (state, { payload }) => {
+    setStoreLabel: (state, { payload }: { payload: StoreLabelPairPayload }) => {
       state.storeLabels[payload.storeId] = payload.label;
     },
 
-    setProjectPath: (state, { payload }) => {
+    setProjectPath: (state, { payload }: { payload: StoreLabelPairPayload }) => {
       state.storeProjectFolders[payload.storeId] = payload.label;
     },
 
-    setAccessSecret: (state, { payload }) => {
-      if (typeof payload === 'string' && payload) {
+    setAccessSecret: (state, { payload }: { payload: string }) => {
+      if (payload) {
         state.accessSecret = payload;
       } else {
         console.error(
@@ -46,7 +46,7 @@ export const userOptionsSlice = createSlice({
       }
     },
 
-    setDeploymentSetting: (state, { payload }) => {
+    setDeploymentSetting: (state, { payload }: { payload: DeploymentSettingPayload }) => {
 
       const { settingKey, value }: DeploymentSettingPayload = payload;
 

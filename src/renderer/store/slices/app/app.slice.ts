@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './app.initialstate';
 import _ from 'lodash';
+import {AddStoreMirrorPayload} from "@/vite-env";
 
 export const appSlice = createSlice({
   name: 'app',
   initialState,
   reducers: {
-    setLocale: (state, { payload }) => {
+    setLocale: (state, { payload }: { payload: string }) => {
       state.locale = payload;
     },
 
@@ -17,13 +18,13 @@ export const appSlice = createSlice({
       }, 1000);
     },
 
-    addStoreMirror: (state, { payload }) => {
+    addStoreMirror: (state, { payload }: { payload: AddStoreMirrorPayload }) => {
       if (!_.isNil(payload.storeId) && !_.isNil(payload.url)) {
-        state.storeMirrors[payload.storeId] =  payload.url;
+        state.storeMirrors[payload.storeId] = payload.url;
       }
     },
 
-    deleteStoreMirror: (state, { payload }) => {
+    deleteStoreMirror: (state, { payload }: { payload: {storeId: string} }) => {
       if (!_.isNil(payload.storeId)) {
         delete state.storeMirrors[payload.storeId];
       }
