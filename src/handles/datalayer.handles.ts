@@ -228,11 +228,27 @@ export async function mountDatalayerRpcHandles() {
     });
   });
 
-  ipcMain.handle('datalayerGetSubscriptions', (_, options: Options) => {
-    return datalayer.getSubscriptions({
+  ipcMain.handle('datalayerGetSubscriptions',
+    async (_, options: Options) => {
+    const subscriptionsResponse = await datalayer.getSubscriptions( {
       ...options,
       waitForWalletAvailability: false
     });
+    const ownedStoresResponse = await datalayer.getOwnedStores();
+
+    if (!subscriptionsResponse?.success){
+      return subscriptionsResponse;
+    }
+
+    if (!ownedStoresResponse?.success) {
+      return subscriptionsResponse;
+    }
+
+    return {
+      ...subscriptionsResponse,
+      store_ids:
+        subscriptionsResponse.store_ids.filter((storeId: string) => !ownedStoresResponse.store_ids.includes(storeId))
+    };
   });
 
   ipcMain.handle('datalayerGetValue', (_, getValueParams: GetValueParams, options: Options) => {
