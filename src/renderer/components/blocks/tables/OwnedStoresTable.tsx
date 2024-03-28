@@ -1,136 +1,158 @@
-import React, {useEffect, useState} from 'react';
-import { Button, Card, Table, TableBody } from 'flowbite-react';
-import { FormattedMessage } from 'react-intl';
-import {useGetOwnedStoresQuery} from '@/api/ipc/datalayer';
-import {LoadingSpinnerCard, Spacer, StoreMirrorButton} from '@/components';
-import { useSelector } from 'react-redux';
+import React, {useCallback, useEffect, useMemo, useState} from "react";
+import {ConfirmUnsubscribeModal, DataTable, LoadingSpinnerCard, StoreId} from "@/components";
+import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
+import {FormattedMessage} from "react-intl";
+import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
-import ROUTES from '@/routes/route-constants'
+import {Button} from 'flowbite-react';
+import {SetStoreLabelModal} from "@/components";
+import {FauxLinkButton} from "@/components";
+import {StoreMirrorButton} from "@/components";
 
-interface OwnedStoreSelectionTableProps {
+interface OwnedStoresTableProps {
   setTableContentsLoaded?: (loaded: boolean) => void;
 }
 
-const OwnedStoresTable: React.FC<OwnedStoreSelectionTableProps> = (
-  {setTableContentsLoaded}: OwnedStoreSelectionTableProps
-) => {
-  const userOptions = useSelector((state: any) => state.userOptions);
+const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoaded}) => {
+
+  const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
+  const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
+  const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
+  const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
+
   const {
-    data,
-    isLoading,
-    error,
-    refetch,
+    data: ownedStoresData,
+    isLoading: ownedStoresQueryLoading,
+    error: getOwnedStoresError,
+    refetch: refetchOwnedStores
   } = useGetOwnedStoresQuery({});
 
-  const [numStores, setNumStores] = useState<number>(0);
+  const handleClickUnsubscribe = useCallback((storeId: string) => {
+    setStoreIdToUnsubscribe(storeId);
+    setShowUnsubscribeModal(true);
+  }, []);
+
+  const handleEditStoreLabel = useCallback((storeId: string) => {
+    setStoreIdToLabel(storeId);
+    setShowStoreLabelModal(true);
+  }, []);
+
+  const handleCloseEditStoreLabelModal = useCallback(() => {
+    setStoreIdToLabel('');
+    setShowStoreLabelModal(false);
+  }, []);
+
+  const handleCloseUnsubscribeModal = useCallback(() => {
+    setStoreIdToUnsubscribe('');
+    setShowUnsubscribeModal(false);
+  }, []);
 
   useEffect(() => {
-    if (data?.store_ids?.length) {
-      setNumStores(data.store_ids.length);
-    } else {
-      setNumStores(0);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    if ((isLoading || error) && setTableContentsLoaded) {
-      setTableContentsLoaded(false);
-    } else if (setTableContentsLoaded) {
+    if (setTableContentsLoaded && ownedStoresData?.success && !ownedStoresQueryLoading && !getOwnedStoresError){
       setTableContentsLoaded(true);
+    }else if (setTableContentsLoaded){
+      setTableContentsLoaded(false);
     }
-  }, [setTableContentsLoaded, isLoading, error]);
+  }, [ownedStoresData, ownedStoresQueryLoading, getOwnedStoresError, setTableContentsLoaded]);
 
-  const tableContents = data?.store_ids?.map(
-    (storeId: string, index: number) => (
-      <Table.Row
-        className="bg-white dark:border-gray-700 dark:bg-gray-800"
-        key={index}
+  const ReloadButton: React.FC = () => {
+    return (
+      <Button
+        onClick={() => {
+          refetchOwnedStores();
+        }}
       >
-        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white truncate ...">
-          {userOptions.storeLabels?.[storeId] || storeId}
-        </Table.Cell>
-        <Table.Cell>
+        <FormattedMessage id={"unable-to-load-click-to-retry"} />
+      </Button>
+    );
+  }
+
+  const columns = useMemo(() => [
+    {
+      title: <FormattedMessage id={"store-id"}/>,
+      key: "storeId",
+      render: (row: any) => {
+        return (
+          <StoreId storeId={row.storeId} onEditStoreLabel={handleEditStoreLabel}/>
+        );
+      }
+    },
+    {
+      title: '',
+      key: "edit",
+      render: (row: any) => {
+        return (
           <Link
             to={ROUTES.EDIT_STORE}
             className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-            state={{storeId: data.store_ids[index]}}
+            state={{storeId: row.storeId}}
           >
             <FormattedMessage id={'edit'} />
           </Link>
-        </Table.Cell>
-        <Table.Cell>
-          <StoreMirrorButton storeId={storeId}/>
-        </Table.Cell>
-        <Table.Cell>
+        );
+      }
+    },
+    {
+      title: '',
+      key: "view",
+      render: (row: any) => {
+        return (
           <Link
             to={ROUTES.VIEW_STORE}
             className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-            state={{storeId: data.store_ids[index]}}
+            state={{storeId: row.storeId}}
           >
             <FormattedMessage id={'view'} />
           </Link>
-        </Table.Cell>
-      </Table.Row>
-    ),
+        );
+      }
+    },
+    {
+      title: '',
+      key: "mirror",
+      render: (row: any) => {
+        return(<StoreMirrorButton storeId={row.storeId}/>);
+      }
+    },
+    {
+      title: '',
+      key: "unsubscribe",
+      render: (row: any) => {
+        return (
+          <FauxLinkButton onClick={() => handleClickUnsubscribe(row.storeId)}>
+            <FormattedMessage id={'unsubscribe'}/>
+          </FauxLinkButton>
+        );
+      }
+    }
+  ], [handleEditStoreLabel, handleClickUnsubscribe]);
+
+  return (
+    <>
+      {ownedStoresQueryLoading
+        ? <LoadingSpinnerCard/>
+        : // not loading, handle error or display data
+        (getOwnedStoresError || !ownedStoresData?.success
+            ? <ReloadButton/>
+            : <DataTable columns={columns} data={ownedStoresData?.store_ids} isLoading={ownedStoresQueryLoading}/>
+        )
+      }
+      {
+        showEditStoreLabelModal &&
+        <SetStoreLabelModal
+          storeId={storeIdToLabel}
+          onClose={handleCloseEditStoreLabelModal}
+        />
+      }
+      {
+        showUnsubscribeModal &&
+        <ConfirmUnsubscribeModal
+          storeId={storeIdToUnsubscribe}
+          onClose={handleCloseUnsubscribeModal}
+        />
+      }
+    </>
   );
-
-  const NoStoresFound: React.FC = () => {
-    return(
-      <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-          <FormattedMessage id={'no-stores-found'} />
-        </Table.Cell>
-      </Table.Row>
-    );
-  }
-
-  if (isLoading) {
-    return <LoadingSpinnerCard />;
-  } else if (error) {
-    return (
-      <>
-        <Button onClick={refetch}>
-          <FormattedMessage id={'unable-to-load-click-to-retry'} />
-        </Button>
-      </>
-    );
-  } else {
-    return (
-      <div className="overflow-x-auto">
-        <Table>
-          <Table.Head>
-            <Table.HeadCell>
-              <FormattedMessage id="store-id" />
-            </Table.HeadCell>
-            <Table.HeadCell>
-              <span className="sr-only" />
-            </Table.HeadCell>
-            <Table.HeadCell>
-              <span className="sr-only" />
-            </Table.HeadCell>
-            <Table.HeadCell>
-              <span className="sr-only" />
-            </Table.HeadCell>
-          </Table.Head>
-          <TableBody className="divide-y">
-            {!data?.store_ids?.length ? (
-              <NoStoresFound/>
-            ) : (
-              <>{tableContents}</>
-            )}
-          </TableBody>
-        </Table>
-        <Spacer size={5} />
-        <Card>
-          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            <span>
-              <FormattedMessage id="store-count:"/> {numStores}
-            </span>
-          </p>
-        </Card>
-      </div>
-    );
-  }
-};
+}
 
 export { OwnedStoresTable };

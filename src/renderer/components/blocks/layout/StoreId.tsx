@@ -16,7 +16,7 @@ const StoreId: React.FC<StoreIdProps> = ({storeId, onEditStoreLabel}) => {
     return userOptions.storeLabels?.[storeId];
   }, [storeId, userOptions.storeLabels]);
 
-  const IDWithEditTooltip: React.FC = () => {
+  const IdWithEditTooltip: React.FC = () => {
     return (
       <Tooltip
         arrow={false}
@@ -53,7 +53,7 @@ const StoreId: React.FC<StoreIdProps> = ({storeId, onEditStoreLabel}) => {
     <>
       {
         (onEditStoreLabel || storeLabel)
-        ? <IDWithEditTooltip/>
+        ? <IdWithEditTooltip/>
         : <div style={{width: '100%', display: 'flex'}}>{storeId}</div>
       }
     </>

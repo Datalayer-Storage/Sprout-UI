@@ -141,4 +141,4 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
   );
 }
 
-export { SubscriptionsTable }
+export { SubscriptionsTable };
