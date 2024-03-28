@@ -45,8 +45,6 @@
   : "Your balance must be greater than the default fee for this action, and could require that additional XCH be used as an asset",
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
   "ensure-chia-services-are-running-and-accessible": "Ensure Chia services are running and accessible.",
-  "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
-  : "Creating a store is a permanent action that cannot be un-done!",
   "do-you-want-to-proceed-with-store-creation?": "Do you want to proceed with store creation?",
   "yes-create-store": "Yes, Create Store",
   "no-cancel-store-creation": "No, Cancel Store Creation",
@@ -129,5 +127,6 @@
   "unable-to-add-mirror": "Unable to add mirror",
   "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror",
   "application-error": "Application Error",
-  "please-reload-or-restart-the-application": "Please reload or restart the application"
+  "please-reload-or-restart-the-application": "Please reload or restart the application",
+  "unsubscribing-from-your-own-store-will-permanently-delete-it": "Unsubscribing from your own store will permanently delete it"
 }

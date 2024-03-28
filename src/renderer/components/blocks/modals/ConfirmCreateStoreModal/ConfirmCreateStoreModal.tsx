@@ -27,17 +27,12 @@ const ConfirmCreateStoreModal: React.FC<ConfirmCreateStoreModalProps> = (
       </Modal.Header>
       <Modal.Body>
         <div className="space-y-6">
-          <div className="space-y-2">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              <FormattedMessage id="creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"/>
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>
-              {" " + 0.01 + " "}
-              <FormattedMessage id="xch-in-addition-to-standard-chia-blockchain-fees"/>
-              {'.'}
-            </p>
-          </div>
+          <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+            <FormattedMessage id="this-action-will-incur-a-non-refundable-fee-of"/>
+            {" " + 0.01 + " "}
+            <FormattedMessage id="xch-in-addition-to-standard-chia-blockchain-fees"/>
+            {'.'}
+          </p>
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
             <FormattedMessage id="do-you-want-to-proceed-with-store-creation?"/>
           </p>

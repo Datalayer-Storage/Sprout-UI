@@ -4,7 +4,7 @@ import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
-import {Button} from 'flowbite-react';
+import {Button, Tooltip} from 'flowbite-react';
 import {SetStoreLabelModal} from "@/components";
 import {FauxLinkButton} from "@/components";
 import {StoreMirrorButton} from "@/components";
@@ -119,9 +119,13 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
       key: "unsubscribe",
       render: (row: any) => {
         return (
-          <FauxLinkButton onClick={() => handleClickUnsubscribe(row.storeId)}>
-            <FormattedMessage id={'unsubscribe'}/>
-          </FauxLinkButton>
+          <Tooltip
+            content={<FormattedMessage id={"unsubscribing-from-your-own-store-will-permanently-delete-it"}/>}
+          >
+            <FauxLinkButton onClick={() => handleClickUnsubscribe(row.storeId)}>
+              <FormattedMessage id={'unsubscribe'}/>
+            </FauxLinkButton>
+          </Tooltip>
         );
       }
     }
