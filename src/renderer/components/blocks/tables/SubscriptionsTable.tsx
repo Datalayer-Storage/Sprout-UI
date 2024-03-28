@@ -5,7 +5,6 @@ import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
 import {Button} from 'flowbite-react';
-import {SetStoreLabelModal} from "@/components";
 import {FauxLinkButton} from "@/components";
 import {StoreMirrorButton} from "@/components";
 
@@ -16,8 +15,6 @@ interface SubscriptionsTableProps {
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContentsLoaded}) => {
 
   const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
-  const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
-  const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
 
   const {
@@ -30,16 +27,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
   const handleClickUnsubscribe = useCallback((storeId: string) => {
     setStoreIdToUnsubscribe(storeId);
     setShowUnsubscribeModal(true);
-  }, []);
-
-  const handleEditStoreLabel = useCallback((storeId: string) => {
-    setStoreIdToLabel(storeId);
-    setShowStoreLabelModal(true);
-  }, []);
-
-  const handleCloseEditStoreLabelModal = useCallback(() => {
-    setStoreIdToLabel('');
-    setShowStoreLabelModal(false);
   }, []);
 
   const handleCloseUnsubscribeModal = useCallback(() => {
@@ -64,8 +51,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       >
         <FormattedMessage id={"unable-to-load-click-to-retry"} />
       </Button>
-    )
-      ;
+    );
   }
 
   const columns = useMemo(() => [
@@ -74,7 +60,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       key: "storeId",
       render: (row: any) => {
         return (
-          <StoreId storeId={row.storeId} onEditStoreLabel={handleEditStoreLabel}/>
+          <StoreId storeId={row.storeId} allowLabelEditing={true}/>
         );
       }
     },
@@ -111,7 +97,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         );
       }
     }
-  ], [handleEditStoreLabel, handleClickUnsubscribe]);
+  ], [handleClickUnsubscribe]);
 
   return (
     <>
@@ -122,13 +108,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
           ? <ReloadButton/>
           : <DataTable columns={columns} data={subscriptionsData?.store_ids} isLoading={subscriptionQueryLoading}/>
         )
-      }
-      {
-        showEditStoreLabelModal &&
-        <SetStoreLabelModal
-          storeId={storeIdToLabel}
-          onClose={handleCloseEditStoreLabelModal}
-        />
       }
       {
         showUnsubscribeModal &&

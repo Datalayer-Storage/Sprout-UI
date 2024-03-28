@@ -5,7 +5,6 @@ import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
 import {Button, Tooltip} from 'flowbite-react';
-import {SetStoreLabelModal} from "@/components";
 import {FauxLinkButton} from "@/components";
 import {StoreMirrorButton} from "@/components";
 
@@ -16,8 +15,6 @@ interface OwnedStoresTableProps {
 const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoaded}) => {
 
   const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
-  const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
-  const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
 
   const {
@@ -30,16 +27,6 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
   const handleClickUnsubscribe = useCallback((storeId: string) => {
     setStoreIdToUnsubscribe(storeId);
     setShowUnsubscribeModal(true);
-  }, []);
-
-  const handleEditStoreLabel = useCallback((storeId: string) => {
-    setStoreIdToLabel(storeId);
-    setShowStoreLabelModal(true);
-  }, []);
-
-  const handleCloseEditStoreLabelModal = useCallback(() => {
-    setStoreIdToLabel('');
-    setShowStoreLabelModal(false);
   }, []);
 
   const handleCloseUnsubscribeModal = useCallback(() => {
@@ -73,7 +60,7 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
       key: "storeId",
       render: (row: any) => {
         return (
-          <StoreId storeId={row.storeId} onEditStoreLabel={handleEditStoreLabel}/>
+          <StoreId storeId={row.storeId} allowLabelEditing={true}/>
         );
       }
     },
@@ -129,7 +116,7 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
         );
       }
     }
-  ], [handleEditStoreLabel, handleClickUnsubscribe]);
+  ], [handleClickUnsubscribe]);
 
   return (
     <>
@@ -140,13 +127,6 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
             ? <ReloadButton/>
             : <DataTable columns={columns} data={ownedStoresData?.store_ids} isLoading={ownedStoresQueryLoading}/>
         )
-      }
-      {
-        showEditStoreLabelModal &&
-        <SetStoreLabelModal
-          storeId={storeIdToLabel}
-          onClose={handleCloseEditStoreLabelModal}
-        />
       }
       {
         showUnsubscribeModal &&
