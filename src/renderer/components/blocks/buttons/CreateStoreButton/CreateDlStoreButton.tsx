@@ -3,7 +3,6 @@ import { Button, Spinner } from 'flowbite-react';
 import { useCreateDataStoreMutation } from '@/api/ipc/datalayer';
 import { FormattedMessage } from 'react-intl';
 import {
-  WalletNotSyncedErrorModal,
   SpendableCoinsInsufficientErrorModal,
   CreatStoreSuccessModal,
   CreateStoreErrorModal,
@@ -11,7 +10,6 @@ import {
 } from '@/components';
 import {
   useGetSpendableCoinsImmediateMutation,
-  useGetSyncStatusImmediateMutation,
   useGetWalletBalanceImmediateMutation,
 } from '@/api/ipc/wallet';
 import {datalayerStoresTag, ipcApi} from '@/api/ipc';
@@ -22,7 +20,6 @@ import { invalidateCheckForTXToken } from '@/store/slices/app';
 
 const CreateDlStoreButton: React.FC = () => {
   const dispatch = useDispatch();
-  const [showNotSyncedModal, setShowNotSyncedModal] = useState(false);
   const [showInsufficientBalanceModal, setShowInsufficientBalanceModal] = useState(false);
   const [showSpendableCoinsInsufficientModal, setShowSpendableCoinsInsufficientModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -34,25 +31,16 @@ const CreateDlStoreButton: React.FC = () => {
   const defaultFee: number = parseInt(defaultFeeAsString);
 
   const [triggerCreateDataStore, { isLoading: isStoreCreating }] = useCreateDataStoreMutation();
-  const [triggerGetSyncStatus, { isLoading: isSyncStatusLoading }] = useGetSyncStatusImmediateMutation();
   const [triggerGetWalletBalance, { isLoading: isBalanceLoading }] = useGetWalletBalanceImmediateMutation();
   const [triggerGetSpendableCoinsImmediate] = useGetSpendableCoinsImmediateMutation();
 
   const handleCreateDataStore = useCallback(async () => {
-    const syncStatusResponse = await triggerGetSyncStatus({});
-
     const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
     const spendableCoinsResponse = await triggerGetSpendableCoinsImmediate(spendableCoinRequest);
 
     // @ts-ignore
     if (spendableCoinsResponse?.data?.confirmed_records?.length < 1) {
       setShowSpendableCoinsInsufficientModal(true);
-      return;
-    }
-
-    // @ts-ignore
-    if (!syncStatusResponse?.data?.synced) {
-      setShowNotSyncedModal(true);
       return;
     }
 
@@ -69,7 +57,7 @@ const CreateDlStoreButton: React.FC = () => {
       dispatch(invalidateCheckForTXToken());
     }, 1000)
 
-    if (createDataStoreResponse.data.success) {
+    if (createDataStoreResponse?.data?.success) {
       setShowErrorModal(false);
       setCreateStoreErrorMsg('');
       setShowSuccessModal(true);
@@ -81,7 +69,7 @@ const CreateDlStoreButton: React.FC = () => {
       setShowErrorModal(true);
       setCreateStoreErrorMsg(createDataStoreResponse?.error);
     }
-  }, [triggerGetSyncStatus, triggerGetSpendableCoinsImmediate, triggerGetWalletBalance,
+  }, [triggerGetSpendableCoinsImmediate, triggerGetWalletBalance,
     defaultFee, dispatch, triggerCreateDataStore, defaultFeeAsString]);
 
   return (
@@ -95,7 +83,7 @@ const CreateDlStoreButton: React.FC = () => {
           }}
         >
           <Button onClick={() => setShowConfirmStoreCreationModal(true)}>
-            {isSyncStatusLoading || isBalanceLoading || isStoreCreating ? (
+            {isBalanceLoading || isStoreCreating ? (
               <Spinner />
             ) : (
               <FormattedMessage id="create-new-store" />
@@ -125,7 +113,6 @@ const CreateDlStoreButton: React.FC = () => {
           setShowModal={setShowErrorModal}
           errorMessage={createStoreErrorMsg}
         />
-        <WalletNotSyncedErrorModal showModal={showNotSyncedModal} setShowModal={setShowNotSyncedModal} />
         <WalletBalanceInsufficientErrorModal
           showModal={showInsufficientBalanceModal}
           setShowModal={setShowInsufficientBalanceModal}

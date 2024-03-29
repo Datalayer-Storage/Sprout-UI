@@ -4,7 +4,7 @@ import {useGetOwnedStoresQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
-import {Button, Tooltip} from 'flowbite-react';
+import {Button, Card, Tooltip} from 'flowbite-react';
 import {FauxLinkButton} from "@/components";
 import {StoreMirrorButton} from "@/components";
 
@@ -16,6 +16,7 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
 
   const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
+  const [numStores, setNumStores] = useState<number>(0);
 
   const {
     data: ownedStoresData,
@@ -41,6 +42,14 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
       setTableContentsLoaded(false);
     }
   }, [ownedStoresData, ownedStoresQueryLoading, getOwnedStoresError, setTableContentsLoaded]);
+
+  useEffect(() => {
+    if (ownedStoresData?.store_ids?.length) {
+      setNumStores(ownedStoresData.store_ids.length);
+    } else {
+      setNumStores(0);
+    }
+  }, [ownedStoresData])
 
   const ReloadButton: React.FC = () => {
     return (
@@ -125,7 +134,15 @@ const OwnedStoresTable: React.FC<OwnedStoresTableProps> = ({setTableContentsLoad
         : // not loading, handle error or display data
         (getOwnedStoresError || !ownedStoresData?.success
             ? <ReloadButton/>
-            : <DataTable columns={columns} data={ownedStoresData?.store_ids} isLoading={ownedStoresQueryLoading}/>
+            : <>
+                <DataTable columns={columns} data={ownedStoresData?.store_ids} isLoading={ownedStoresQueryLoading}/>
+                <Card>
+                  <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                    <FormattedMessage id="store-count"/>: {numStores}
+                  </p>
+                </Card>
+              </>
+
         )
       }
       {

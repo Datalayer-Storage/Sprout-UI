@@ -4,7 +4,7 @@ import {useGetSubscriptionsQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
-import {Button} from 'flowbite-react';
+import {Button, Card} from 'flowbite-react';
 import {FauxLinkButton} from "@/components";
 import {StoreMirrorButton} from "@/components";
 
@@ -16,6 +16,7 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
 
   const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
   const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
+  const [numStores, setNumStores] = useState<number>(0);
 
   const {
     data: subscriptionsData,
@@ -41,6 +42,14 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       setTableContentsLoaded(false);
     }
   }, [subscriptionsData, subscriptionQueryLoading, getSubscriptionsError, setTableContentsLoaded]);
+
+  useEffect(() => {
+    if (subscriptionsData?.store_ids?.length) {
+      setNumStores(subscriptionsData.store_ids.length);
+    } else {
+      setNumStores(0);
+    }
+  }, [subscriptionsData]);
 
   const ReloadButton: React.FC = () => {
     return (
@@ -106,7 +115,15 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         : // not loading, handle error or display data
         (getSubscriptionsError || !subscriptionsData?.success
           ? <ReloadButton/>
-          : <DataTable columns={columns} data={subscriptionsData?.store_ids} isLoading={subscriptionQueryLoading}/>
+          : // display table
+            <>
+              <DataTable columns={columns} data={subscriptionsData?.store_ids} isLoading={subscriptionQueryLoading}/>
+              <Card>
+                <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+                  <FormattedMessage id="subscription-count"/>: {numStores}
+                </p>
+              </Card>
+            </>
         )
       }
       {
