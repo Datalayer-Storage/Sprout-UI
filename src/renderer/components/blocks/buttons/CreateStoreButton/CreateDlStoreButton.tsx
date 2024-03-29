@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, {Dispatch, useCallback, useState} from 'react';
 import { Button, Spinner } from 'flowbite-react';
 import { useCreateDataStoreMutation } from '@/api/ipc/datalayer';
 import { FormattedMessage } from 'react-intl';
@@ -16,10 +16,12 @@ import {datalayerStoresTag, ipcApi} from '@/api/ipc';
 import { ConfirmCreateStoreModal } from '@/components';
 import {useDispatch, useSelector} from 'react-redux';
 import { SpendableCoinRequest } from 'chia-wallet';
-import { invalidateCheckForTXToken } from '@/store/slices/app';
+import { invalidateCheckForTXTokenAsync } from '@/store/slices/app';
+import {UnknownAction} from "@reduxjs/toolkit";
 
 const CreateDlStoreButton: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch: Dispatch<UnknownAction> = useDispatch();
+  const dispatchThunkAction: Dispatch<any> = useDispatch<any>();
   const [showInsufficientBalanceModal, setShowInsufficientBalanceModal] = useState(false);
   const [showSpendableCoinsInsufficientModal, setShowSpendableCoinsInsufficientModal] = useState(false);
   const [showErrorModal, setShowErrorModal] = useState(false);
@@ -51,10 +53,10 @@ const CreateDlStoreButton: React.FC = () => {
       return;
     }
 
-    dispatch(invalidateCheckForTXToken());
+    dispatchThunkAction(invalidateCheckForTXTokenAsync());
     const createDataStoreResponse: any = await triggerCreateDataStore({fee: defaultFeeAsString});
     setTimeout(() => {
-      dispatch(invalidateCheckForTXToken());
+      dispatchThunkAction(invalidateCheckForTXTokenAsync());
     }, 1000)
 
     if (createDataStoreResponse?.data?.success) {
@@ -63,14 +65,13 @@ const CreateDlStoreButton: React.FC = () => {
       setShowSuccessModal(true);
       // @ts-ignore
       dispatch(ipcApi.util.invalidateTags([datalayerStoresTag]));
-      dispatch(invalidateCheckForTXToken());
+      dispatchThunkAction(invalidateCheckForTXTokenAsync());
     } else {
       setShowSuccessModal(false);
       setShowErrorModal(true);
       setCreateStoreErrorMsg(createDataStoreResponse?.error);
     }
-  }, [triggerGetSpendableCoinsImmediate, triggerGetWalletBalance,
-    defaultFee, dispatch, triggerCreateDataStore, defaultFeeAsString]);
+  }, [triggerGetSpendableCoinsImmediate, triggerGetWalletBalance, defaultFee, dispatchThunkAction, triggerCreateDataStore, defaultFeeAsString, dispatch]);
 
   return (
     <>
