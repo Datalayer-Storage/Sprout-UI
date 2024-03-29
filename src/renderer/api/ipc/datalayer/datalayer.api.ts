@@ -33,6 +33,19 @@ import {
 // @ts-ignore
 import {BaseQueryResult} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
 
+const mapIdToStoreIdTransformation = (baseQueryReturnValue: BaseQueryResult<{id: string, storeId: string}[]>):
+Promise<{id: string, storeId: string}[]> | [] => {
+  return {
+    ...baseQueryReturnValue,
+    store_ids:
+      baseQueryReturnValue.store_ids ?
+        baseQueryReturnValue.store_ids.map((storeId: string) => ({
+          id: storeId,
+          storeId
+        })) : []
+  };
+}
+
 /**
  * RTKquery state managment API for chia-wallet
  */
@@ -94,6 +107,7 @@ const datalayerApi = ipcApi.injectEndpoints({
       query: () => ({ channel: 'datalayerGetOwnedStores', args: {} }),
       // @ts-ignore
       providesTags: () => [{ type: datalayerStoresTag, id: 'LIST' }],
+      transformResponse: mapIdToStoreIdTransformation
     }),
 
     getRoot: builder.query<any, GetRootParams>({
@@ -108,18 +122,7 @@ const datalayerApi = ipcApi.injectEndpoints({
       query: (args) => ({ channel: 'datalayerGetSubscriptions', args }),
       //@ts-ignore
       providesTags: () => [datalayerSubscriptionsTag],
-      transformResponse(baseQueryReturnValue: BaseQueryResult<{id: string, storeId: string}[]>):
-        Promise<{id: string, storeId: string}[]> | [] {
-        return {
-          ...baseQueryReturnValue,
-          store_ids:
-            baseQueryReturnValue.store_ids ?
-            baseQueryReturnValue.store_ids.map((storeId: string) => ({
-              id: storeId,
-              storeId
-            })) : []
-        };
-      }
+      transformResponse: mapIdToStoreIdTransformation
     }),
 
     getValue: builder.query<any, GetValueParams>({

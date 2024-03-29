@@ -1,6 +1,24 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import initialState from './app.initialstate';
 import _ from 'lodash';
+
+// Async thunk
+export const invalidateCheckForTXTokenAsync =
+  createAsyncThunk(
+  'app/invalidateCheckForTXToken',
+  async (_, { dispatch }) => {
+    dispatch(appSlice.actions.setCheckForPendingTxToken(Math.random()));
+    return new Promise<void>((resolve, reject) => {
+      try {
+        setTimeout(() => {
+          dispatch(appSlice.actions.setCheckForPendingTxToken(Math.random()));
+          resolve();
+        }, 1000);
+      }catch (error: any){
+        reject(error);
+      }
+    });
+  });
 
 export const appSlice = createSlice({
   name: 'app',
@@ -10,11 +28,9 @@ export const appSlice = createSlice({
       state.locale = payload;
     },
 
-    invalidateCheckForTXToken: (state) => {
-      state.checkForPendingTxToken = Math.random();
-      setTimeout(() => {
-        state.checkForPendingTxToken = Math.random();
-      }, 1000);
+    /** do not export. private action for {@link invalidateCheckForTXTokenAsync} */
+    setCheckForPendingTxToken: (state, { payload }) => {
+      state.checkForPendingTxToken = payload;
     },
 
     addStoreMirror: (state, { payload }) => {
@@ -33,7 +49,6 @@ export const appSlice = createSlice({
 
 export const {
   setLocale,
-  invalidateCheckForTXToken,
   addStoreMirror,
   deleteStoreMirror
 } = appSlice.actions;
