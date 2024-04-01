@@ -27,6 +27,9 @@ const Subscriptions: React.FC = () => {
     error: ownedStoresQueryError
   } = useGetOwnedStoresQuery({});
 
+  // Regex to check if the string is a valid URL
+  const storeIdPattern: RegExp = new RegExp(/^[a-zA-Z0-9]{64}$/);
+
   const handleTextInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSubscriptionStoreIdToAdd(event.target.value || '');
   }, []);
@@ -84,7 +87,7 @@ const Subscriptions: React.FC = () => {
             <TextInput ref={storeInputRef} onChange={handleTextInputChange}/>
           </div>
           <Button
-            disabled={subscriptionStoreIdToAdd.length < 64 || subscriptionStoreIdToAdd.length > 64}
+            disabled={!storeIdPattern.test(subscriptionStoreIdToAdd)}
             isProcessing={subscribeMutationLoading || ownedStoresQueryLoading}
             onClick={() => handleAddSubscription()}
             style={{inlineSize: 'min-content', whiteSpace: 'nowrap'}}

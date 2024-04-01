@@ -138,6 +138,7 @@
   "optionally-set-a-label-for-the-store-or-dismiss-this-modal": "Optionally set a label for the store, or dismiss this modal",
   "additional-time-will-be-required-for-the-store-data-to-populate"
   : "Additional time will be required for the store data to populate"
+  "unsubscribing": "Unsubscribing"
   "transactions-will-be-required-to-complete-the-deployment-at-an-estimated-blockchain-fee-cost-of"
   : "Transactions will be required to complete the deployment at an estimated blockchain fee of"
 }
