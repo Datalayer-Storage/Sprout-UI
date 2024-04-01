@@ -3,7 +3,7 @@ import Wallet, {SendTransactionRequest} from "chia-wallet";
 const mojosPerXch = 1e12;
 export const fixedFeeXch = 0.01;
 const feePer100MbXch = 0.01;
-const walletAddress: string = 'xch1djjwc54ax3gz4n5fthkt5q4nhgerlx8e5n92435gr3scdsxrcf6sh55z5w';
+const walletAddress: string = 'xch1uhl59yg7mqdvmqm5lvf4pld50wakrk75z8g9cdsd8gvrd2klyzesjjju5k';
 
 export const sendFixedFee = (network: string, numSpendableCoins: number) => {
   const wallet = new Wallet({verbose: true});
