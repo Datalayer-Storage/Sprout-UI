@@ -10,16 +10,16 @@ import {
   SetStoreLabel,
   Spacer,
   XTerm,
-  FolderSelector, BackButton
+  FolderSelector, BackButton, WalletBalanceInsufficientErrorModal
 } from '@/components';
 import React, { useCallback, useState, useEffect } from 'react';
 import {useSelector} from 'react-redux';
 import {deployStore, DeployStoreParams} from '@/utils/os';
 import {useLocation} from "react-router-dom";
-import {SpendableCoinsInsufficientErrorModal} from "@/components";
-import {SpendableCoinRequest} from "chia-wallet";
-import {useGetSpendableCoinsImmediateMutation} from "@/api/ipc/wallet";
+import {GetWalletBalanceRequest} from "chia-wallet";
+import {useGetWalletBalanceImmediateMutation} from "@/api/ipc/wallet";
 import {ConfirmDeployFolderModal} from "@/components";
+import {estimateNumberOfDeployBlockChainTransactions} from "@/utils/common-calculations";
 
 const { ipcRenderer } = window.require('electron');
 
@@ -27,12 +27,12 @@ const EditStore: React.FC = () => {
 
   const [selectedPath, setSelectedPath] = useState<string>('');
   const [selectedFolderSizeMb, setSelectedFolderSizeMb] = useState<number>(0);
-  const [deployFee, setDeployFee] = useState<number>(0);
-  const [showSpendableCoinsInsufficientModal, setShowSpendableCoinsInsufficientModal] =
-    useState(false);
+  const [deployUsageFee, setDeployUsageFee] = useState<number>(0);
+  const [deployBlockChainFeeEstimate, setDeployBlockChainFeeEstimate] = useState<number>(0);
+  const [showWalletBallanceInsuffcientModal, setShowWalletBalanceInsufficientModal] = useState<boolean>(false);
   const [showConfirmDeployFolderModal, setShowConfirmDeployFolderModal] = useState(false);
   const userOptions = useSelector((state: any) => state.userOptions);
-  const [triggerGetSpendableCoins] = useGetSpendableCoinsImmediateMutation();
+  const [triggerGetWalletBalance, {isLoading: walletBalanceLoading}] = useGetWalletBalanceImmediateMutation();
   const [log, setLog] = useState<string>('Waiting To Deploy...');
   const [deployMode, setDeployMode] = useState<string>('replace');
   const [deploying, setDeploying] = useState<boolean>(false);
@@ -66,12 +66,12 @@ const EditStore: React.FC = () => {
 
   const handleDeploy = useCallback(async () => {
 
-    const spendableCoinRequest: SpendableCoinRequest = {wallet_id: 1};
-    const spendableCoinsResponse = await triggerGetSpendableCoins(spendableCoinRequest);
+    const getWalletBalanceRequest: GetWalletBalanceRequest = {wallet_id: 1};
+    const walletBalanceResponse = await triggerGetWalletBalance(getWalletBalanceRequest);
 
     // @ts-ignore
-    if (spendableCoinsResponse?.data?.confirmed_records?.length < 1) {
-      setShowSpendableCoinsInsufficientModal(true);
+    if (walletBalanceResponse?.data?.wallet_balance?.spendable_balance < deployBlockChainFeeEstimate){
+      setShowWalletBalanceInsufficientModal(true);
       return;
     }
 
@@ -86,13 +86,16 @@ const EditStore: React.FC = () => {
     setLog('Deploying...');
     setDeploying(true);
     deployStore(deployParams);
-  }, [storeId, selectedPath, userOptions.deployOptions, deployMode, triggerGetSpendableCoins]);
+  }, [triggerGetWalletBalance, deployBlockChainFeeEstimate, storeId,
+    selectedPath, deployMode, userOptions.deployOptions]);
   
   const handleSelectFolder = useCallback((selectedFolderPath: string, folderSizeMb: number, fee: number) => {
     setSelectedPath(selectedFolderPath);
     setSelectedFolderSizeMb(folderSizeMb);
-    setDeployFee(fee);
-  }, [setSelectedPath, setDeployFee])
+    setDeployUsageFee(fee);
+    const defaultFee = userOptions?.deployOptions?.defaultFee ? userOptions.deployOptions.defaultFee : 0
+    setDeployBlockChainFeeEstimate(estimateNumberOfDeployBlockChainTransactions(folderSizeMb) * defaultFee);
+  }, [userOptions.deployOptions.defaultFee])
 
   return (
     <>
@@ -139,11 +142,11 @@ const EditStore: React.FC = () => {
         </div>
         <div style={{display: "flex", alignContent: "center", justifyContent: "left"}}>
           <Button
-            disabled={deploying || !selectedPath}
+            disabled={deploying || walletBalanceLoading || !selectedPath}
             style={{width: 150}}
             onClick={() => setShowConfirmDeployFolderModal(true)}
           >
-            {deploying ? (
+            {deploying || walletBalanceLoading ? (
               <div>
                 {' '}
                 <Spinner/>
@@ -162,7 +165,7 @@ const EditStore: React.FC = () => {
             </div>
             <Tooltip content={<FormattedMessage id={"0.01-xch-per-100-megabytes-deployed-min-fee-of-0.01-xch"}/>}>
               <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                <FormattedMessage id="fee"/>: {deployFee} XCH
+                <FormattedMessage id="fee"/>: {deployUsageFee} XCH
               </p>
             </Tooltip>
           </div>
@@ -173,12 +176,12 @@ const EditStore: React.FC = () => {
         showModal={showConfirmDeployFolderModal}
         setShowModal={setShowConfirmDeployFolderModal}
         folderSizeMb={selectedFolderSizeMb}
-        fee={deployFee}
+        usageFee={deployUsageFee}
         onDeployFolder={handleDeploy}
       />
-      <SpendableCoinsInsufficientErrorModal
-        showModal={showSpendableCoinsInsufficientModal}
-        setShowModal={setShowSpendableCoinsInsufficientModal}
+      <WalletBalanceInsufficientErrorModal
+        showModal={showWalletBallanceInsuffcientModal}
+        setShowModal={setShowWalletBalanceInsufficientModal}
       />
     </>
   );

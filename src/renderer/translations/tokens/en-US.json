@@ -41,8 +41,10 @@
   "invalid-component-state": "INVALID COMPONENT STATE",
   "browse-...": "Browse ...",
   "your-chia-wallet-is-not-synced": "Your Chia wallet is not synced.",
-  "your-balance-must-be-greater-than-the-default-fee-for-this-action-and-could-require-that-additional-xch-be-used-as-an-asset"
-  : "Your balance must be greater than the default fee for this action, and could require that additional XCH be used as an asset",
+  "your-spendable-wallet-balance-is-insufficient-for-this-action"
+  : "Your spendable balance is insufficient for this action",
+  "reducing-your-default-fee-or-default-mirror-coin-value-can-help-resolve-this-error"
+  : "Reducing your default fee or default mirror coin value can help resolve this error",
   "error-occurred-while-creating-store" : "Error occurred while creating store.",
   "ensure-chia-services-are-running-and-accessible": "Ensure Chia services are running and accessible.",
   "creating-a-store-is-a-permanent-action-that-cannot-be-un-done!"
@@ -89,7 +91,7 @@
   "do-you-want-to-proceed-with-folder-deploy?": "Do you want to proceed with folder deploy?",
   "yes-deploy-folder": "Yes, Deploy Folder",
   "no-cancel-folder-deploy": "No, Cancel Folder Deploy",
-  "of-data-will-be-deployed": "of data will be deployed.",
+  "of-data-will-be-deployed": "of data will be deployed",
   "unsubscribing-from-this-store-will-remove-its-associated-data-from-this-device"
   : "Unsubscribing from this store will remove its associated data from this device.",
   "this-subscription-will-appear-in-your-subscriptions-list-until-all-of-its-local-data-has-been-removed"
@@ -110,7 +112,8 @@
   "the-official-downloads-page": "the official downloads page",
   "chia-is-running-retry": "Chia is running, retry",
   "waiting-for-wallet-to-sync": "Waiting for wallet to sync",
-  "the-default-fee-can-be-set-in-settings": "The default fee can be set in settings",
+  "the-default-fee-and-mirror-coin-value-can-be-set-in-settings"
+  : "The default fee and mirror coin value can be set in settings",
   "mirror": "Mirror",
   "add-store-mirror": "Add Store Mirror",
   "mirror-url": "Mirror URL",
@@ -129,5 +132,7 @@
   "unable-to-add-mirror": "Unable to add mirror",
   "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror",
   "application-error": "Application Error",
-  "please-reload-or-restart-the-application": "Please reload or restart the application"
+  "please-reload-or-restart-the-application": "Please reload or restart the application",
+  "transactions-will-be-required-to-complete-the-deployment-at-an-estimated-blockchain-fee-cost-of"
+  : "Transactions will be required to complete the deployment at an estimated blockchain fee of"
 }
