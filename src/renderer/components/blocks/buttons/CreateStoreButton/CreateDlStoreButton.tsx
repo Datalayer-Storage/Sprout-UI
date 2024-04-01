@@ -18,7 +18,8 @@ import {datalayerStoresTag, ipcApi} from '@/api/ipc';
 import { ConfirmCreateStoreModal } from '@/components';
 import {useDispatch, useSelector} from 'react-redux';
 import { SpendableCoinRequest } from 'chia-wallet';
-import { invalidateCheckForTXToken } from '@/store/slices/app';
+import {invalidateCheckForTXToken} from '@/store/slices/app';
+import {setStoreLabel} from "@/store/slices/userOptions";
 
 const CreateDlStoreButton: React.FC = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const CreateDlStoreButton: React.FC = () => {
   const [triggerGetWalletBalance, { isLoading: isBalanceLoading }] = useGetWalletBalanceImmediateMutation();
   const [triggerGetSpendableCoinsImmediate] = useGetSpendableCoinsImmediateMutation();
 
-  const handleCreateDataStore = useCallback(async () => {
+  const handleCreateDataStore = useCallback(async (storeLabel: string) => {
     const syncStatusResponse = await triggerGetSyncStatus({});
 
     const spendableCoinRequest: SpendableCoinRequest = { wallet_id: 1 };
@@ -69,10 +70,15 @@ const CreateDlStoreButton: React.FC = () => {
       dispatch(invalidateCheckForTXToken());
     }, 1000)
 
-    if (createDataStoreResponse.data.success) {
+    if (createDataStoreResponse?.data?.success) {
       setShowErrorModal(false);
       setCreateStoreErrorMsg('');
       setShowSuccessModal(true);
+
+      if (storeLabel){
+        dispatch(setStoreLabel({storeId: createDataStoreResponse.data.id, label: storeLabel}));
+      }
+
       // @ts-ignore
       dispatch(ipcApi.util.invalidateTags([datalayerStoresTag]));
       dispatch(invalidateCheckForTXToken());

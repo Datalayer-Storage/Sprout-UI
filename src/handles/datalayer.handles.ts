@@ -129,13 +129,14 @@ export async function mountDatalayerRpcHandles() {
       if (getWalletBalanceResponse?.wallet_balance?.spendable_balance > totalTransactionWithUsageFee){
         sendFixedFee(network, spendableCoins.confirmed_records.length, parseInt(createDataStoreParams.fee));
       }
-      setTimeout(() => {
-        return datalayer.createDataStore(createDataStoreParams, {
-          ...options,
-          waitForWalletAvailability: false,
-          includeFee: false
-        });
-      }, 1000);
+
+      await new Promise(ignore => setTimeout(ignore, 1000));
+
+      return datalayer.createDataStore(createDataStoreParams, {
+        ...options,
+        waitForWalletAvailability: false,
+        includeFee: false
+      });
     },
   );
 
