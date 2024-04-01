@@ -133,6 +133,7 @@
   "an-error-occurred-while-adding-the-mirror": "An error occurred while adding the mirror",
   "application-error": "Application Error",
   "please-reload-or-restart-the-application": "Please reload or restart the application",
+  "unsubscribing": "Unsubscribing"
   "transactions-will-be-required-to-complete-the-deployment-at-an-estimated-blockchain-fee-cost-of"
   : "Transactions will be required to complete the deployment at an estimated blockchain fee of"
 }
