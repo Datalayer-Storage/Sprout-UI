@@ -37,7 +37,6 @@ export const appSlice = createSlice({
     },
 
     deleteUnsubscribingStoreMark: (state, { payload }) => {
-      console.log('********', payload?.storeId)
       if (!_.isNil(payload.storeId)) {
         console.log('deleted unsubscribing mark for store', payload.storeId)
         delete state.unsubscribingStores[payload.storeId];
