@@ -69,7 +69,7 @@ const ConfirmDeleteMirrorModal: React.FC<ConfirmDeleteMirrorModalProps> = ({stor
 
   useEffect(() => {
     if (deleteMirrorData?.success) {
-      dispatch(deleteStoreMirror(storeId));
+      dispatch(deleteStoreMirror({storeId}));
       setDisplayActionLoading(false);
       onClose();
     } else if (deleteMirrorError) {

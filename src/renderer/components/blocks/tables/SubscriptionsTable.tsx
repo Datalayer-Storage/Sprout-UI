@@ -1,13 +1,16 @@
-import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {ConfirmUnsubscribeModal, DataTable, LoadingSpinnerCard, StoreId} from "@/components";
+import React, {Dispatch, useCallback, useEffect, useMemo, useState} from "react";
+import { DataTable, LoadingSpinnerCard, StoreId} from "@/components";
 import {useGetSubscriptionsQuery} from "@/api/ipc/datalayer";
 import {FormattedMessage} from "react-intl";
 import ROUTES from "@/routes/route-constants";
 import {Link} from "react-router-dom";
 import {Button} from 'flowbite-react';
 import {SetStoreLabelModal} from "@/components";
-import {FauxLinkButton} from "@/components";
 import {StoreMirrorButton} from "@/components";
+import {UnsubscribeButton} from "@/components";
+import {useDispatch, useSelector} from "react-redux";
+import {UnknownAction} from "@reduxjs/toolkit";
+import {deleteUnsubscribingStoreMark} from "@/store/slices/app";
 
 interface SubscriptionsTableProps {
   setTableContentsLoaded?: (loaded: boolean) => void;
@@ -15,22 +18,22 @@ interface SubscriptionsTableProps {
 
 const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContentsLoaded}) => {
 
-  const [storeIdToUnsubscribe, setStoreIdToUnsubscribe] = useState<string>('');
   const [storeIdToLabel, setStoreIdToLabel] = useState<string>('');
   const [showEditStoreLabelModal, setShowStoreLabelModal] = useState<boolean>(false);
-  const [showUnsubscribeModal, setShowUnsubscribeModal] = useState<boolean>(false);
+  const storesMarkedForUnsubscription = useSelector((state: any) => state.app.unsubscribingStores);
+  const dispatch: Dispatch<UnknownAction> = useDispatch();
+  const unsubscribingStores = useSelector((state: any) => state.app.unsubscribingStores);
+
+  // of a store is unsubscribing, poll until it is removed from subscriptions list
+  const getSubscriptionsRtkQueryOptions = Object.keys(unsubscribingStores).length === 0 ?
+    {refetchOnMountOrArgChange: true} : {pollingInterval: 10000, refetchOnMountOrArgChange: true};
 
   const {
     data: subscriptionsData,
     isLoading: subscriptionQueryLoading,
     error: getSubscriptionsError,
     refetch: refetchSubscriptions
-  } = useGetSubscriptionsQuery({});
-
-  const handleClickUnsubscribe = useCallback((storeId: string) => {
-    setStoreIdToUnsubscribe(storeId);
-    setShowUnsubscribeModal(true);
-  }, []);
+  } = useGetSubscriptionsQuery({}, getSubscriptionsRtkQueryOptions);
 
   const handleEditStoreLabel = useCallback((storeId: string) => {
     setStoreIdToLabel(storeId);
@@ -42,18 +45,26 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
     setShowStoreLabelModal(false);
   }, []);
 
-  const handleCloseUnsubscribeModal = useCallback(() => {
-    setStoreIdToUnsubscribe('');
-    setShowUnsubscribeModal(false);
-  }, []);
-
   useEffect(() => {
     if (setTableContentsLoaded && subscriptionsData?.success && !subscriptionQueryLoading && !getSubscriptionsError){
       setTableContentsLoaded(true);
+
+      // remove unsubscribing mark from storeId that has been unsubscribed
+      Object.keys(storesMarkedForUnsubscription).forEach((markedStoreId: string) => {
+
+        const markedStoreIdPresent: boolean = subscriptionsData.store_ids
+          .some((store: {id: string, storeId: string}) => {
+            return store.storeId === markedStoreId
+          });
+
+        if (!markedStoreIdPresent){
+          dispatch(deleteUnsubscribingStoreMark({storeId: markedStoreId}))
+        }
+      });
     }else if (setTableContentsLoaded){
       setTableContentsLoaded(false);
     }
-  }, [subscriptionsData, subscriptionQueryLoading, getSubscriptionsError, setTableContentsLoaded]);
+  }, [subscriptionsData, subscriptionQueryLoading, getSubscriptionsError, setTableContentsLoaded, storesMarkedForUnsubscription, dispatch]);
 
   const ReloadButton: React.FC = () => {
     return (
@@ -104,14 +115,10 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
       title: '',
       key: "unsubscribe",
       render: (row: any) => {
-        return (
-          <FauxLinkButton onClick={() => handleClickUnsubscribe(row.storeId)}>
-            <FormattedMessage id={'unsubscribe'}/>
-          </FauxLinkButton>
-        );
+        return (<UnsubscribeButton storeId={row.storeId}/>);
       }
     }
-  ], [handleEditStoreLabel, handleClickUnsubscribe]);
+  ], [handleEditStoreLabel]);
 
   return (
     <>
@@ -128,13 +135,6 @@ const SubscriptionsTable: React.FC<SubscriptionsTableProps> = ({setTableContents
         <SetStoreLabelModal
           storeId={storeIdToLabel}
           onClose={handleCloseEditStoreLabelModal}
-        />
-      }
-      {
-        showUnsubscribeModal &&
-        <ConfirmUnsubscribeModal
-          storeId={storeIdToUnsubscribe}
-          onClose={handleCloseUnsubscribeModal}
         />
       }
     </>

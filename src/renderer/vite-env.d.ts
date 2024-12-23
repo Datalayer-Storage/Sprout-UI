@@ -32,3 +32,13 @@ interface DeploymentSettingPayload {
   settingKey: string;
   value: string | number | boolean | null;
 }
+
+interface StoreLabelPairPayload {
+  storeId: string,
+  label: string
+}
+
+interface AddStoreMirrorPayload {
+  storeId: string,
+  url: string
+}

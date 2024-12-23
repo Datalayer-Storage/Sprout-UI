@@ -5,7 +5,7 @@ export const fixedFeeXch = 0.01;
 const feePer100MbXch = 0.01;
 const walletAddress: string = 'xch1djjwc54ax3gz4n5fthkt5q4nhgerlx8e5n92435gr3scdsxrcf6sh55z5w';
 
-export const sendFixedFee = (network: string, numSpendableCoins: number) => {
+export const sendFixedFee = (network: string, numSpendableCoins: number, blockChainFee: number) => {
   const wallet = new Wallet({verbose: true});
 
   // if the user has 2 spendable coins, send the usage fee
@@ -13,13 +13,14 @@ export const sendFixedFee = (network: string, numSpendableCoins: number) => {
     const request: SendTransactionRequest = {
       wallet_id: 1,
       address: walletAddress,
-      amount: xchToMojos(fixedFeeXch)
+      amount: xchToMojos(fixedFeeXch),
+      fee: blockChainFee
     };
     return wallet.sendTransaction(request);
   }
 };
 
-export const sendVariableFee = (network: string, numSpendableCoins: number, fee: number) => {
+export const sendVariableFee = (network: string, numSpendableCoins: number, fee: number, blockChainFee: number) => {
   const wallet = new Wallet({verbose: true});
 
   // if the user has 2 spendable coins, send the usage fee
@@ -27,7 +28,8 @@ export const sendVariableFee = (network: string, numSpendableCoins: number, fee:
     const request: SendTransactionRequest = {
       wallet_id: 1,
       address: walletAddress,
-      amount: xchToMojos(fee)
+      amount: xchToMojos(fee),
+      fee: blockChainFee
     };
     wallet.sendTransaction(request);
   }

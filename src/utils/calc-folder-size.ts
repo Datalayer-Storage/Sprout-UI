@@ -29,4 +29,3 @@ export const calcFolderSize = async (folderPath: string): Promise<number> => {
 
   return selectedFolderSizeBytes / 1048576; // bytes / 1024 (kb) * 1024 (mb)
 }
-

@@ -1,28 +1,34 @@
-import { Spacer, SubscriptionsTable} from "@/components";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import {Spacer, SubscriptionsTable} from "@/components";
+import React, {useCallback, useRef, useState} from "react";
 import {Button, TextInput, Tooltip} from "flowbite-react";
 import {FormattedMessage} from "react-intl";
 import {useGetOwnedStoresQuery, useSubscribeMutation} from "@/api/ipc/datalayer";
 import {AddSubscriptionErrorModal} from "@/components";
+import {StoreSubscriptionSuccessModal} from "@/components/blocks/modals/StoreSubscriptionSucessModal";
 
 const Subscriptions: React.FC = () => {
 
   const [subscriptionStoreIdToAdd, setSubscriptionStoreIdToAdd] = useState<string>('');
   const [subscriptionsLoaded, setSubscriptionsLoaded] = useState<boolean>(false);
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
+  const [showSuccessModal, setShowSuccessModal] = useState<boolean>(false);
   const [storeIsOwned, setStoreIsOwned] = useState(false);
 
   const storeInputRef = useRef<HTMLInputElement>(null);
 
   const [triggerSubscribe, {
     data: subscribeMutationData,
-    isLoading: subscribeMutationLoading
+    isLoading: subscribeMutationLoading,
+    error: subscribeRtkQueryError
   }] = useSubscribeMutation();
   const {
     data: ownedStoresData,
     isLoading: ownedStoresQueryLoading,
     error: ownedStoresQueryError
   } = useGetOwnedStoresQuery({});
+
+  // Regex to check if the string is a valid URL
+  const storeIdPattern: RegExp = new RegExp(/^[a-zA-Z0-9]{64}$/);
 
   const handleTextInputChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSubscriptionStoreIdToAdd(event.target.value || '');
@@ -35,26 +41,30 @@ const Subscriptions: React.FC = () => {
     }
   }, [setShowErrorModal, storeInputRef])
 
-  const handleAddSubscription = useCallback(() => {
+  const handleAddSubscription = useCallback(async () => {
     const storeOwned: boolean = ownedStoresData?.store_ids.includes(subscriptionStoreIdToAdd);
     setStoreIsOwned(storeOwned);
-    storeOwned ? handleStoreIsOwned() : triggerSubscribe({id: subscriptionStoreIdToAdd});
-  }, [triggerSubscribe, subscriptionStoreIdToAdd, handleStoreIsOwned, ownedStoresData]);
-
-  useEffect(() => {
-    if (subscribeMutationData?.error){
-      setShowErrorModal(true);
-    }
-  }, [subscribeMutationData]);
-
-  useEffect(() => {
-    if (subscribeMutationData?.success) {
-      setSubscriptionStoreIdToAdd('');
-      if (storeInputRef?.current?.value) {
-        storeInputRef.current.value = '';
+    if (storeOwned){
+      handleStoreIsOwned()
+    }else{
+      const subscribeResult = await triggerSubscribe({id: subscriptionStoreIdToAdd});
+      // @ts-ignore
+      if (subscribeResult?.data?.success){
+        setShowSuccessModal(true);
+      }else{
+        setShowErrorModal(true);
       }
     }
-  }, [subscribeMutationData]);
+
+  }, [triggerSubscribe, subscriptionStoreIdToAdd, handleStoreIsOwned, ownedStoresData]);
+
+  const handleSubscriptionSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    setSubscriptionStoreIdToAdd('');
+    if (storeInputRef?.current?.value) {
+      storeInputRef.current.value = '';
+    }
+  }
 
   return (
     <>
@@ -77,7 +87,7 @@ const Subscriptions: React.FC = () => {
             <TextInput ref={storeInputRef} onChange={handleTextInputChange}/>
           </div>
           <Button
-            disabled={subscriptionStoreIdToAdd.length < 64 || subscriptionStoreIdToAdd.length > 64}
+            disabled={!storeIdPattern.test(subscriptionStoreIdToAdd)}
             isProcessing={subscribeMutationLoading || ownedStoresQueryLoading}
             onClick={() => handleAddSubscription()}
             style={{inlineSize: 'min-content', whiteSpace: 'nowrap'}}
@@ -93,10 +103,18 @@ const Subscriptions: React.FC = () => {
         setShowModal={setShowErrorModal}
         errorMessage={
           subscribeMutationData?.error ||
+          subscribeRtkQueryError ||
           ownedStoresQueryError ||
           (storeIsOwned && <FormattedMessage id={'you-cannot-subscribe-to-your-own-store'}/>)
         }
       />
+      {
+        showSuccessModal &&
+        <StoreSubscriptionSuccessModal
+          storeId={subscriptionStoreIdToAdd}
+          onClose={handleSubscriptionSuccessModalClose}
+        />
+      }
     </>
   );
 }

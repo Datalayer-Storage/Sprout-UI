@@ -43,10 +43,8 @@ const AccessSettings: React.FC<AccessSettingsProps> = () => {
         accessKeyTextInput.current.value != '' &&
         accessSecretTextInput.current.value != ''
       ) {
-        dispatch(setAccessKey(accessKeyTextInput.current.value as string));
-        dispatch(
-          setAccessSecret(accessSecretTextInput.current.value as string),
-        );
+        dispatch(setAccessKey(accessKeyTextInput.current.value));
+        dispatch(setAccessSecret(accessSecretTextInput.current.value));
       }
     }
   }, [dispatch]);

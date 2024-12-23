@@ -1,5 +1,6 @@
 export default {
-  locale: null,
+  locale: '',
   checkForPendingTxToken: 1,
-  storeMirrors: {}
+  storeMirrors: {},
+  unsubscribingStores: {}
 };

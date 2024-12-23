@@ -27,12 +27,12 @@ const WalletBalanceInsufficientErrorModal: React.FC<WalletBalanceInsufficientMod
       <Modal.Body>
         <div className="space-y-6">
           <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-            <FormattedMessage
-              id="your-balance-must-be-greater-than-the-default-fee-for-this-action-and-could-require-that-additional-xch-be-used-as-an-asset"
-            />.
+            <FormattedMessage id="your-spendable-wallet-balance-is-insufficient-for-this-action"/>
+            {'. '}
+            <FormattedMessage id="reducing-your-default-fee-or-default-mirror-coin-value-can-help-resolve-this-error"/>.
           </p>
           <FauxLinkButton onClick={handleGoToSettings}>
-            <FormattedMessage id={"the-default-fee-can-be-set-in-settings"}/>.
+            <FormattedMessage id={"the-default-fee-and-mirror-coin-value-can-be-set-in-settings"}/>.
           </FauxLinkButton>
         </div>
       </Modal.Body>

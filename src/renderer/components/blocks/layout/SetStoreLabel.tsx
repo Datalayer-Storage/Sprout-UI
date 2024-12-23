@@ -24,7 +24,7 @@ const SetStoreLabel: React.FC<SelectedStoreIdCardProps> = ({
   };
 
   return (
-    <div className={'space-y-6 flex-col'}>
+    <div className={'space-y-4 flex-col'}>
       <div className={'flex'}>
         <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
           <FormattedMessage id="store-id"/>: {storeId}
